@@ -197,9 +197,15 @@
 ** General programming
 
    Use prettify-symbols mode for all programming.
+   Currentlly this only works for Emacs 24.4.X and higher,
+   so add in a version check. There is an external package for earlier
+   versions, which I might include in the else portion below later.
    #+name: programming-setup
    #+begin_src emacs-lisp
-     (global-prettify-symbols-mode +1)
+    (if (and (>= (symbol-value 'emacs-major-version) 24) 
+             (>= (symbol-value 'emacs-minor-version)' 4))
+        (global-prettify-symbols-mode +1)
+        ())
    #+end_src
 
    Syntax highlighting
