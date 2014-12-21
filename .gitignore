@@ -1,3 +1,5 @@
 custom.el
 emacs.el
 .org-id-locations
+.cask
+auto-save-list
