@@ -5,16 +5,16 @@
 * Configuring Emacs:
 
   Giving this Cask and org-mode format for Emacs configuration a
-  chance. This template was lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]
-  I have removed some parts of it that either I didn't think I would
+  chance. This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for
+  me]]. I have removed some parts of it that either I didn't think I would
   need or didn't understand.
 
 * How to use this configuration
 
-** TODO Obtaining the source
+** Obtaining the source
 
-   You can find the latest public version of the configuration in [[https://github.com/joodie/emacs-literal-config/][the
-   Github repository]]. The meat of it (and the source of this
+   You can find the latest public version of the configuration in
+   [[https://github.com/markblunk/dotEmacs][the Github repository]] The meat of it (and the source of this
    document) is the ~emacs.org~ file.
 
 ** Installation
@@ -23,14 +23,26 @@
    uses [[https://github.com/cask/cask][Cask]] to specify the package dependencies. [[https://github.com/rdallasgray/pallet][Pallet]] is installed
    to sync actual installed packages with the dependency spec.
 
-** TODO Installation procedure
+** Installation procedure
 
   - Install GNU Emacs 24 or higher
-  - Install Cask from https://github.com/cask/cask
-  - Clone [[https://github.com/mblunk/SOMETHINGHERE][the repository]] as ~$HOME/.emacs.d~ (or symlink it to that
+  - Install Cask from https://github.com/cask/cask. If you are using a
+    mac, you can install cask using homebrew.
+  - Clone [[https://github.com/markblunk/dotEmacs][the repository]] as ~$HOME/.emacs.d~ (or symlink it to that
     directory).
   - Run ~cask install~ in ~$HOME/.emacs.d~
   - Start Emacs
+** Issues with installation
+   I had some problems (on a mac) with the package not being able to
+   find the cask.el and cask-bootstrap.el file from cask. my eventual
+   solution was to symlink those files, found in a subdirectory of
+   cask, into ~$HOME/.cask/~
+
+   Also, after running cask install the init.el file will look for a
+   custom.el file, and throw an error if it is not found. However,
+   currently creating a blank one (by running 'touch custom.el')
+   solves this problem. I should change the init.el to create that
+   custom.el if one is not found.
 * Graphics and looks
 ** Color theme
 
