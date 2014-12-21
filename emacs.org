@@ -174,10 +174,11 @@
   #+begin_src emacs-lisp
     (setq inhibit-startup-screen +1)
   #+end_src
-**TODO make another window with shell
+
+  **TODO make another window with shell
 * Formatting and white-space
-  Turn off default indent-mode
-   Superfluous white-space should be shown.
+
+  Turn off default indent-mode. Superfluous white-space should be shown.
   #+name: formatting
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
@@ -186,7 +187,7 @@
 
 ** Text (non-code) formatting
 
-   Let Emacs do line wrapping.
+   Let Emacs do line wrapping
    #+name: formatting
    #+begin_src emacs-lisp
      (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -350,7 +351,6 @@
 * TODO Auto Complete
 
   For now, using company mode
-
   #+name: auto-complete
   #+begin_src emacs-lisp
     (require 'company)
@@ -362,7 +362,6 @@
   Some miminal global key bindings. Consult
   http://www.masteringemacs.org/article/my-emacs-keybindings
   for some more ideas.
-
   #+name: global-keys
   #+begin_src emacs-lisp
     (global-set-key "\C-cg" 'magit-status)
@@ -388,6 +387,7 @@
     (ido-mode +1)
     (ido-yes-or-no-mode +1)
   #+end_src
+
 ** TODO Backups
    Save all backups to a universal location
    (this doesnt seem to be working)
