@@ -202,8 +202,8 @@
    versions, which I might include in the else portion below later.
    #+name: programming-setup
    #+begin_src emacs-lisp
-    (if (and (>= (symbol-value 'emacs-major-version) 24) 
-             (>= (symbol-value 'emacs-minor-version)' 4))
+    (if (and (>= emacs-major-version 24)
+             (>= emacs-minor-version 4))
         (global-prettify-symbols-mode +1)
         ())
    #+end_src
