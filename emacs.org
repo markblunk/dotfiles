@@ -400,13 +400,12 @@
    #+name: global-backup
    #+begin_src emacs-lisp
      (setq
-       backup-by-copying t      ; don't clobber symlinks
-       backup-directory-alist
-       '(("." . "~/.emacs.d/backups"))
+      backup-by-copying t      ; don't clobber symlinks
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+     (setq backup-directory-alist '(("" . "~/.emacs.d/backup/persave")))
    #+end_src
 * Org Mode
 ** Global keys
