@@ -46,4 +46,5 @@
 (depends-on "shut-up")
 (depends-on "smart-mode-line")
 (depends-on "smartparens")
+(depends-on "sql-indent")
 (depends-on "yaml-mode")

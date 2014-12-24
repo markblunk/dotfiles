@@ -312,7 +312,6 @@
    #+end_src
 
 ** TODO Python
-
    Some Python stuff should go here at some point.
    #+name: programming-setup
    #+begin_src emacs-lisp
@@ -343,9 +342,10 @@
    Pretty sql indentation
    #+name: programming-setup
    #+begin_src emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.sql$" . sql-mode))
      (add-to-list 'auto-mode-alist '("\\.hql$" . sql-mode))
      (eval-after-load "sql"
-       '(load-library "sql-indent"))
+        '(load-library "sql-indent"))
    #+end_src
 ** YAML
 
