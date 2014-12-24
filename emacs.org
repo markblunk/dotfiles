@@ -379,11 +379,11 @@
   bind that function.
   #+name: global-navigation
   #+begin_src emacs-lisp
-    (defun edit-emacs-configuration ()
+    (defun mb-edit-emacs-configuration ()
        " Open emacs configuration file"
       (interactive)
       (find-file "~/.emacs.d/emacs.org"))
-    (global-set-key "\C-ce" 'edit-emacs-configuration)
+    (global-set-key "\C-ce" 'mb-edit-emacs-configuration)
   #+end_src
 
   enable ido-mode
@@ -451,12 +451,12 @@
    #+name: org-config
    #+begin_src emacs-lisp
 
-     (defun org-autodone (n-done n-not-done)
+     (defun mb-org-autodone (n-done n-not-done)
        "Switch entry to DONE when all subentries are done, to TODO otherwise."
        (let (org-log-done org-log-states)   ; turn off logging
          (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-     (add-hook 'org-after-todo-statistics-hook 'org-autodone)
+     (add-hook 'org-after-todo-statistics-hook 'mb-org-autodone)
    #+end_src
 
    File and refile notes to any main header in any file in
