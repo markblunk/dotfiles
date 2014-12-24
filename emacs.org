@@ -468,7 +468,7 @@
 
    #+end_src
 ** Org-Babel
-*** Fontifying source blocks
+*** TODO Fontifying source blocks
     Enable yntax highlighting in src blocks.
     #+name: org-config
     #+begin_src emacs-lisp
