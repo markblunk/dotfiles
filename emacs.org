@@ -145,20 +145,6 @@
      (require 'uniquify)
      (setq uniquify-buffer-name-style 'forward)
    #+end_src
-
-** Window configuration
-   Use sticky windows to keep a selected window visible
-   (using "C-x 9") when deleting windows (with "C-x 0" and "C-x 1").
-
-   #+name: look-and-feel
-   #+begin_src emacs-lisp
-     (require 'sticky-windows)
-     (global-set-key     [(control x) (?0)]        'sticky-window-delete-window)
-     (global-set-key     [(control x) (?1)]        'sticky-window-delete-other-windows)
-     (global-set-key     [(control x) (?9)]        'sticky-window-keep-window-visible)
-
-   #+end_src
-
 ** Window systems and terminals
 
     Make mouse clicks work in xterm (and iTerm)
