@@ -13,6 +13,7 @@
 (depends-on "csv-mode")
 (depends-on "dash")
 (depends-on "dired+")
+(depends-on "epc")
 (depends-on "epl")
 (depends-on "exec-path-from-shell")
 (depends-on "f")
