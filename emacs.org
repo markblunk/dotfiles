@@ -162,6 +162,13 @@
   #+end_src
 
   **TODO make another window with shell
+  **Multi-term
+  #+name: startup
+  #+begin_src emacs-lisp
+    (require 'multi-term)
+    (setq multi-term-program "/bin/bash")
+  #+end_src
+
 * Formatting and white-space
 
   Turn off default indent-mode. Superfluous white-space should be shown.
