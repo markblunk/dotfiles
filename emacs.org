@@ -108,6 +108,7 @@
      (sml/apply-theme 'dark)
      (setq sml/shorten-directory t)
      (setq sml/shorten-modes t)
+     (setq column-number-mode t)
    #+end_src
 
 ** Scrolling behavior
