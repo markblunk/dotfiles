@@ -320,9 +320,9 @@
      ;;jedi
      (require 'epc)
      (setq jedi:setup-keys t)
-     (setq jedi:server-command '("python" "/Users/x289/.emacs.d/.cask/24.4.1/elpa/jedi-20140321.1323/jediepcserver.py"))
      (setq jedi:tooltip-method '(pos-tip))
      (autoload 'jedi:setup "jedi" nil t)
+     (setq jedi:complete-on-dot t)
      (add-hook 'python-mode-hook 'jedi:setup)
      (add-hook 'python-mode-hook 'auto-complete-mode)
      (add-hook 'python-mode-hook 'jedi:ac-setup)
