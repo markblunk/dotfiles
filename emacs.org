@@ -10,21 +10,15 @@
   need or didn't understand.
 
 * How to use this configuration
-
 ** Obtaining the source
-
    You can find the latest public version of the configuration in
    [[https://github.com/markblunk/dotEmacs][the Github repository]] The meat of it (and the source of this
    document) is the ~emacs.org~ file.
-
 ** Installation
-
    This configuration is intended to be installable from scratch. It
    uses [[https://github.com/cask/cask][Cask]] to specify the package dependencies. [[https://github.com/rdallasgray/pallet][Pallet]] is installed
    to sync actual installed packages with the dependency spec.
-
 ** Installation procedure
-
   - Install GNU Emacs 24 or higher
   - Install Cask from https://github.com/cask/cask. If you are using a
     mac, you can install cask using homebrew.
@@ -179,7 +173,6 @@
   #+end_src
 
 ** Text (non-code) formatting
-
    Let Emacs do line wrapping
    #+name: formatting
    #+begin_src emacs-lisp
@@ -328,7 +321,6 @@
      (add-hook 'python-mode-hook 'jedi:ac-setup)
    #+end_src
 ** Scala
-
    Use scala-mode2 for scala files
    #+name: programming-setup
    #+begin_src emacs-lisp
@@ -347,14 +339,12 @@
         '(load-library "sql-indent"))
    #+end_src
 ** YAML
-
    #+name: programming-setup
    #+begin_src emacs-lisp
     (require 'yaml-mode)
     (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
    #+end_src
 * TODO Auto Complete
-
   For now, using company mode
   #+name: auto-complete
   #+begin_src emacs-lisp
@@ -363,7 +353,6 @@
   #+end_src
 
 * TODO Global key bindings
-
   Some miminal global key bindings. Consult
   http://www.masteringemacs.org/article/my-emacs-keybindings
   for some more ideas.
@@ -373,7 +362,6 @@
     (global-set-key "\C-cq" 'delete-indentation)
   #+end_src
 * Global navigation
-
   Set emacs configuration file location, and
   bind that function.
   #+name: global-navigation
@@ -384,7 +372,6 @@
       (find-file "~/.emacs.d/emacs.org"))
     (global-set-key "\C-ce" 'mb-edit-emacs-configuration)
   #+end_src
-
   enable ido-mode
   #+name: global-navigation
   #+begin_src emacs-lisp
@@ -392,7 +379,6 @@
     (ido-mode +1)
     (ido-yes-or-no-mode +1)
   #+end_src
-
 ** TODO Backups
    Save all backups to a universal location
    (this doesnt seem to be working)
