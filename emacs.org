@@ -30,7 +30,7 @@
    I had some problems (on a mac) with the package not being able to
    find the cask.el and cask-bootstrap.el file from cask. my eventual
    solution was to symlink those files, found in a subdirectory of
-   cask, into ~$HOME/.cask/~
+   cask, into $HOME/.cask/~
 
    Also, after running cask install the init.el file will look for a
    custom.el file, and throw an error if it is not found. However,
@@ -148,7 +148,6 @@
         (xterm-mouse-mode +1))
     #+end_src
 * Start up
-
   Start with the scratch buffer; no start up screen.
   #+name: startup
   #+begin_src emacs-lisp
@@ -164,8 +163,8 @@
   #+end_src
 
 * Formatting and white-space
-
-  Turn off default indent-mode. Superfluous white-space should be shown.
+  Turn off default indent-mode. Superfluous white-space should be
+  shown.
   #+name: formatting
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
