@@ -154,8 +154,6 @@
   #+begin_src emacs-lisp
     (setq inhibit-startup-screen +1)
   #+end_src
-
-  **TODO make another window with shell
   **Multi-term
   #+name: startup
   #+begin_src emacs-lisp
