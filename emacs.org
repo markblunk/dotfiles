@@ -178,6 +178,7 @@
    #+end_src
 
 * Programming
+
 ** General programming
 
    Use prettify-symbols mode for all programming.
@@ -219,7 +220,6 @@
         (when matching-text (message matching-text))))
    #+end_src
 ** Lisps
-
    For lisp code, I want ParEdit plus general highlighting etc.
    #+name: programming-setup
    #+begin_src emacs-lisp
@@ -237,7 +237,6 @@
      (add-hook 'scheme-mode-hook           'rainbow-delimiters-mode)
    #+end_src
 ** Emacs Lisp
-
    #+name: programming-setup
    #+begin_src emacs-lisp
      (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -273,14 +272,12 @@
      (add-to-list 'auto-mode-alist '("\\.jade$" . jade-mode))
    #+end_src
 ** Java
-
    Use Java-mode for java
    #+name: programming-setup
    #+begin_src emacs-lisp
      (add-to-list 'auto-mode-alist '("\\.java$'" . java-mode))
    #+end_src
 ** Javascript
-
    I use JS2-mode for javascript source.
    #+name: programming-setup
    #+begin_src emacs-lisp
