@@ -22,13 +22,13 @@
     mac, you can install cask using homebrew.
   - Clone [[https://github.com/markblunk/dotEmacs][the repository]] as ~$HOME/.emacs.d~ (or symlink it to that
     directory).
-  - Run ~cask install in ~$HOME/.emacs.d~
+  - Run ~cask install~ in ~$HOME/.emacs.d~
   - Start Emacs
 ** Issues with installation
    I had some problems (on a mac) with the package not being able to
    find the cask.el and cask-bootstrap.el file from cask. my eventual
    solution was to symlink those files, found in a subdirectory of
-   cask, into $HOME/.cask/~
+   cask, into ~$HOME/.cask/~
 
    Also, after running cask install the init.el file will look for a
    custom.el file, and throw an error if it is not found. However,
