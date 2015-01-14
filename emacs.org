@@ -489,12 +489,10 @@
     <<startup>>
   #+end_src
 * Environment
-
   OSX doesn't set the environment from the shell init files for
   graphical applications, but I set PATH and a bunch of other stuff
   there. The =exec-path-from-shell= package will take care of
   that.
-
   #+name: environment
   #+begin_src emacs-lisp
     (when (memq window-system '(mac ns))
