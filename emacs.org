@@ -245,12 +245,24 @@
      (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
    #+end_src
 ** CSV
-
    #+name: programming-setup
    #+begin_src emacs-lisp
      (require 'csv-mode)
      (add-to-list 'auto-mode-alist '("\\.csv" . csv-mode))
      (add-to-list 'auto-mode-alist '("\\.tsv" . csv-mode))
+   #+end_src
+** Haskell
+   #+name: programming-setup
+   #+begin_src emacs-lisp
+     (require 'haskell-mode)
+     (require 'hi2)
+   
+     (add-to-list 'auto-mode-alist '("\\.hs" . haskell-mode))
+     (autoload 'ghc-init "ghc" nil t)
+     (autoload 'ghc-debug "ghc" nil t)
+     (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+     (add-hook 'haskell-mode-hook 'turn-on-hi2)
    #+end_src
 ** Jade
 
