@@ -281,20 +281,22 @@
      (require 'flycheck)
      (add-hook 'after-init-hook  'global-flycheck-mode)
      (add-hook 'python-mode-hook
-        (lambda ()
-          (setq indent-tabs-mode nil)
-          (setq tab-width 4)
-          (setq python-indent 4)
-	  (setq tab-stop-list (number-sequence 4 120 4))))
-     ;;jedi
+       (lambda ()
+         (setq indent-tabs-mode nil)
+         (setq tab-width 4)
+         (setq python-indent 4)
+	 (setq tab-stop-list (number-sequence 4 120 4))))
+   #+end_src
+   Jedi stuff
+   #+begin_src emacs-lisp
      (require 'epc)
-     (setq jedi:setup-keys t)
-     (setq jedi:tooltip-method '(pos-tip))
      (autoload 'jedi:setup "jedi" nil t)
-     (setq jedi:complete-on-dot t)
      (add-hook 'python-mode-hook 'jedi:setup)
-     (add-hook 'python-mode-hook 'auto-complete-mode)
-     (add-hook 'python-mode-hook 'jedi:ac-setup)
+     (setq jedi:setup-keys t)
+     (setq jedi:complete-on-dot t)
+     (setq jedi:tooltip-method '(pos-tip popup))
+;     (add-hook 'python-mode-hook 'auto-complete-mode)
+;     (add-hook 'python-mode-hook 'jedi:ac-setup)
    #+end_src
 ** Scala
    Use scala-mode2 for scala files
