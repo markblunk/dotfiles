@@ -1,7 +1,6 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Mark Blunk
 #+EMAIL: mblunk@gmail.com
-
 * Configuring Emacs:
   Giving this Cask and org-mode format for Emacs configuration a
   chance. This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for
@@ -311,6 +310,7 @@
    #+name: programming-setup
    #+begin_src emacs-lisp
      (add-to-list 'auto-mode-alist '("\\.sql$" . sql-mode))
+     (add-to-list 'auto-mode-alist '("\\.hive$" . sql-mode))
      (add-to-list 'auto-mode-alist '("\\.hql$" . sql-mode))
      (eval-after-load "sql"
         '(load-library "sql-indent"))
