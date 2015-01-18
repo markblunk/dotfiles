@@ -45,7 +45,7 @@
     I find that I am repeatedly forgetting to add the ~#+name:
     SECTION_NAME~ line.
     2. If you add a new section, named say ~NEW_SECTION~, then don't forget
-       to add the line ~<<NEW_SECTIONy>>~ in the Configuration file layout
+       to add the line ~<<NEW_SECTION>>~ in the Configuration file layout
        code block below.
 
 * Graphics and looks
