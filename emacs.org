@@ -34,6 +34,20 @@
    currently creating a blank one (by running 'touch custom.el')
    solves this problem. I should change the init.el to create that
    custom.el if one is not found.
+** Adding your own modifications
+    Here are some problems I have run into more than once, when
+    attempting to modify this configuration file
+    1. Every code block look like this:
+    #+name: SECTION_NAME
+    #+begin_src emacs-lisp
+      ;;SOME CODE GOES HERE
+    #+end_src
+    I find that I am repeatedly forgetting to add the ~#+name:
+    SECTION_NAME~ line.
+    2. If you add a new section, named say ~NEW_SECTION~, then don't forget
+       to add the line ~<<NEW_SECTIONy>>~ in the Configuration file layout
+       code block below.
+
 * Graphics and looks
 ** Color theme
     Load a default theme. For now using deeper-blue. Would like to try
