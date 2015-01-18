@@ -287,15 +287,11 @@
 	 (setq tab-stop-list (number-sequence 4 120 4))))
    #+end_src
    Jedi stuff
+   #+name: programming-setup
    #+begin_src emacs-lisp
      (require 'epc)
-     (autoload 'jedi:setup "jedi" nil t)
      (add-hook 'python-mode-hook 'jedi:setup)
-     (setq jedi:setup-keys t)
      (setq jedi:complete-on-dot t)
-     (setq jedi:tooltip-method '(pos-tip popup))
-;     (add-hook 'python-mode-hook 'auto-complete-mode)
-;     (add-hook 'python-mode-hook 'jedi:ac-setup)
    #+end_src
 ** Scala
    Use scala-mode2 for scala files
