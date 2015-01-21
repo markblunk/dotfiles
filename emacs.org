@@ -28,12 +28,6 @@
    find the cask.el and cask-bootstrap.el file from cask. my eventual
    solution was to symlink those files, found in a subdirectory of
    cask, into ~$HOME/.cask/~
-
-   Also, after running cask install the init.el file will look for a
-   custom.el file, and throw an error if it is not found. However,
-   currently creating a blank one (by running 'touch custom.el')
-   solves this problem. I should change the init.el to create that
-   custom.el if one is not found.
 ** Adding your own modifications
     Here are some problems I have run into more than once, when
     attempting to modify this configuration file
@@ -517,9 +511,13 @@
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
   functions in the user init file, which is "~/.emacs.d/init.el" in
-  this setup. Instead, put it in a separate file
+  this setup. Instead, put it in a separate file, which we create if
+  it's not there, by first creating an empty file and then loading the
+  needed content.
   #+name: customize-config
   #+begin_src emacs-lisp
-    (setq custom-file "~/.emacs.d/custom.el")
+    (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
+    (unless (file-exists-p custom-file)
+      (shell-command (concat "touch " custom-file)))
     (load custom-file)
   #+end_src
