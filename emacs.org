@@ -150,7 +150,7 @@
     (require 'multi-term)
     (setq multi-term-program "/bin/bash")
   #+end_src
-* Formatting and white-space
+** Formatting and white-space
   Turn off default indent-mode. Superfluous white-space should be
   shown.
   #+name: startup
@@ -160,11 +160,10 @@
   #+end_src
 ** Text (non-code) formatting
    Let Emacs do line wrapping
-   #+name: formatting
+   #+name: startup
    #+begin_src emacs-lisp
      (add-hook 'text-mode-hook 'turn-on-auto-fill)
    #+end_src
-
 * Programming
 ** General programming
    Use prettify-symbols mode for all programming.
