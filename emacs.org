@@ -153,10 +153,10 @@
 * Formatting and white-space
   Turn off default indent-mode. Superfluous white-space should be
   shown.
-  #+name: formatting
+  #+name: startup
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
-    (setq show-trailing-whitespace 't)
+    (setq-default show-trailing-whitespace t)
   #+end_src
 ** Text (non-code) formatting
    Let Emacs do line wrapping
