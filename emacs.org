@@ -29,15 +29,13 @@
    solution was to symlink those files, found in a subdirectory of
    cask, into ~$HOME/.cask/~
 ** Adding your own modifications
-    Here are some problems I have run into more than once, when
-    attempting to modify this configuration file
-    1. Every code block look like this:
-    #+name: SECTION_NAME
-    #+begin_src emacs-lisp
-      ;;SOME CODE GOES HERE
-    #+end_src
-    I find that I am repeatedly forgetting to add the ~#+name:
+    Here are some problems I have run into more than once when
+    attempting to modify this configuration file:
+    1. Every code block should be begin with ~#+name: SECTION_NAME~,
+       in addition the begin_src and end_src wrapped around the
+       code. I find that I am repeatedly forgetting to add the ~#+name:
     SECTION_NAME~ line.
+
     2. If you add a new section, named say ~NEW_SECTION~, then don't forget
        to add the line ~<<NEW_SECTION>>~ in the Configuration file layout
        code block below.
