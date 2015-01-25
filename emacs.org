@@ -1,7 +1,7 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Mark Blunk
 #+EMAIL: mblunk@gmail.com
-* Configuring Emacs:
+* Configuring Emacs
   Giving this Cask and org-mode format for Emacs configuration a
   chance. This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for
   me]]. I have removed some parts of it that either I didn't think I would
@@ -9,8 +9,7 @@
 * How to use this configuration
 ** Obtaining the source
    You can find the latest public version of the configuration in
-   [[https://github.com/markblunk/dotEmacs][the Github repository]] The meat of it (and the source of this
-   document) is the ~emacs.org~ file.
+   [[https://github.com/markblunk/dotEmacs][the Github repository]] The meat of it is here, in the ~emacs.org~ file.
 ** Installation
    This configuration is intended to be installable from scratch. It
    uses [[https://github.com/cask/cask][Cask]] to specify the package dependencies. [[https://github.com/rdallasgray/pallet][Pallet]] is installed
@@ -29,8 +28,8 @@
    solution was to symlink those files, found in a subdirectory of
    cask, into ~$HOME/.cask/~
 ** Adding your own modifications
-    Here are some problems I have run into more than once, when
-    attempting to modify this configuration file
+   Here are some problems I have run into more than once, when
+   attempting to modify this configuration file
     1. Every code block look like this:
     #+name: SECTION_NAME
     #+begin_src emacs-lisp
@@ -44,8 +43,8 @@
 
 * Graphics and looks
 ** Color theme
-    Load a default theme. For now using deeper-blue. Would like to try
-    using solarized at some point
+   Load a default theme. For now using deeper-blue. Would like to try
+   using solarized at some point
     #+name: look-and-feel
     #+begin_src emacs-lisp
       (load-theme 'deeper-blue)
