@@ -60,7 +60,7 @@
                          :width 'normal)
    #+end_src
 ** Blinking cursor
-    Turn the cursor off
+   Turn the cursor off
     #+name: look-and-feel
     #+begin_src emacs-lisp
       (blink-cursor-mode nil)
@@ -427,7 +427,7 @@
    #+end_src
 ** Org-Babel
 *** TODO Fontifying source blocks
-    Enable yntax highlighting in src blocks.
+    Enable syntax highlighting in src blocks.
     #+name: org-config
     #+begin_src emacs-lisp
       (setq org-src-fontify-natively t)
