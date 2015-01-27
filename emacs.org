@@ -28,14 +28,11 @@
    solution was to symlink those files, found in a subdirectory of
    cask, into ~$HOME/.cask/~
 ** Adding your own modifications
-   Here are some problems I have run into more than once, when
-   attempting to modify this configuration file
-    1. Every code block look like this:
-    #+name: SECTION_NAME
-    #+begin_src emacs-lisp
-      ;;SOME CODE GOES HERE
-    #+end_src
-    I find that I am repeatedly forgetting to add the ~#+name:
+    Here are some problems I have run into more than once when
+    attempting to modify this configuration file:
+    1. Every code block should be begin with ~#+name: SECTION_NAME~,
+       in addition the begin_src and end_src wrapped around the
+       code. I find that I am repeatedly forgetting to add the ~#+name:
     SECTION_NAME~ line.
     2. If you add a new section, named say ~NEW_SECTION~, then don't forget
        to add the line ~<<NEW_SECTION>>~ in the Configuration file layout
@@ -164,6 +161,7 @@
     (require 'multi-term)
     (setq multi-term-program "/bin/bash")
   #+end_src
+<<<<<<< HEAD
 ** Multiple window setup
    Start with the scratch buffer; no start up screen.
   #+name: startup
@@ -179,20 +177,22 @@
       (other-window 1))
   #+end_src
 * Formatting and white-space
+=======
+** Formatting and white-space
+>>>>>>> 8bc2cbbb53e1408cf5213b6a0f5482cd73822b0b
   Turn off default indent-mode. Superfluous white-space should be
   shown.
-  #+name: formatting
+  #+name: startup
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
-    (setq show-trailing-whitespace 't)
+    (setq-default show-trailing-whitespace t)
   #+end_src
 ** Text (non-code) formatting
    Let Emacs do line wrapping
-   #+name: formatting
+   #+name: startup
    #+begin_src emacs-lisp
      (add-hook 'text-mode-hook 'turn-on-auto-fill)
    #+end_src
-
 * Programming
 ** General programming
    Use prettify-symbols mode for all programming.
