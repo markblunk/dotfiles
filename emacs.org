@@ -169,14 +169,14 @@
   #+name: startup
   #+begin_src emacs-lisp
     (setq inhibit-startup-screen +1)
-;    (progn
-;      (interactive)
-;      (split-window-horizontally 40)
-;      (other-window 1)
-;      (split-window)
-;      (other-window 1)
-;      (multi-term)
-;      (other-window 1))
+    (progn
+      (interactive)
+      (split-window-horizontally 40)
+      (other-window 1)
+      (split-window)
+      (other-window 1)
+      (multi-term)
+      (other-window 1))
   #+end_src
 * Formatting and white-space
   Turn off default indent-mode. Superfluous white-space should be
