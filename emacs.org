@@ -63,7 +63,7 @@
    Turn the cursor off
     #+name: look-and-feel
     #+begin_src emacs-lisp
-      (blink-cursor-mode nil)
+      (blink-cursor-mode 0)
     #+end_src
 ** Reduce clutter
     Remove the toolbar and the  scroll bars. The position will be set
