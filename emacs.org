@@ -62,12 +62,6 @@
     #+begin_src emacs-lisp
       (blink-cursor-mode 0)
     #+end_src
-** Highlight current line
-   Highlight the current line
-    #+name: look-and-feel
-    #+begin_src emacs-lisp
-      (global-hl-line-mode 1)
-    #+end_src
 ** Reduce clutter
     Remove the toolbar and the  scroll bars. The position will be set
     up to show in the buffer.
