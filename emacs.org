@@ -339,13 +339,6 @@
     (require 'yaml-mode)
     (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
    #+end_src
-* TODO Auto Complete
-  For now, using company mode
-  #+name: auto-complete
-  #+begin_src emacs-lisp
-    (require 'company)
-    (add-hook 'after-init-hook 'global-company-mode)
-  #+end_src
 * TODO Global key bindings
   Some miminal global key bindings. Consult
   http://www.masteringemacs.org/article/my-emacs-keybindings
