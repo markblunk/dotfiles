@@ -137,6 +137,12 @@
         (xterm-mouse-mode +1))
     #+end_src
 * Start up
+** TODO Projectile
+  #+name: startup
+  #+begin_src emacs-lisp
+    (require 'projectile)
+    (projectile-global-mode)
+  #+end_src
 ** TODO Replace alt with cmd
   #+name: startup
   #+begin_src emacs-lisp
