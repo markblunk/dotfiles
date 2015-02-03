@@ -333,11 +333,6 @@
      (eval-after-load "sql"
         '(load-library "sql-indent"))
    #+end_src
-   Pretty sql indentation
-   #+begin_src emacs-lisp
-     (eval-after-load "sql"
-        '(load-library "sql-indent"))
-   #+end_src
 ** YAML
    #+name: programming-setup
    #+begin_src emacs-lisp
