@@ -137,7 +137,7 @@
         (xterm-mouse-mode +1))
     #+end_src
 * Start up
-** TODO Projectile
+** Projectile
   #+name: startup
   #+begin_src emacs-lisp
     (require 'projectile)
