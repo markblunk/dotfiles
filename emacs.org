@@ -161,10 +161,7 @@
     (require 'multi-term)
     (setq multi-term-program "/bin/bash")
   #+end_src
-* Formatting and white-space
-=======
 ** Formatting and white-space
->>>>>>> 8bc2cbbb53e1408cf5213b6a0f5482cd73822b0b
   Turn off default indent-mode. Superfluous white-space should be
   shown.
   #+name: startup
