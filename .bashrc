@@ -103,14 +103,7 @@ fi
 #general linux stuff
 if [[ $OSTYPE = linux* ]]
 then
-    echo 'some linux stuff should go here'
-    BLUE="\[\033[0;34m\]"
-    RED="\[\033[0;31m\]"
-    LIGHT_RED="\[\033[1;31m\]"
-    WHITE="\[\033[1;37m\]"
-    NO_COLOUR="\[\033[0m\]"
-    TITLEBAR=""
-    PS1='${TITLEBAR}\$BLUE[$RED\$(date +%H%M)$BLUE]\$BLUE[$LIGHT_RED\u@\h:\W$(__git_ps1 " (%s)")]\$WHITE\$$NO_COLOUR '
+    PS1='\e[33;1m\u@\h: \e[31m\W$(__git_ps1 " (%s)")\e[0m\$ '
     PS2='> '
     PS4='+ '
 fi
