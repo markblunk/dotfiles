@@ -496,7 +496,6 @@
     <<look-and-feel>>
     <<formatting>>
     <<programming-setup>>
-    <<auto-complete>>
     <<global-keys>>
     <<global-navigation>>
     <<global-backup>>
