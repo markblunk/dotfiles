@@ -27,6 +27,14 @@
    find the cask.el and cask-bootstrap.el file from cask. my eventual
    solution was to symlink those files, found in a subdirectory of
    cask, into ~$HOME/.cask/~
+** Spell Checking
+   Emacs does not come with a spell checker reloaded. I installed
+   Aspell on the Mac by running the following commands:
+    #+name: install Aspell
+    #+begin_src /bin/bash
+      brew install aspell --with-lang-en
+    #+end_src
+   This auto-magically installed a spellchecker that emacs can use.
 ** Adding your own modifications
     Here are some problems I have run into more than once when
     attempting to modify this configuration file:
