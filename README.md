@@ -1,4 +1,4 @@
-Emacs Configuration files
+Configuration files
 ========
+Some git stuff, a lot of emacs stuff.
 
-All of the explanation can be found in the file emacs.org
