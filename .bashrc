@@ -12,10 +12,7 @@ alias ..5='cd ../../../../..'
 
 
 
-# Start typing a command at a shell prompt, then hit up/down for history search
-# using the inputted text as the beginning of the search string
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+
 
 #set some defaults
 
@@ -36,6 +33,11 @@ source ~/.git-prompt.sh
 #general mac stuff
 if [[ $OSTYPE = darwin* ]]
 then
+    # Start typing a command at a shell prompt, then hit up/down for history search
+    # using the inputted text as the beginning of the search string
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+
     alias emacsgui=/usr/local/Cellar/emacs/24.4/Emacs.app/Contents/MacOS/Emacs
     alias ls='ls -G'
     alias ll='ls -lG'
