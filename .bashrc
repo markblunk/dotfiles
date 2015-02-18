@@ -110,7 +110,7 @@ then
     WHITE="\[\033[1;37m\]"
     NO_COLOUR="\[\033[0m\]"
     TITLEBAR=""
-    PS1='${TITLEBAR}\$BLUE[$RED\$(date +%H%M)$BLUE]\$BLUE[$LIGHT_RED\u@\h:\W$(__git_ps1 " (%s)")]\$WHITE\$$NO_COLOUR '
+    PS1='\[\e[0;32m\]\u\[\e[m\]@\h\[\e[1;34m\]\w$(__git_ps1 " (%s)")\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
     PS2='> '
     PS4='+ '
 fi
