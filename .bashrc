@@ -105,7 +105,8 @@ fi
 #general linux stuff
 if [[ $OSTYPE = linux* ]]
 then
-    PS1='\e[33;1m\u@\h: \e[31m\W$(__git_ps1 " (%s)")\e[0m\$ '
+    echo 'some linux stuff should go here'
+    PS1='\[\e[0;32m\]\u\[\e[m\]@\h\[\e[1;34m\]\w$(__git_ps1 " (%s)")\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
     PS2='> '
     PS4='+ '
 fi
