@@ -208,8 +208,8 @@
    Show matching parentheses
    #+name: programming-setup
    #+begin_src emacs-lisp
-;;     (require 'smartparens)
-;;     (smartparens-global-mode t)
+     (require 'smartparens)
+     (smartparens-global-mode t)
      (show-paren-mode 1)
      (setq show-paren-delay 0)
      (defadvice show-paren-function
