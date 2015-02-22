@@ -155,7 +155,7 @@
   #+name: startup
   #+begin_src emacs-lisp
     (setq-default mac-command-modifier 'meta)
-    (setq-default mac-option-modifier nil)
+    (setq-default mac-option-modifier 'super)
   #+end_src
 ** Set frame size
   #+name: startup
