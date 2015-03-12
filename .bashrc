@@ -108,6 +108,13 @@ then
     PS1='\[\e[0;32m\]\u\[\e[m\]@\h\[\e[1;34m\]\w$(__git_ps1 " (%s)")\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
     PS2='> '
     PS4='+ '
+    if [[ $HOSTNAME = blerpy ]]
+    then
+        #Haskell package manager
+        PATH=$HOME/.cabal/bin:$PATH
+        #emacs package manager
+        PATH=$HOME/.cask/bin:$PATH
+    fi
 fi
 
 #stuff for the work laptop
