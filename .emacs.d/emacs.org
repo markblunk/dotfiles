@@ -52,7 +52,7 @@
    using solarized at some point
     #+name: look-and-feel
     #+begin_src emacs-lisp
-      (load-theme 'leuven t)
+      (load-theme 'deeper-blue t)
     #+end_src
 ** Font
    Load default font of Inconsolata
