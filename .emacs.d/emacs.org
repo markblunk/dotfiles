@@ -224,7 +224,7 @@
                                  (blink-matching-open))))
      (when matching-text (message matching-text))))
    #+end_src
-** Lisps
+** Lisp
    For lisp code, I want ParEdit plus general highlighting etc.
    #+name: programming-setup
    #+begin_src emacs-lisp
