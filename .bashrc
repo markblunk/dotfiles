@@ -44,15 +44,15 @@ if [[ $OSTYPE = darwin* ]]; then
 
     COLOR1="\[\033[0;32m\]"
     COLOR2="\[\033[1;33m\]"
-    COLOR3="\[\033[0;36m\]"
-    COLOR4="\[\033[0;31m\]"
-    NO_COLOUR="\[\033[0m\]"
+    COLOR3="\[\033[0;31m\]"
+    COLOR4="\[\033[0;36m\]"
+    NO_COLOR="\[\033[0m\]"
     LSCOLORS="GxFxCxDxBxegedabagaced"
     export CLICOLOR=1
     export LSCOLORS
 
     #if we are in a git repository, the prompt will tell us what branch were in.
-    PS1=$COLOR1'\u'$COLOR2'@'$COLOR4'\h'$COLOR2:$COLOR3'\W$(__git_ps1 " (%s)") \$'$NO_COLOUR
+    PS1=$COLOR1'\u'$COLOR2'@'$COLOR3'\h'$COLOR2:$COLOR4'\W$(__git_ps1 " (%s)") \$'$NO_COLOR
 
 
     #java config
