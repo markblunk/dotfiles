@@ -31,8 +31,7 @@ fi
 source ~/.git-prompt.sh
 
 #general mac stuff
-if [[ $OSTYPE = darwin* ]]
-then
+if [[ $OSTYPE = darwin* ]]; then
     # Start typing a command at a shell prompt, then hit up/down for history search
     # using the inputted text as the beginning of the search string
     bind '"\e[A": history-search-backward'
@@ -103,13 +102,17 @@ then
 
 fi
 #general linux stuff
-if [[ $OSTYPE = linux* ]]
-then
+if [[ $OSTYPE = linux* ]]; then
     PS1='\[\e[0;32m\]\u\[\e[m\]@\h\[\e[1;34m\]\w$(__git_ps1 " (%s)")\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
     PS2='> '
     PS4='+ '
-    if [[ $HOSTNAME = blerpy ]]
-    then
+    if [[ $HOSTNAME = blerpy ]]; then
+
+
+        export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+        export SPARK_HOME=/usr/local/spark
+        PATH=$SPARK_HOME/bin:$PATH
+
         #Haskell package manager
         PATH=$HOME/.cabal/bin:$PATH
         #emacs package manager
@@ -118,8 +121,7 @@ then
 fi
 
 #stuff for the work laptop
-if [[ -s ~/.work.sh ]]
-then
+if [[ -s ~/.work.sh ]]; then
     source ~/.work.sh
 fi
 
