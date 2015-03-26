@@ -117,6 +117,10 @@ if [[ $OSTYPE = linux* ]]; then
         PATH=$HOME/.cabal/bin:$PATH
         #emacs package manager
         PATH=$HOME/.cask/bin:$PATH
+
+        #findbugs
+        export FINDBUGS_HOME=/usr/local/findbugs
+        PATH=/usr/local/findbugs/bin:$PATH
     fi
 fi
 
