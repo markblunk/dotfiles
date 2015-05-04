@@ -1,2 +1,0 @@
-# SOURCE BASHRC
-source ~/.bashrc
