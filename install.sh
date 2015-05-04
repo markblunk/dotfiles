@@ -20,10 +20,6 @@ fi
 for i in "cask.el" "cask-bootstrap.el"
          do
              if [ -a "/usr/local/Cellar/cask/0.7.2/$i" ]; then
-
                  ln -sfv "/usr/local/Cellar/cask/0.7.2/$i" ~/.cask
              fi
 done
-#if [ "$(uname)" == "Darwin" -a -f "$DOTFILES_DIR/install/osx.sh" ]; then
-#    source "$DOTFILES_DIR/install/osx.sh"
-#fi
