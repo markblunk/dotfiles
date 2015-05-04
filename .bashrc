@@ -1,7 +1,5 @@
 #mark's bashrc
 
-#Setting the 'ol PATH
-#PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH
 
 # Some aliai
 alias ..='cd ..'
@@ -9,10 +7,6 @@ alias ..2='cd ../..'
 alias ..3='cd ../../..'
 alias ..4='cd ../../../..'
 alias ..5='cd ../../../../..'
-
-
-
-
 
 #set some defaults
 
@@ -29,6 +23,7 @@ fi
 
 #some git stuff
 source ~/.git-prompt.sh
+source ~/.git-completion.bash
 
 #general mac stuff
 if [[ $OSTYPE = darwin* ]]; then
@@ -37,7 +32,7 @@ if [[ $OSTYPE = darwin* ]]; then
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
 
-    alias emacsgui=/usr/local/Cellar/emacs/24.4/Emacs.app/Contents/MacOS/Emacs
+    alias emacsgui=/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs
     alias ls='ls -G'
     alias ll='ls -lG'
     export GREP_OPTIONS="--color"
@@ -60,47 +55,36 @@ if [[ $OSTYPE = darwin* ]]; then
     PATH=$JAVA_HOME/bin:$PATH
 
     #hadoop config
-    export HADOOP_INSTALL=/usr/local/Cellar/hadoop/2.5.1/libexec
-    export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
-    export HADOOP_HOME=$HADOOP_INSTALL
-    export HADOOP_COMMON_HOME=$HADOOP_INSTALL
-    export HADOOP_HDFS_HOME=$HADOOP_INSTALL
-    export YARN_HOME=$HADOOP_INSTALL
-    #    export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.realm= -Djava.security.krb5.kdc="
-    #   export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.conf=/dev/null"
+    export HADOOP_PREFIX=/usr/local/Cellar/hadoop/2.*/libexec
+#    export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+#    export HADOOP_HOME=$HADOOP_INSTALL
+#    export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+#    export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+#    export YARN_HOME=$HADOOP_INSTALL
 
-    alias hstart="$HADOOP_INSTALL/sbin/start-dfs.sh;$HADOOP_INSTALL/sbin/start-yarn.sh"
-    alias hstop="$HADOOP_INSTALL/sbin/stop-yarn.sh;$HADOOP_INSTALL/sbin/stop-dfs.sh"
+    export HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop
+    alias hstart="$HADOOP_PREFIX/sbin/start-dfs.sh;$HADOOP_PREFIX/sbin/start-yarn.sh"
+    alias hstop="$HADOOP_PREFIX/sbin/stop-yarn.sh;$HADOOP_PREFIX/sbin/stop-dfs.sh"
 
     #haskell config
     PATH=$HOME/.cabal/bin:$HOME/Library/Haskell/bin:$PATH
 
-
-    #rvm config
-    # Load RVM into a shell session *as a function*
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-    # Load RVM function
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-
-
     #python2 config
     # export PYTHONPATH=/usr/local/lib/python2.7/site-packages
-
 
     #scala config
     export SCALA_HOME=/usr/local/Cellar/scala/2.*/libexec
 
-
     #spark config
-    export SPARK_HOME=/usr/local/Cellar/spark/1.2.0
+    export SPARK_HOME=/usr/local/Cellar/spark/1.3.0
     export PYSPARK_SUBMIT_ARGS="--master local[2]"
     PATH=$SPARK_HOME/bin:$PATH
 
     #Homebrew stuff
     PATH=/usr/local/bin:$PATH
     PATH=/usr/local/sbin:$PATH
-
 fi
+
 #general linux stuff
 if [[ $OSTYPE = linux* ]]; then
     PS1='\[\e[0;32m\]\u\[\e[m\]@\h\[\e[1;34m\]\w$(__git_ps1 " (%s)")\[\e[m\] \[\e[1;32m\]\$\[\e[m\] \[\e[1;37m\]'
