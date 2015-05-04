@@ -9,7 +9,7 @@
 * How to use this configuration
 ** Obtaining the source
    You can find the latest public version of the configuration in
-   [[https://github.com/markblunk/dotEmacs][the Github repository]] The meat of it is here, in the ~emacs.org~ file.
+   [[https://github.com/markblunk/dotfiles][the Github repository]] The meat of it is here, in the ~emacs.org~ file.
 ** Installation
    This configuration is intended to be installable from scratch. It
    uses [[https://github.com/cask/cask][Cask]] to specify the package dependencies. [[https://github.com/rdallasgray/pallet][Pallet]] is installed
