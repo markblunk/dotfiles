@@ -36,6 +36,7 @@
 (depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "multi-term")
+(depends-on "neotree")
 (depends-on "org")
 (depends-on "org-plus-contrib")
 (depends-on "package-build")
