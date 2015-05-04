@@ -1,0 +1,54 @@
+# Shortcuts
+
+alias gg="$GIT_GUI"
+
+alias chrome="open -a ~/Applications/Google\ Chrome.app"
+alias firefox="open -a ~/Applications/Firefox.app"
+alias emacsgui="open  /usr/local/Cellar/emacs/24.5/Emacs.app"
+
+alias hstart="$HADOOP_PREFIX/sbin/start-dfs.sh;$HADOOP_PREFIX/sbin/start-yarn.sh"
+alias hstop="$HADOOP_PREFIX/sbin/stop-yarn.sh;$HADOOP_PREFIX/sbin/stop-dfs.sh"
+
+
+# Exclude OSX specific files in ZIP archives
+
+alias zip="zip -x *.DS_Store -x *__MACOSX* -x *.AppleDouble*"
+
+
+# Flush DNS
+
+alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"
+
+# Start screen saver
+
+alias afk="/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine"
+
+# Log off
+
+alias logoff="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+# Show/hide desktop icons
+
+alias desktopshow="defaults write com.apple.finder CreateDesktop -bool true && killfinder"
+alias desktophide="defaults write com.apple.finder CreateDesktop -bool false && killfinder"
+
+# Clean up LaunchServices to remove duplicates in the "Open With" menu
+
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+
+# Empty trash on mounted volumes and main HDD, and clear system logs
+
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
+
+# Reload native apps
+
+alias killfinder="killall Finder"
+alias killdock="killall Dock"
+alias killmenubar="killa SystemUIServer NotificationCenter"
+alias killosx="killfinder && killdock && killmenubar"
+
+
+# Recursively remove Apple meta files
+
+alias cleanupds="find . -type f -name '*.DS_Store' -ls -exec /bin/rm {} \;"
+alias cleanupad="find . -type d -name .AppleDouble -ls -exec /bin/rm -r {} \;"

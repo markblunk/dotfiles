@@ -1,0 +1,86 @@
+# Executable
+
+is-executable() {
+    local BIN=`command -v "$1" 2>/dev/null`
+    [[ ! $BIN == "" && -x $BIN ]] && true || false
+}
+
+is-supported() {
+    if [ $# -eq 1 ]; then
+        eval $1 > /dev/null 2>&1 && true || false
+    else
+        eval $1 > /dev/null 2>&1 && echo -n "$2" || echo -n "$3"
+    fi
+}
+
+# Clean caches
+
+cleanup() {
+    is-executable npm && npm cache clean
+    is-executable brew && brew cleanup
+    is-executable brew && brew cask cleanup
+}
+
+# Create a new directory and enter it
+
+mk() {
+    mkdir -p "$@" && cd "$@"
+}
+
+# Fuzzy find file/dir
+
+ff() {  find . -type f -name "${1}";}
+fff() { find . -type f -name "*${1}*";}
+fd() {  find . -type d -name "${1}";}
+fdf() { find . -type d -name "*${1}*";}
+
+# Show disk usage of current folder, or list with depth
+
+duf() {
+    du --max-depth=${1:-0} -c | sort -r -n | awk '{split("K M G",v); s=1; while($1>1024){$1/=1024; s++} print int($1)v[s]"\t"$2}'
+}
+
+# Show line, optionally show surrounding lines
+
+line() {
+    local line_number=$1
+    local lines_around=${2:-0}
+    sed -n "`expr $line_number - $lines_around`,`expr $line_number + $lines_around`p"
+}
+
+# Show duplicate/unique lines
+# Source: https://github.com/ain/.dotfiles/commit/967a2e65a44708449b6e93f87daa2721929cb87a
+
+duplines() {
+    sort $1 | uniq -d
+}
+
+uniqlines() {
+    sort $1 | uniq -u
+}
+
+# Extract many types of compress files
+# Source: http://nparikh.org/notes/zshrc.txt
+
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)  tar -jxvf "$1"                        ;;
+            *.tar.gz)   tar -zxvf "$1"                        ;;
+            *.bz2)      bunzip2 "$1"                          ;;
+            *.dmg)      hdiutil mount "$1"                    ;;
+            *.gz)       gunzip "$1"                           ;;
+            *.tar)      tar -xvf "$1"                         ;;
+            *.tbz2)     tar -jxvf "$1"                        ;;
+            *.tgz)      tar -zxvf "$1"                        ;;
+            *.zip)      unzip "$1"                            ;;
+            *.ZIP)      unzip "$1"                            ;;
+            *.pax)      cat "$1" | pax -r                     ;;
+            *.pax.Z)    uncompress "$1" --stdout | pax -r     ;;
+            *.Z)        uncompress "$1"                       ;;
+            *)          echo "'$1' cannot be extracted/mounted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file to extract"
+    fi
+}
