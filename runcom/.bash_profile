@@ -45,8 +45,8 @@ DOTFILES_DIR="$HOME/.dotfiles"
 
 # Finally we can source the dotfiles (order matters)
 DIRS=($DOTFILES_DIR)
-if [ -d ~/.work-dotfiles ]; then
-    DIRS+=('~/.work-dotfiles')
+if [ -d $HOME/.work-dotfiles ]; then
+    DIRS+=("$HOME/.work-dotfiles")
 fi
 
 for DIR in "${DIRS[@]}"; do
@@ -67,12 +67,12 @@ for DIR in "${DIRS[@]}"; do
     fi
 
     if $SHELL_BASH; then
-        for DOTFILE in "$DIR"/system/.*.bash
-        do
+        for DOTFILE in "$DIR"/system/.*.bash; do
             [ -f "$DOTFILE" ] && source "$DOTFILE"
         done
     fi
 done
+
 #git stuff
 DOTFILES_DIR="$HOME/.dotfiles"
 for i in ".git-prompt.sh" ".git-completion.bash" ".githelpers"
