@@ -91,7 +91,12 @@ bash_prompt_command() {
         P_EXIT+="${P_RED}✘ "
     fi
 
-    PS1="${P_EXIT}${P_USER}${P_YELLOW}@${P_HOST} ${P_YELLOW}${P_PWD}${P_GREEN}${P_GIT}${P_YELLOW} ❯ ${P_RESET}"
+    # Python virtual environment
+    if [[ $VIRTUAL_ENV != 0 ]]; then
+        P_VIRTUALENV=`echo $VIRTUAL_ENV | sed -E 's/.*\/([^\/]+$)/\1/g'`
+    fi
+
+    PS1="${P_EXIT}${P_VIRTUALENV} ${P_USER}${P_YELLOW}@${P_HOST} ${P_YELLOW}${P_PWD}${P_GREEN}${P_GIT}${P_YELLOW}$ ❯ ${P_RESET}"
 }
 #if we are in a git repository, the prompt will tell us what branch were in.
 #PS1=$COLOR1'\u'$COLOR2'@'$COLOR3'\h'$COLOR2:$COLOR4'\W$(__git_ps1 " (%s)") \$'$NO_COLOR
