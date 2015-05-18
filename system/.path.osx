@@ -5,7 +5,7 @@
 prepend() {
     [ -d $1 ] && PATH="$1:${PATH}"
 }
-JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
 prepend "$JAVA_HOME/bin"
 prepend "$HOME/.cabal/bin"
 prepend "$HOME/Library/Haskell/bin"
