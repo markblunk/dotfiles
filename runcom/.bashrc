@@ -5,19 +5,19 @@
 # Shell
 
 if [ -n "$ZSH_VERSION" ]; then
-   SHELL_ZSH=true
-   SHELL_BASH=false
+    readonly SHELL_ZSH=true
+    readonly SHELL_BASH=false
 elif [ -n "$BASH_VERSION" ]; then
-   SHELL_BASH=true
-   SHELL_ZSH=false
+    readonly SHELL_BASH=true
+    readonly SHELL_ZSH=false
 fi
 
 # OS
 
 if [ "$(uname -s)" = "Darwin" ]; then
-    OS="OSX"
+    readonly OS="OSX"
 else
-    OS=`uname -s`
+    readonly OS=$(uname -s)
 fi
 
 # Resolve DOTFILES_DIR (assuming ~/.dotfiles on distros without readlink and/or $BASH_SOURCE/$0)
