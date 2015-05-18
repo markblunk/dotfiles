@@ -1,20 +1,20 @@
 # If not running interactively, don't do anything
 
-[ -z "$PS1" ] && return
+[[ -z "$PS1" ]] && return
 
 # Shell
 
-if [ -n "$ZSH_VERSION" ]; then
+if [[ -n "$ZSH_VERSION" ]]; then
     readonly SHELL_ZSH=true
     readonly SHELL_BASH=false
-elif [ -n "$BASH_VERSION" ]; then
+elif [[ -n "$BASH_VERSION" ]]; then
     readonly SHELL_BASH=true
     readonly SHELL_ZSH=false
 fi
 
 # OS
 
-if [ "$(uname -s)" = "Darwin" ]; then
+if [[ "$(uname -s)" = "Darwin" ]]; then
     readonly OS="OSX"
 else
     readonly OS=$(uname -s)
@@ -45,31 +45,31 @@ DOTFILES_DIR="$HOME/.dotfiles"
 
 #create an array of dotfiles_dir, add work_dotfiles if they exist
 DIRS=($DOTFILES_DIR)
-if [ -d $HOME/.work-dotfiles ]; then
+if [[ -d $HOME/.work-dotfiles ]]; then
     DIRS+=("$HOME/.work-dotfiles")
 fi
 
 # Finally we can source the dotfiles (order matters)
 for DIR in "${DIRS[@]}"; do
     for DOTFILE in "$DIR"/system/.{function,path,env,alias,completion,grep,prompt,custom}; do
-        [ -f "$DOTFILE" ] && source "$DOTFILE"
+        [[ -f "$DOTFILE" ]] && source "$DOTFILE"
     done
 
-    if [ $OS = "OSX" ]; then
+    if [[ $OS = "OSX" ]]; then
         for DOTFILE in "$DIR"/system/.{path,env,alias,function}.osx; do
-            [ -f "$DOTFILE" ] && source "$DOTFILE"
+            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
         done
     fi
 
-    if [ $OS = "Linux" ]; then
+    if [[ $OS = "Linux" ]]; then
         for DOTFILE in "$DIR"/system/.{path,env,alias,function}.linux; do
-            [ -f "$DOTFILE" ] && source "$DOTFILE"
+            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
         done
     fi
 
     if $SHELL_BASH; then
         for DOTFILE in "$DIR"/system/.*.bash; do
-            [ -f "$DOTFILE" ] && source "$DOTFILE"
+            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
         done
     fi
 done
