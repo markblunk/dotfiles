@@ -43,12 +43,13 @@ DOTFILES_DIR="$HOME/.dotfiles"
  #   return # `exit 1` would quit the shell itself
 #fi
 
-# Finally we can source the dotfiles (order matters)
+#create an array of dotfiles_dir, add work_dotfiles if they exist
 DIRS=($DOTFILES_DIR)
 if [ -d $HOME/.work-dotfiles ]; then
     DIRS+=("$HOME/.work-dotfiles")
 fi
 
+# Finally we can source the dotfiles (order matters)
 for DIR in "${DIRS[@]}"; do
     for DOTFILE in "$DIR"/system/.{function,path,env,alias,completion,grep,prompt,custom}; do
         [ -f "$DOTFILE" ] && source "$DOTFILE"
@@ -81,7 +82,7 @@ do
 done
 
 # Clean up
-unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE
+unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE DIRS
 
 # Export
 export SHELL_BASH OS DOTFILES_DIR
