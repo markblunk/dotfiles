@@ -1,4 +1,4 @@
-## Prompt
+# Prompt
 
 _bash_prompt_config() {
 
@@ -73,7 +73,7 @@ bash_prompt_command() {
 
     local OFFSET=$(( ${#P_PWD} - MAXLENGTH ))
 
-    if [ ${OFFSET} -gt "0" ]; then
+    if [[ ${OFFSET} -gt "0" ]]; then
         P_PWD=${P_PWD:$OFFSET:$MAXLENGTH}
         P_PWD=${TRUNC_SYMBOL}/${P_PWD#*/}
     fi
@@ -103,7 +103,7 @@ bash_prompt_command() {
 
 parse_git_branch() {
     local OUT=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-    if [ "$OUT" != "" ]; then echo " $OUT"; fi
+    if [[ "$OUT" != "" ]]; then echo " $OUT"; fi
 }
 
 _bash_prompt_config
