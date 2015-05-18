@@ -1,4 +1,6 @@
 #!/bin/sh
+set -o nounset
+set -o errexit
 
 # Get current dir (so run this script from anywhere)
 
