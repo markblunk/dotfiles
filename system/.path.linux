@@ -16,5 +16,5 @@ if [[ $HOSTNAME = blerpy ]]; then
 
    #findbugs
    export FINDBUGS_HOME=/usr/local/findbugs
-   prepend "/usr/local/findbugs/bin"
+   prepend "$FINDBUGS_HOME/bin"
 fi
