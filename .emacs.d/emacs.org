@@ -380,6 +380,16 @@
     (ido-mode +1)
     (ido-yes-or-no-mode +1)
   #+end_src
+
+  cua mode for cutting and pasting
+  #+name: global-navigation
+  #+begin_src emacs-lisp
+  (cua-mode t)
+  (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+  (transient-mark-mode 1) ;; No region when it is not highlighted
+  (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
+  #+end_src
+
 * Backups
   Save all backups to a universal location
   #+name: global-backup
