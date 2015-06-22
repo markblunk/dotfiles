@@ -8,6 +8,7 @@
 (depends-on "cider")
 (depends-on "cider-decompile")
 (depends-on "cl-lib")
+(depends-on "clojure-mode")
 (depends-on "command-log-mode")
 (depends-on "company")
 (depends-on "csv-mode")
