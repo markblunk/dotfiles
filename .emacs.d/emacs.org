@@ -317,6 +317,7 @@
    #+begin_src emacs-lisp
      (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
      (require 'flycheck)
+     (require 'highlight-indentation)
      (add-hook 'after-init-hook  'global-flycheck-mode)
      (add-hook 'python-mode-hook
        (lambda ()
@@ -324,6 +325,8 @@
          (setq tab-width 4)
          (setq python-indent 4)
 	 (setq tab-stop-list (number-sequence 4 120 4))))
+     (add-hook 'python-mode-hook 'highlight-indentation)
+     (set-face-background 'highlight-indent-face "#e3e3d3")
    #+end_src
    Jedi stuff
    #+name: programming-setup
