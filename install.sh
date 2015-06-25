@@ -22,10 +22,10 @@ if [ ! -d ~/.cask ]; then
 fi
 
 for i in "cask.el" "cask-bootstrap.el"
-         do
-             if [ -a "/usr/local/Cellar/cask/0.7.2/$i" ]; then
-                 ln -sfv "/usr/local/Cellar/cask/0.7.2/$i" ~/.cask
-             fi
+do
+    if [ -a "/usr/local/Cellar/cask/0.7.2/$i" ]; then
+        ln -sfv "/usr/local/Cellar/cask/0.7.2/$i" ~/.cask
+    fi
 done
 if [ ! -d $HOME/.virtualenvs ]; then
     mkdir $HOME/.virtualenvs
