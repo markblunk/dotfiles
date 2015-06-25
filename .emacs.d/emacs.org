@@ -343,8 +343,11 @@
    #+name: programming-setup
    #+begin_src emacs-lisp
      (require 'scala-mode2)
-     (add-to-list 'auto-mode-alist '("\\.sc$" . scala-mode2))
-     (add-to-list 'auto-mode-alist '("\\.sbt" . scala-mode2))
+     (add-to-list 'auto-mode-alist '("\\.sc$" . scala-mode))
+     (require 'sbt-mode)
+     (add-to-list 'auto-mode-alist '("\\.sbt$" . sbt-mode))
+     (require 'ensime)
+     (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
    #+end_src
 ** SQL
    Load Hive files with sql mode.
