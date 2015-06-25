@@ -27,5 +27,6 @@ for i in "cask.el" "cask-bootstrap.el"
                  ln -sfv "/usr/local/Cellar/cask/0.7.2/$i" ~/.cask
              fi
 done
-
-mkdir $HOME/.virtualenvs
+if [ ! -d $HOME/.virtualenvs ]; then
+    mkdir $HOME/.virtualenvs
+fi
