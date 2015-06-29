@@ -9,6 +9,8 @@
 (depends-on "cider-decompile")
 (depends-on "cl-lib")
 (depends-on "clojure-mode")
+(depends-on "color-theme")
+(depends-on "color-theme-solarized")
 (depends-on "command-log-mode")
 (depends-on "company")
 (depends-on "csv-mode")
