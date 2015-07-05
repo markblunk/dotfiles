@@ -322,15 +322,16 @@
      (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
      (require 'flycheck)
      (add-hook 'after-init-hook  'global-flycheck-mode)
+     (require 'highlight-indentation)
+     (add-hook 'python-mode-hook 'highlight-indentation-mode)
      (add-hook 'python-mode-hook
        (lambda ()
          (setq indent-tabs-mode nil)
          (setq tab-width 4)
          (setq python-indent 4)
-	 (setq tab-stop-list (number-sequence 4 120 4))))
-     (require 'highlight-indentation)
-     (add-hook 'python-mode-hook 'highlight-indentation)
-     (set-face-background 'highlight-indentation-face "DarkRed")
+	 (setq tab-stop-list (number-sequence 4 120 4))
+         (set-face-background 'highlight-indentation-face "DarkRed")
+         (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")))
    #+end_src
    Jedi stuff
    #+name: programming-setup
