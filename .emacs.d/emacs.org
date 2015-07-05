@@ -329,7 +329,7 @@
 	 (setq tab-stop-list (number-sequence 4 120 4))))
      (require 'highlight-indentation)
      (add-hook 'python-mode-hook 'highlight-indentation)
-     (set-face-background 'highlight-indent-face "#e3e3d3")
+     (set-face-background 'highlight-indentation-face "DarkRed")
    #+end_src
    Jedi stuff
    #+name: programming-setup
