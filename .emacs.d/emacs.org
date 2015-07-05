@@ -48,13 +48,11 @@
 
 * Graphics and looks
 ** Color theme
-   Load a default theme. For now using deeper-blue. Would like to try
-   using solarized at some point
+   Load a default theme. This version of solarized doesn't play well
+   with iTerm2, but not sure how to fix this.
     #+name: look-and-feel
     #+begin_src emacs-lisp
-      (require 'color-theme)
-      (require 'color-theme-solarized)
-      (color-theme-solarized-light)
+       (load-theme 'solarized-dark t)
     #+end_src
 ** Font
    Load default font of Inconsolata
