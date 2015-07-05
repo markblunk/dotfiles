@@ -152,6 +152,10 @@
     (projectile-global-mode)
   #+end_src
 ** TODO Replace alt with cmd
+   http://azaleasays.com/2013/07/05/setting-up-mac-os-x-and-iterm2-for-emacs/
+   in iterm2
+   1. map left option to ESC
+   2. swap left option and command
   #+name: startup
   #+begin_src emacs-lisp
     (setq-default mac-command-modifier 'meta)
