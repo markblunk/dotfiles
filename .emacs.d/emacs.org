@@ -316,7 +316,7 @@
      (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
    #+end_src
 ** TODO Python
-   Some Python stuff should go here at some point.
+   In order for flycheck to work, install pylint with pip
    #+name: programming-setup
    #+begin_src emacs-lisp
      (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
