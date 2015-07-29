@@ -353,12 +353,10 @@
    Use scala-mode2 for scala files
    #+name: programming-setup
    #+begin_src emacs-lisp
-     (require 'scala-mode2)
-     (add-to-list 'auto-mode-alist '("\\.sc$" . scala-mode))
-     (require 'sbt-mode)
-     (add-to-list 'auto-mode-alist '("\\.sbt$" . sbt-mode))
      (require 'ensime)
      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+     (require 'scala-mode2)
+     (add-to-list 'auto-mode-alist '("\\.sc$" . scala-mode))
    #+end_src
 ** SQL
    Load Hive files with sql mode.
