@@ -315,6 +315,12 @@
      (require 'markdown-mode)
      (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
    #+end_src
+** Pig
+   #+name: programming-setup
+   #+begin_src emacs-lisp
+     (require 'pig-mode)
+     (add-to-list 'auto-mode-alist '("\\.pig$" . pig-mode))
+   #+end_src
 ** TODO Python
    In order for flycheck to work, install pylint with pip
    #+name: programming-setup
