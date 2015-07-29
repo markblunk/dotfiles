@@ -5,7 +5,6 @@
 prepend() {
           [ -d $1 ] && PATH="$1:${PATH}"
 }
-JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
 prepend $JAVA_HOME/bin
 SPARK_HOME=/usr/local/Cellar/apache-spark/1.4.0
 prepend $SPARK_HOME/bin
