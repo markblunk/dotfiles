@@ -6,7 +6,6 @@ prepend() {
           [ -d $1 ] && PATH="$1:${PATH}"
 }
 prepend $JAVA_HOME/bin
-SPARK_HOME=/usr/local/Cellar/apache-spark/1.4.0
 prepend $SPARK_HOME/bin
 
 #Finally, add this Haskell stuff to PATH even though it doesn't currently exist
