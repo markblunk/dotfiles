@@ -386,8 +386,8 @@
   for some more ideas.
   #+name: global-keys
   #+begin_src emacs-lisp
-    (global-set-key "\C-cg" 'magit-status)
-    (global-set-key "\C-cq" 'delete-indentation)
+    (global-set-key "\C-c g" 'magit-status)
+    (global-set-key "\C-c q" 'delete-indentation)
   #+end_src
 * Global navigation
   Set emacs configuration file location, and
