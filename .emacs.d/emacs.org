@@ -210,6 +210,11 @@
    #+begin_src emacs-lisp
      (global-font-lock-mode t)
    #+end_src
+   #+name: programming-setup
+   #+begin_src emacs-lisp
+     (require 'yasnippet)
+     (yas-global-mode 1)
+   #+end_src
    Show matching parentheses
    #+name: programming-setup
    #+begin_src emacs-lisp
