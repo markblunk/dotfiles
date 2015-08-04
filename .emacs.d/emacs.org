@@ -285,7 +285,10 @@
 ;     (custom-set-variables '(company-ghc-show-info t))
      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
      (add-hook 'haskell-mode-hook 'turn-on-hi2)
-   #+end_src
+     (add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
+     (setq haskell-ghci-program-name "cabal")
+     (setq haskell-ghci-program-args '("repl"))
+    #+end_src
 ** Jade
    For Jade files, use jade-mode
    #+name: programming-setup
