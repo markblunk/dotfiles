@@ -23,8 +23,8 @@ fi
 
 for i in "cask.el" "cask-bootstrap.el"
 do
-    if [ -a "/usr/local/Cellar/cask/0.7.2/$i" ]; then
-        ln -sfv "/usr/local/Cellar/cask/0.7.2/$i" ~/.cask
+    if [ -a "/usr/local/share/emacs/site-lisp/cask/$i" ]; then
+       ln -sfv "/usr/local/share/emacs/site-lisp/cask/$i"  ~/.cask
     fi
 done
 if [ ! -d $HOME/.virtualenvs ]; then
