@@ -276,9 +276,13 @@
      (require 'haskell-mode)
      (require 'hi2)
      (add-to-list 'auto-mode-alist '("\\.hs" . haskell-mode))
-     (autoload 'ghc-init "ghc" nil t)
-     (autoload 'ghc-debug "ghc" nil t)
-     (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;     (autoload 'ghc-init "ghc" nil t)
+;     (autoload 'ghc-debug "ghc" nil t)
+;     (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;    (require 'company);
+;     (add-hook 'haskell-mode-hook 'company-mode)
+;     (add-to-list 'company-backends 'company-ghc)
+;     (custom-set-variables '(company-ghc-show-info t))
      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
      (add-hook 'haskell-mode-hook 'turn-on-hi2)
    #+end_src
