@@ -521,7 +521,7 @@
               org-babel-evaluated-languages))
    #+end_src
 * Other libraries
-  Loading ~dired+~ improves ~dired~.
+  Loading neotree instead of ~dired~
   #+name: libraries
   #+begin_src emacs-lisp
     (require 'neotree)
