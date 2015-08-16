@@ -56,13 +56,13 @@ for DIR in "${DIRS[@]}"; do
     done
 
     if [[ $OS = "OSX" ]]; then
-        for DOTFILE in "$DIR"/system/.{path,env,alias,function}.osx; do
+        for DOTFILE in "$DIR"/system/.{env,path,alias,function}.osx; do
             [[ -f "$DOTFILE" ]] && source "$DOTFILE"
         done
     fi
 
     if [[ $OS = "Linux" ]]; then
-        for DOTFILE in "$DIR"/system/.{path,env,alias,function}.linux; do
+        for DOTFILE in "$DIR"/system/.{env,path,alias,function}.linux; do
             [[ -f "$DOTFILE" ]] && source "$DOTFILE"
         done
     fi
