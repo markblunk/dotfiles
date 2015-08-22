@@ -55,5 +55,6 @@
 (depends-on "smart-mode-line")
 (depends-on "smartparens")
 (depends-on "sql-indent")
+(depends-on "virtualenvwrapper")
 (depends-on "yaml-mode")
 (depends-on "yasnippet")
