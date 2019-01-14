@@ -22,7 +22,7 @@ fi
 
 # Resolve DOTFILES_DIR (assuming ~/.dotfiles on distros without readlink and/or $BASH_SOURCE/$0)
 
-DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 
 
 #READLINK=$(which greadlink || which readlink)
@@ -44,41 +44,66 @@ DOTFILES_DIR="$HOME/.dotfiles"
 #fi
 
 #create an array of dotfiles_dir, add work_dotfiles if they exist
-DIRS=($DOTFILES_DIR)
-if [[ -d $HOME/.work-dotfiles ]]; then
-    DIRS+=("$HOME/.work-dotfiles")
-fi
+#DIRS=($DOTFILES_DIR)
+#if [[ -d $HOME/.work-dotfiles ]]; then
+#    DIRS+=("$HOME/.work-dotfiles")
+#fi
 
 # Finally we can source the dotfiles (order matters)
-for DIR in "${DIRS[@]}"; do
-    for DOTFILE in "$DIR"/system/.{function,path,env,alias,completion,grep,prompt,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,path,env,alias,completion,grep,prompt,custom}; do
+    [[ -f "$DOTFILE" ]] && source "$DOTFILE"
+done
+
+if [[ $OS = "OSX" ]]; then
+    for DOTFILE in "$DOTFILES_DIR"/system/.{env,path,alias,function}.osx; do
         [[ -f "$DOTFILE" ]] && source "$DOTFILE"
     done
+fi
 
-    if [[ $OS = "OSX" ]]; then
-        for DOTFILE in "$DIR"/system/.{env,path,alias,function}.osx; do
-            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
-        done
-    fi
+if [[ $OS = "Linux" ]]; then
+    for DOTFILE in "$DOTFILES_DIR"/system/.{env,path,alias,function}.linux; do
+        [[ -f "$DOTFILE" ]] && source "$DOTFILE"
+    done
+fi
 
-    if [[ $OS = "Linux" ]]; then
-        for DOTFILE in "$DIR"/system/.{env,path,alias,function}.linux; do
-            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
-        done
-    fi
+if $SHELL_BASH; then
+    for DOTFILE in "$DOTFILES_DIR"/system/.*.bash; do
+        [[ -f "$DOTFILE" ]] && source "$DOTFILE"
+    done
+fi
 
-    if $SHELL_BASH; then
-        for DOTFILE in "$DIR"/system/.*.bash; do
-            [[ -f "$DOTFILE" ]] && source "$DOTFILE"
-        done
-    fi
-done
 
 #git stuff
 for i in ".git-prompt.sh" ".git-completion.bash"
 do
     source "$DOTFILES_DIR/git/$i"
 done
+
+#add bazel to path
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+#not sure what this does
+eval $($HOMEBREW_PREFIX/bin/brew shellenv)
+
+# virtualenvwrapper stuff
+export WORKON_HOME=$HOME/.virtualenvs
+#export PROJECT_HOME=$HOME/Devel
+export VIRTUALENVWRAPPER_PYTHON=$HOMEBREW_PREFIX/bin/python3
+source $HOMEBREW_PREFIX/bin/virtualenvwrapper.sh
+
+#if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
+#    PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+#fi
+
+if [ -d $HOME/.cask/bin ] ; then
+    PATH="$HOME/.cask/bin:$PATH"
+fi
+
+if [ -d $HOME/.cargo/bin ] ; then
+    PATH="$HOME/.cargo/bin:$PATH"
+fi
 
 # Clean up
 unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE DIRS
