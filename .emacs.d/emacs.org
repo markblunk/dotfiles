@@ -178,17 +178,51 @@ Syntax highlighting Show matching parentheses
                              (blink-matching-open))))
     (when matching-text (message matching-text))))
   (require 'flycheck)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
   (require 'flycheck-color-mode-line)
-
   (eval-after-load "flycheck"
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
   ;(add-hook 'after-init-hook  'global-flycheck-mode)
   ;(add-hook 'after-init-hook 'global-company-mode)
 
 #+end_src
+** C
+#+name: c
+#+begin_src emacs-lisp
+  (add-hook 'c-mode-hook #'flycheck-mode)
+  (require 'google-c-style)
+  (add-hook 'c-mode-common-hook 'google-set-c-style)
+  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+#+end_src
 ** Cpp
+elpa doesnt work https://github.com/flycheck/flycheck-google-cpplint/issues/10
+so manually loading it [[~/.emacs.d/external/flycheck-google-cpplint][here]]
+
+Also, install python package cpplint so flycheck-google-cpplint has an
+executable.
+#+begin_src sh
+  mkvirtualenv cpplint
+  pip install cpplint
+  chmod +x ~/.virtualenvs/cpplint/lib/python3.7/site-packages/cpplint.py
+  ln -s /usr/bin/python /home/linuxbrew/.linuxbrew/bin/python3
+#+end_src
+
 #+name: cpp
 #+begin_src emacs-lisp
+  (load "~/.emacs.d/external/flycheck-google-cpplint")
+  (add-to-list 'flycheck-checkers 'c/c++-googlelint)
+  (custom-set-variables
+   '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.7/site-packages/cpplint.py"))
+
+  ;; disabling gcc, in favor of googlelint. this is not recommended here
+  ;; https://www.flycheck.org/en/27/_downloads/flycheck.html#Registering-new-checkers
+  ;; if we decide that's a bad idea then we should replace that line with this one
+  ;; (flycheck-add-next-checker 'c/c++-gcc 'c/c++-googlelint)
+  ;; (flycheck-add-next-checker 'c/c++-gcc '(warning . c/c++-googlelint))
+  ;(add-to-list 'flycheck-disabled-checkers 'c/c++-gcc)
+  ;(add-to-list 'flycheck-disabled-checkers 'c/c++-cppcheck)
+  (setq-default flycheck-disabled-checkers '(c/c++-gcc c/c++-cppcheck))
+  (add-hook 'c++-mode-hook #'flycheck-mode)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+end_src
 ** Lisp
@@ -392,6 +426,7 @@ Make custom markers for todo items:
               cancelled.
 #+name: todos
 #+begin_src emacs-lisp
+     (setq org-default-notes-file "~/org/notes.org")
      (setq org-todo-keywords
            '((sequence "TODO(t)" "PENDING(p)" "MEETING(m)" "|" "DONE(d)" "CANCELED(c)")))
 

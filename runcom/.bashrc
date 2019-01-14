@@ -85,6 +85,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 export HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
+
 #not sure what this does
 eval $($HOMEBREW_PREFIX/bin/brew shellenv)
 
@@ -93,10 +94,6 @@ export WORKON_HOME=$HOME/.virtualenvs
 #export PROJECT_HOME=$HOME/Devel
 export VIRTUALENVWRAPPER_PYTHON=$HOMEBREW_PREFIX/bin/python3
 source $HOMEBREW_PREFIX/bin/virtualenvwrapper.sh
-
-if [ -d "/home/linuxbrew/.linuxbrew/bin" ] ; then
-    PATH="$HOMEBREW_PREFIX:$PATH"
-fi
 
 if [ -d $HOME/.cask/bin ] ; then
     PATH="$HOME/.cask/bin:$PATH"

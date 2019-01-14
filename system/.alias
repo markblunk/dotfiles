@@ -1,9 +1,3 @@
-# Shortcuts
-
-alias _="sudo"
-alias g="git"
-alias rr="rm -rf"
-
 # ls
 
 LS_COLORS=$(is-supported "ls --color" --color -G)
