@@ -17,10 +17,3 @@ alias ld="ls -ld ${LS_COLORS} */"
 
 unset LS_COLORS LS_TIMESTYLEISO LS_GROUPDIRSFIRST
 
-# cd
-
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias -- -="cd -"
-
