@@ -25,7 +25,6 @@
 (depends-on "ghc")
 (depends-on "git")
 (depends-on "git-gutter")
-(depends-on "git-gutter-fringe")
 (depends-on "haskell-mode")
 (depends-on "hi2")
 (depends-on "highlight-indentation")
