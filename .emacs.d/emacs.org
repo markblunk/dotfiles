@@ -150,7 +150,6 @@ Make mouse clicks work in xterm (and iTerm)
 #+end_src
 * Programming
 ** General programming
-
 Use prettify-symbols mode for all programming.  Currentlly this only
  works for Emacs 24.4.X and higher, so add in a version check. There
  is an external package for earlier versions, which I might include in
@@ -179,34 +178,17 @@ Syntax highlighting Show matching parentheses
                              (blink-matching-open))))
     (when matching-text (message matching-text))))
   (require 'flycheck)
-  (add-hook 'after-init-hook  'global-flycheck-mode)
-  #+end_src
-** C
-#+name: c
-#+begin_src emacs-lisp
-  (setq-default c-basic-offset 4
-    tab-width 2
-    indent-tabs-mode t)
+  (require 'flycheck-color-mode-line)
+
+  (eval-after-load "flycheck"
+    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+  ;(add-hook 'after-init-hook  'global-flycheck-mode)
+  ;(add-hook 'after-init-hook 'global-company-mode)
+
 #+end_src
 ** Cpp
-style I want to use in c++ mode
 #+name: cpp
 #+begin_src emacs-lisp
-;  (c-add-style "my-style"
-;	     '("jellyfish"
-;	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
-;	       (c-basic-offset . 2)            ; indent by four spaces
-;	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
-;				   (brace-list-open . 0)
-;				   (statement-case-open . +)))))
-
-  (defun my-c++-mode-hook ()
-;    (c-set-style "my-style")        ; use my-style defined above
-    (c-set-style "gnu")        ; use my-style defined above
-    (auto-fill-mode)
-    (c-toggle-auto-hungry-state 1))
-;  (add-hook 'c++-mode-hook flycheck-pkg-config)
-  (add-hook 'c++-mode-hook 'my-c++-mode-hook)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+end_src
 ** Lisp
@@ -289,7 +271,7 @@ local environment
       (venv-workon project-venv-name))))
   (require 'epc)
   (require 'jedi)
-  (add-to-list 'ac-sources 'ac-source-jedi-direct)
+;  (add-to-list 'ac-sources 'ac-source-jedi-direct)
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:setup-keys t)
   (setq jedi:complete-on-dot t)
@@ -303,6 +285,9 @@ local environment
     (lambda ()
       (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
+  (require 'racer)
+  (require 'company)
+  (add-hook 'rust-mode-hook #'flycheck-mode)
   ;code completion
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
