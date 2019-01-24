@@ -24,10 +24,7 @@
     br = branch
     co = checkout
     df = diff
-    lg = log -p
-    who = shortlog -s --
-    slog  = !git --no-pager log --format=oneline --abbrev-commit
-    l = "!source ~/.githelpers && pretty_git_log"
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 [github]
     user = markblunk
 [grep]

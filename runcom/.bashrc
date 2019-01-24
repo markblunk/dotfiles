@@ -75,8 +75,7 @@ for DIR in "${DIRS[@]}"; do
 done
 
 #git stuff
-DOTFILES_DIR="$HOME/.dotfiles"
-for i in ".git-prompt.sh" ".git-completion.bash" ".githelpers"
+for i in ".git-prompt.sh" ".git-completion.bash"
 do
     source "$DOTFILES_DIR/git/$i"
 done
