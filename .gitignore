@@ -1,7 +1,6 @@
 custom.el
 emacs.el
 .org-id-locations
-.cask
 ac-comphist.dat
 auto-save-list
 .python-environments
@@ -11,3 +10,6 @@ ido.last
 ensime
 tramp
 Games
+.emacs.d/elpa
+.emacs.d/.cask
+.emacs.d/bookmarks

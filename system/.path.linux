@@ -2,19 +2,11 @@ prepend() {
     [ -d $1 ] && PATH="$1:${PATH}"
 }
 
-if [[ $HOSTNAME = blerpy ]]; then
-   export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+if [[ $HOSTNAME = markbott ]]; then
+   export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
    prepend "$JAVA_HOME/bin"
-   export SPARK_HOME=/usr/local/spark
-   PATH=$SPARK_HOME/bin:$PATH
-   prepend "$SPARK_HOME/bin"
 
-   #Haskell package manager
-   prepend "$HOME/.cabal/bin"
    #emacs package manager
    prepend "$HOME/.cask/bin"
 
-   #findbugs
-   export FINDBUGS_HOME=/usr/local/findbugs
-   prepend "$FINDBUGS_HOME/bin"
 fi

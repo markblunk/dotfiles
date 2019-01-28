@@ -1,30 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 #set -o nounset
 #set -o errexit
 
 # Get current dir (so run this script from anywhere)
 
-export DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # Bunch of symlinks
 
-ln -sfv "$DOTFILES_DIR/runcom/.bash_profile" ~
-ln -sfv "$DOTFILES_DIR/runcom/.bashrc" ~
-ln -sfv "$DOTFILES_DIR/runcom/.inputrc" ~
-ln -sfv "$DOTFILES_DIR/git/.githelpers" ~
-ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
-ln -sfv "$DOTFILES_DIR/git/.gitignore_global" ~
-ln -sfv "$DOTFILES_DIR/.emacs.d" ~
-ln -sfv "$DOTFILES_DIR/.tmux.conf" ~
-ln -sfv "$DOTFILES_DIR/plugins.sbt" ~/.sbt/*/plugins
+ln -sfv "$DOTFILES_DIR/runcom/.bash_profile" $HOME
+ln -sfv "$DOTFILES_DIR/runcom/.bashrc" $HOME
+ln -sfv "$DOTFILES_DIR/runcom/.inputrc" $HOME
+ln -sfv "$DOTFILES_DIR/git/.githelpers" $HOME
+ln -sfv "$DOTFILES_DIR/git/.gitconfig" $HOME
+ln -sfv "$DOTFILES_DIR/git/.gitignore_global" $HOME
+ln -sfv "$DOTFILES_DIR/.emacs.d" $HOME
+ln -sfv "$DOTFILES_DIR/.tmux.conf" $HOME
+#ln -sfv "$DOTFILES_DIR/plugins.sbt" $HOME/.sbt/*/plugins
 
-if [ ! -d ~/.cask ]; then
-    mkdir ~/.cask
+if [ ! -d $HOME/.cask ]; then
+    mkdir $HOME/.cask
 fi
 
 for i in "cask.el" "cask-bootstrap.el"
 do
-    if [ -a "/usr/local/share/emacs/site-lisp/cask/$i" ]; then
-       ln -sfv "/usr/local/share/emacs/site-lisp/cask/$i"  ~/.cask
+    if [ -e "/usr/local/share/emacs/site-lisp/cask/$i" ]; then
+       ln -sfv "/usr/local/share/emacs/site-lisp/cask/$i"  $HOME/.cask
     fi
 done
 if [ ! -d $HOME/.virtualenvs ]; then

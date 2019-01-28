@@ -1,9 +1,3 @@
-# Shortcuts
-
-alias _="sudo"
-alias g="git"
-alias rr="rm -rf"
-
 # ls
 
 LS_COLORS=$(is-supported "ls --color" --color -G)
@@ -16,11 +10,4 @@ alias lt="ls -lhAtr ${LS_COLORS} ${LS_TIMESTYLEISO} ${LS_GROUPDIRSFIRST}"
 alias ld="ls -ld ${LS_COLORS} */"
 
 unset LS_COLORS LS_TIMESTYLEISO LS_GROUPDIRSFIRST
-
-# cd
-
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias -- -="cd -"
 
