@@ -72,36 +72,17 @@ if $SHELL_BASH; then
     done
 fi
 
-
 #git stuff
 for i in ".git-prompt.sh" ".git-completion.bash"
 do
     source "$DOTFILES_DIR/git/$i"
 done
 
-#add bazel to path
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-export HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
-
-#not sure what this does
-eval $($HOMEBREW_PREFIX/bin/brew shellenv)
-
 # virtualenvwrapper stuff
 export WORKON_HOME=$HOME/.virtualenvs
 #export PROJECT_HOME=$HOME/Devel
-export VIRTUALENVWRAPPER_PYTHON=$HOMEBREW_PREFIX/bin/python3
-source $HOMEBREW_PREFIX/bin/virtualenvwrapper.sh
-
-if [ -d $HOME/.cask/bin ] ; then
-    PATH="$HOME/.cask/bin:$PATH"
-fi
-
-if [ -d $HOME/.cargo/bin ] ; then
-    PATH="$HOME/.cargo/bin:$PATH"
-fi
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source $HOME/.local/bin/virtualenvwrapper.sh
 
 # Clean up
 unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE DIRS

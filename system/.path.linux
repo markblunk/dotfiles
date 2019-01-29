@@ -3,10 +3,24 @@ prepend() {
 }
 
 if [[ $HOSTNAME = markbott ]]; then
-   export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
-   prepend "$JAVA_HOME/bin"
+    export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+    prepend "$JAVA_HOME/bin"
 
-   #emacs package manager
-   prepend "$HOME/.cask/bin"
+    #emacs package manager
+    if [ -d $HOME/.cask/bin ]; then
+        prepend "$HOME/.cask/bin"
+    fi
+
+    if [ -d $HOME/.cargo/bin ]; then
+        prepend "$HOME/.cargo/bin"
+    fi
+
+    #add bazel to path
+    if [ -d "$HOME/bin" ]; then
+        prepend "$HOME/bin"
+    fi
+
+    #virtualenv stuff
+    prepend "$HOME/.local/bin"
 
 fi

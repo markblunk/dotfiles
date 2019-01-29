@@ -203,7 +203,7 @@ executable.
 #+begin_src sh
   mkvirtualenv cpplint
   pip install cpplint
-  chmod +x ~/.virtualenvs/cpplint/lib/python3.7/site-packages/cpplint.py
+  chmod +x ~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py
   ln -s /usr/bin/python /home/linuxbrew/.linuxbrew/bin/python3
 #+end_src
 
@@ -212,16 +212,14 @@ executable.
   (load "~/.emacs.d/external/flycheck-google-cpplint")
   (add-to-list 'flycheck-checkers 'c/c++-googlelint)
   (custom-set-variables
-   '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.7/site-packages/cpplint.py"))
-
+    '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py")
+  )
   ;; disabling gcc, in favor of googlelint. this is not recommended here
   ;; https://www.flycheck.org/en/27/_downloads/flycheck.html#Registering-new-checkers
   ;; if we decide that's a bad idea then we should replace that line with this one
   ;; (flycheck-add-next-checker 'c/c++-gcc 'c/c++-googlelint)
-  ;; (flycheck-add-next-checker 'c/c++-gcc '(warning . c/c++-googlelint))
-  ;(add-to-list 'flycheck-disabled-checkers 'c/c++-gcc)
-  ;(add-to-list 'flycheck-disabled-checkers 'c/c++-cppcheck)
-  (setq-default flycheck-disabled-checkers '(c/c++-gcc c/c++-cppcheck))
+  ;(flycheck-add-next-checker 'c/c++-gcc '(warning . c/c++-googlelint))
+  (setq-default flycheck-disabled-checkers '(c/c++-gcc))
   (add-hook 'c++-mode-hook #'flycheck-mode)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+end_src
