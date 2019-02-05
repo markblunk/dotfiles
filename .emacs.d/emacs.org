@@ -328,6 +328,7 @@ local environment
 ** Rust
 #+name: rust
 #+begin_src emacs-lisp
+  (setq exec-path (append exec-path '("~/.cargo/bin")))
   (require 'rust-mode)
   ;; this hook requires stable toolchain
   (add-hook 'rust-mode-hook
