@@ -191,6 +191,9 @@ Syntax highlighting Show matching parentheses
   (push 'company-lsp company-backends)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
+  (require 'yasnippet)
+  (yas-global-mode 1)
+
 #+end_src
 ** C
 #+name: c
