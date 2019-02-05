@@ -182,8 +182,14 @@ Syntax highlighting Show matching parentheses
   (require 'flycheck-color-mode-line)
   (eval-after-load "flycheck"
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-  ;(add-hook 'after-init-hook  'global-flycheck-mode)
-  ;(add-hook 'after-init-hook 'global-company-mode)
+
+  (require 'rainbow-delimiters)
+  (require 'lsp-mode)
+  (require 'company)
+  (add-hook 'after-init-hook 'global-company-mode)
+  (require 'company-lsp)
+  (push 'company-lsp company-backends)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
 #+end_src
 ** C
@@ -204,23 +210,32 @@ executable.
   mkvirtualenv cpplint
   pip install cpplint
   chmod +x ~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py
-  ln -s /usr/bin/python /home/linuxbrew/.linuxbrew/bin/python3
 #+end_src
 
 #+name: cpp
 #+begin_src emacs-lisp
   (load "~/.emacs.d/external/flycheck-google-cpplint")
   (add-to-list 'flycheck-checkers 'c/c++-googlelint)
-  (custom-set-variables
-    '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py")
+  (custom-set-variables '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py")
+                        '(flycheck-c/c++-clang-executable "/usr/bin/clang-7")
+                        '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
   )
-  ;; disabling gcc, in favor of googlelint. this is not recommended here
+ ;; disabling gcc, in favor of googlelint. this is not recommended here
   ;; https://www.flycheck.org/en/27/_downloads/flycheck.html#Registering-new-checkers
   ;; if we decide that's a bad idea then we should replace that line with this one
   ;; (flycheck-add-next-checker 'c/c++-gcc 'c/c++-googlelint)
   ;(flycheck-add-next-checker 'c/c++-gcc '(warning . c/c++-googlelint))
   (setq-default flycheck-disabled-checkers '(c/c++-gcc))
+
+
+  (setq lsp-clients-clangd-executable "clangd-7")
+
+  ;; https://github.com/emacs-lsp/lsp-mode#how-it-works
+  ;; if you want to force starting a particular language server in a file
+  ;; you may use C-u M-x lsp which will prompt you to select language server to start.
   (add-hook 'c++-mode-hook #'flycheck-mode)
+  (add-hook 'c++-mode-hook #'lsp)
+  (add-hook 'c++-mode-hook  'rainbow-delimiters-mode)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+end_src
 ** Lisp
@@ -228,13 +243,12 @@ For lisp code, I want ParEdit plus general highlighting etc.
 #+name: lisp
 #+begin_src emacs-lisp
   (require 'paredit)
-  (require 'rainbow-delimiters)
   (autoload 'enable-paredit-mode "paredit"
       "Turn on pseudo-structural editing of Lisp code."   t)
   (add-hook 'lisp-mode-hook             'enable-paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook             'rainbow-delimiters-mode)
-   (add-hook 'lisp-interaction-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'lisp-interaction-mode-hook 'rainbow-delimiters-mode)
 #+end_src
 ** Emacs Lisp
 #+name: elisp
@@ -318,7 +332,6 @@ local environment
       (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
   (require 'racer)
-  (require 'company)
   (add-hook 'rust-mode-hook #'flycheck-mode)
   ;code completion
   (add-hook 'rust-mode-hook #'racer-mode)
@@ -508,10 +521,10 @@ this org file.
   <<startup>>
 #+end_src
 * Environment
-  External packages may be dropped in the .emacs.d/ext directory.
+  External packages may be dropped in the .emacs.d/external directory.
   #+name: environment
   #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/ext")
+    (add-to-list 'load-path "~/.emacs.d/external")
   #+end_src
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
