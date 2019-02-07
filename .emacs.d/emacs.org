@@ -186,14 +186,14 @@ Syntax highlighting Show matching parentheses
   (require 'rainbow-delimiters)
   (require 'lsp-mode)
   (require 'company)
-  (add-hook 'after-init-hook 'global-company-mode)
   (require 'company-lsp)
+  (add-hook 'after-init-hook 'global-company-mode)
   (push 'company-lsp company-backends)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (custom-set-variables '(lsp-auto-guess-root t))
 
   (require 'yasnippet)
   (yas-global-mode 1)
-
 #+end_src
 ** C
 #+name: c
@@ -204,34 +204,12 @@ Syntax highlighting Show matching parentheses
   (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 #+end_src
 ** Cpp
-elpa doesnt work https://github.com/flycheck/flycheck-google-cpplint/issues/10
-so manually loading it [[~/.emacs.d/external/flycheck-google-cpplint][here]]
-
-Also, install python package cpplint so flycheck-google-cpplint has an
-executable.
-#+begin_src sh
-  mkvirtualenv cpplint
-  pip install cpplint
-  chmod +x ~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py
-#+end_src
-
 #+name: cpp
 #+begin_src emacs-lisp
-  (load "~/.emacs.d/external/flycheck-google-cpplint")
-  (add-to-list 'flycheck-checkers 'c/c++-googlelint)
-  (custom-set-variables '(flycheck-c/c++-googlelint-executable "~/.virtualenvs/cpplint/lib/python3.6/site-packages/cpplint.py")
-                        '(flycheck-c/c++-clang-executable "/usr/bin/clang-7")
+  (custom-set-variables;
+                        '(company-clang-executable "/usr/bin/clang-7")
                         '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
-  )
- ;; disabling gcc, in favor of googlelint. this is not recommended here
-  ;; https://www.flycheck.org/en/27/_downloads/flycheck.html#Registering-new-checkers
-  ;; if we decide that's a bad idea then we should replace that line with this one
-  ;; (flycheck-add-next-checker 'c/c++-gcc 'c/c++-googlelint)
-  ;(flycheck-add-next-checker 'c/c++-gcc '(warning . c/c++-googlelint))
-  (setq-default flycheck-disabled-checkers '(c/c++-gcc))
-
-
-  (setq lsp-clients-clangd-executable "clangd-7")
+                        '(lsp-clients-clangd-executable "clangd-7"))
 
   ;; https://github.com/emacs-lsp/lsp-mode#how-it-works
   ;; if you want to force starting a particular language server in a file
@@ -239,8 +217,18 @@ executable.
   (add-hook 'c++-mode-hook #'flycheck-mode)
   (add-hook 'c++-mode-hook #'lsp)
   (add-hook 'c++-mode-hook  'rainbow-delimiters-mode)
+
+  (require 'clang-format)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+end_src
+
+To have commands like clang-format-buffer run as expected, place a
+.clang-format in your project directory by running the following command
+
+#+begin_src sh
+  clang-format-7 -i -style=Google -dump-config > $PROJECT_DIR/.clang-format
+#+end_src
+
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
 #+name: lisp
