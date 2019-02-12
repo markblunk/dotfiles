@@ -188,9 +188,13 @@ Syntax highlighting Show matching parentheses
   (require 'company)
   (require 'company-lsp)
   (add-hook 'after-init-hook 'global-company-mode)
+
+  (require 'lsp-mode)
+;  (require 'lsp-ui)
+  (require 'company-lsp)
   (push 'company-lsp company-backends)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (custom-set-variables '(lsp-auto-guess-root t))
+;  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  ; (custom-set-variables '(lsp-auto-guess-root t))
 
   (require 'yasnippet)
   (yas-global-mode 1)
@@ -199,6 +203,7 @@ Syntax highlighting Show matching parentheses
 #+name: c
 #+begin_src emacs-lisp
   (add-hook 'c-mode-hook #'flycheck-mode)
+
   (require 'google-c-style)
   (add-hook 'c-mode-common-hook 'google-set-c-style)
   (add-hook 'c-mode-common-hook 'google-make-newline-indent)
@@ -207,9 +212,10 @@ Syntax highlighting Show matching parentheses
 #+name: cpp
 #+begin_src emacs-lisp
   (custom-set-variables;
-                        '(company-clang-executable "/usr/bin/clang-7")
-                        '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
-                        '(lsp-clients-clangd-executable "clangd-7"))
+    '(company-clang-executable "/usr/bin/clang-7")
+;    '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
+    '(lsp-clients-clangd-executable "clangd-7")
+)
 
   ;; https://github.com/emacs-lsp/lsp-mode#how-it-works
   ;; if you want to force starting a particular language server in a file
