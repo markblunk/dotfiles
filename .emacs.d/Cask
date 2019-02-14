@@ -3,6 +3,7 @@
 (source melpa)
 (source org)
 
+(depends-on "ccls")
 (depends-on "cider")
 (depends-on "cider-decompile")
 (depends-on "cl-lib")

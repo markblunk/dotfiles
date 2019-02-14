@@ -184,17 +184,17 @@ Syntax highlighting Show matching parentheses
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
   (require 'rainbow-delimiters)
-  (require 'lsp-mode)
   (require 'company)
-  (require 'company-lsp)
   (add-hook 'after-init-hook 'global-company-mode)
 
   (require 'lsp-mode)
-;  (require 'lsp-ui)
+  (require 'lsp-ui)
   (require 'company-lsp)
+
   (push 'company-lsp company-backends)
-;  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  ; (custom-set-variables '(lsp-auto-guess-root t))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (custom-set-variables '(lsp-response-timeout 60)
+                        '(lsp-auto-guess-root t))
 
   (require 'yasnippet)
   (yas-global-mode 1)
@@ -209,13 +209,17 @@ Syntax highlighting Show matching parentheses
   (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 #+end_src
 ** Cpp
+
+To get ccls to behave correctly I followed the build & install
+sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then add a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
+directory of your project.
+
 #+name: cpp
 #+begin_src emacs-lisp
   (custom-set-variables;
     '(company-clang-executable "/usr/bin/clang-7")
-;    '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
-    '(lsp-clients-clangd-executable "clangd-7")
-)
+    '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
+    '(lsp-clients-clangd-executable "clangd-7"))
 
   ;; https://github.com/emacs-lsp/lsp-mode#how-it-works
   ;; if you want to force starting a particular language server in a file
@@ -224,11 +228,15 @@ Syntax highlighting Show matching parentheses
   (add-hook 'c++-mode-hook #'lsp)
   (add-hook 'c++-mode-hook  'rainbow-delimiters-mode)
 
+  (require 'ccls)
+  (setq ccls-executable "/home/mblunk/code/misc/ccls/Release/ccls")
+
   (require 'clang-format)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 #+end_src
 
-To have commands like clang-format-buffer run as expected, place a
+To have commands like 'clang-format-buffer run as expected, place a
 .clang-format in your project directory by running the following command
 
 #+begin_src sh
