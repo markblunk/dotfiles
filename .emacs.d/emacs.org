@@ -81,6 +81,7 @@ up to show in the buffer. When running emacs in a terminal, remove the menu bar.
     (scroll-bar-mode -1))
   (when (not (window-system))
     (menu-bar-mode -1))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 ** Fringe decorations
 [https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
@@ -178,7 +179,6 @@ Syntax highlighting Show matching parentheses
                              (blink-matching-open))))
     (when matching-text (message matching-text))))
   (require 'flycheck)
-  (setq flycheck-check-syntax-automatically '(mode-enabled save))
   (require 'flycheck-color-mode-line)
   (eval-after-load "flycheck"
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
@@ -231,18 +231,14 @@ directory of your project.
   (require 'ccls)
   (setq ccls-executable "/home/mblunk/code/misc/ccls/Release/ccls")
 
-  (require 'clang-format)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 #+end_src
-
-To have commands like 'clang-format-buffer run as expected, place a
-.clang-format in your project directory by running the following command
-
-#+begin_src sh
-  clang-format-7 -i -style=Google -dump-config > $PROJECT_DIR/.clang-format
+** Autoconf
+#+name: autoconf
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.m4\\'" . autoconf-mode))
 #+end_src
-
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
 #+name: lisp
@@ -506,6 +502,7 @@ this org file.
   <<elisp>>
   <<c>>
   <<cpp>>
+  <<autoconf>>
   <<csv>>
   <<java>>
   <<javascript>>
