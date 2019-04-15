@@ -211,8 +211,8 @@ Syntax highlighting Show matching parentheses
 ** Cpp
 
 To get ccls to behave correctly I followed the build & install
-sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then add a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
-directory of your project.
+sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
+directory of my project.
 
 #+name: cpp
 #+begin_src emacs-lisp
@@ -238,6 +238,11 @@ directory of your project.
 #+name: autoconf
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.m4\\'" . autoconf-mode))
+#+end_src
+** Cmake
+#+name: cmake
+#+begin_src emacs-lisp
+  (require 'cmake-mode)
 #+end_src
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
@@ -502,6 +507,7 @@ this org file.
   <<elisp>>
   <<c>>
   <<cpp>>
+  <<cmake>>
   <<autoconf>>
   <<csv>>
   <<java>>

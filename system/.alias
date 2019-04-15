@@ -10,4 +10,3 @@ alias lt="ls -lhAtr ${LS_COLORS} ${LS_TIMESTYLEISO} ${LS_GROUPDIRSFIRST}"
 alias ld="ls -ld ${LS_COLORS} */"
 
 unset LS_COLORS LS_TIMESTYLEISO LS_GROUPDIRSFIRST
-

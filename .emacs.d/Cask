@@ -8,6 +8,7 @@
 (depends-on "cider-decompile")
 (depends-on "cl-lib")
 (depends-on "clang-format")
+(depends-on "cmake-mode")
 (depends-on "color-theme-sanityinc-solarized")
 (depends-on "command-log-mode")
 (depends-on "company")
