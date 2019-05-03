@@ -1,7 +1,13 @@
-*~
 ._*
-.#*
 .DS_Store
 .idea
-.ensime_cache/
+
+#emacs
+
+*~
+.#*
 .projectile
+.dir-locals.el
+.ccls
+.ccls-cache/
+.ensime_cache/
