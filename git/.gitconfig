@@ -35,6 +35,6 @@
     helper = cache --timeout=3600
 [core]
     editor = emacs
+    excludesfile = ~/.gitignore_global
 [push]
-#    default = simple
      default = current
