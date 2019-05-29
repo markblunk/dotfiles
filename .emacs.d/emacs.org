@@ -244,6 +244,13 @@ directory of my project.
 #+begin_src emacs-lisp
   (require 'cmake-mode)
 #+end_src
+
+** Docker
+#+name: docker
+#+begin_src emacs-lisp
+  (require 'dockerfile-mode)
+    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+#+end_src
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
 #+name: lisp
@@ -507,8 +514,9 @@ this org file.
   <<elisp>>
   <<c>>
   <<cpp>>
-  <<cmake>>
   <<autoconf>>
+  <<cmake>>
+  <<docker>>
   <<csv>>
   <<java>>
   <<javascript>>

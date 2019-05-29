@@ -15,6 +15,7 @@
 (depends-on "company-lsp")
 (depends-on "csv-mode")
 (depends-on "dash")
+(depends-on "dockerfile-mode")
 (depends-on "ensime")
 (depends-on "epc")
 (depends-on "epl")
