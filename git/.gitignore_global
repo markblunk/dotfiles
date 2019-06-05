@@ -8,6 +8,8 @@
 .#*
 .projectile
 .dir-locals.el
+.ensime_cache/
+
+# lsp for cpp
 .ccls
 .ccls-cache/
-.ensime_cache/
