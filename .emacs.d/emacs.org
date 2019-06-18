@@ -463,6 +463,11 @@ Make custom markers for todo items:
      (setq org-refile-targets '((nil :level . 1)
                                 (org-agenda-files :level . 1)))
    #+end_src
+** CDLatex
+#+name: org-latex
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+#+end_src
 ** Org-Babel
 *** TODO Fontifying source blocks
 Enable syntax highlighting in src blocks.
@@ -532,6 +537,7 @@ this org file.
   <<global-backup>>
   <<org-commands>>
   <<todos>>
+  <<org-latex>>
   <<org-babel-syntax>>
   <<org-babel-languages>>
   <<libraries>>

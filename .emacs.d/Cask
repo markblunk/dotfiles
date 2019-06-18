@@ -3,10 +3,9 @@
 (source melpa)
 (source org)
 
+(depends-on "auctex")
 (depends-on "ccls")
-(depends-on "cider")
-(depends-on "cider-decompile")
-(depends-on "cl-lib")
+(depends-on "cdlatex")
 (depends-on "clang-format")
 (depends-on "cmake-mode")
 (depends-on "color-theme-sanityinc-solarized")
