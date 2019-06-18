@@ -1,3 +1,9 @@
+
+# Ignore files without extension
+*
+!*/
+!*.*
+
 ._*
 .DS_Store
 .idea
@@ -13,3 +19,6 @@
 # lsp for cpp
 .ccls
 .ccls-cache/
+
+#vscode
+.vscode/
