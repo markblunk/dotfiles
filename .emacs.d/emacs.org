@@ -402,8 +402,9 @@ bind that function.
 
   ;  enable ido-mode
   (setq ido-enable-flex-matching t)
-  (ido-mode +1)
+  (ido-mode t)
   (ido-yes-or-no-mode +1)
+  (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil)
 
   (cua-mode t)
   (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
