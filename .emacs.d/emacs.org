@@ -422,6 +422,14 @@ Save all backups to a universal location
     version-control t)
 #+end_src
 * Org Mode
+** Bullets
+use [[https://github.com/sabof/org-bullets][org-bullets]]
+
+#+name: org-bullets
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+END_SRC
+
 ** Global keys
 Short key bindings for capturing notes/links and switching to agenda.
 #+name: org-commands
@@ -532,6 +540,7 @@ this org file.
   <<scala>>
   <<sql>>
   <<yaml>>
+  <<org-bullets>>
   <<global-keys>>
   <<global-navigation>>
   <<global-backup>>
