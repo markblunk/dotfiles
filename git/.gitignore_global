@@ -5,16 +5,20 @@
 !*.*
 
 ._*
-.DS_Store
+
 .idea
 
-#emacs
+#mac
+.DS_Store
 
+
+#emacs
 *~
 .#*
 .projectile
 .dir-locals.el
 .ensime_cache/
+.emacs.d/network-security.data
 
 # lsp for cpp
 .ccls
