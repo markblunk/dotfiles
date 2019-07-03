@@ -443,8 +443,9 @@ Short key bindings for capturing notes/links and switching to agenda.
   (require 'org-agenda)
   (custom-set-variables
   '(org-directory "~/org")
-  '(org-agenda-files (list org-directory)))
-  (setq org-log-done 'time)
+  '(org-agenda-files (list org-directory))
+  '(org-archive-location (concat 'org-directory  "/archive.org::"))
+  '(org-log-done 'time))
 #+end_src
 ** Notes / Tasks / TODOs
 Make custom markers for todo items:
@@ -462,23 +463,16 @@ Make custom markers for todo items:
 #+begin_src emacs-lisp
      (setq org-default-notes-file "~/org/notes.org")
      (setq org-todo-keywords
-           '((sequence "TODO(t)" "PENDING(p)" "MEETING(m)" "|" "DONE(d)" "CANCELED(c)")))
-
-     (defun mb-org-autodone (n-done n-not-done)
-       "Switch entry to DONE when all subentries are done, to TODO otherwise."
-       (let (org-log-done org-log-states)   ; turn off logging
-         (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-     (add-hook 'org-after-todo-statistics-hook 'mb-org-autodone)
+           '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
      (setq org-refile-targets '((nil :level . 1)
                                 (org-agenda-files :level . 1)))
    #+end_src
 ** CDLatex
 #+name: org-latex
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 #+end_src
 ** Org-Babel
-*** TODO Fontifying source blocks
 Enable syntax highlighting in src blocks.
 #+name: org-babel-syntax
 #+begin_src emacs-lisp
