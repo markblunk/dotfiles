@@ -455,13 +455,12 @@ Make custom markers for todo items:
 - PENDING :: something that's awaiting feedback from someone
              else. If it has a date, it needs followup if there
              hasn't been any feedback at that time.
-- MEETING :: a scheduled meeting and cannot easily be rescheduled.
 - DONE :: done.
 - CANCELED :: can be ignored. May include a note on why it's been
               cancelled.
 #+name: todos
 #+begin_src emacs-lisp
-     (setq org-default-notes-file "~/org/notes.org")
+     (setq org-default-notes-file (concat 'org-directory  "/notes.org"))
      (setq org-todo-keywords
            '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
      (setq org-refile-targets '((nil :level . 1)
