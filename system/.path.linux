@@ -3,7 +3,7 @@ prepend() {
 }
 
 if [[ $HOSTNAME = markbott ]]; then
-    export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+    export JAVA_HOME="/usr/lib/jvm/default-java"
     prepend "$JAVA_HOME/bin"
 
     #emacs package manager

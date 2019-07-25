@@ -234,6 +234,13 @@ directory of my project.
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 #+end_src
+** CSV
+#+name: csv
+#+begin_src emacs-lisp
+  (require 'csv-mode)
+  (add-to-list 'auto-mode-alist '("\\.csv" . csv-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsv" . csv-mode))
+#+end_src
 ** Autoconf
 #+name: autoconf
 #+begin_src emacs-lisp
@@ -271,13 +278,6 @@ For lisp code, I want ParEdit plus general highlighting etc.
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-#+end_src
-** CSV
-#+name: csv
-#+begin_src emacs-lisp
-  (require 'csv-mode)
-  (add-to-list 'auto-mode-alist '("\\.csv" . csv-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsv" . csv-mode))
 #+end_src
 ** Java
 Use Java-mode for java
@@ -444,7 +444,7 @@ Short key bindings for capturing notes/links and switching to agenda.
   (custom-set-variables
   '(org-directory "~/org")
   '(org-agenda-files (list org-directory))
-  '(org-archive-location (concat 'org-directory  "/archive.org::"))
+  '(org-archive-location  "~/org/archive.org::")
   '(org-log-done 'time))
 #+end_src
 ** Notes / Tasks / TODOs
@@ -460,12 +460,12 @@ Make custom markers for todo items:
               cancelled.
 #+name: todos
 #+begin_src emacs-lisp
-     (setq org-default-notes-file (concat 'org-directory  "/notes.org"))
-     (setq org-todo-keywords
-           '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
-     (setq org-refile-targets '((nil :level . 1)
-                                (org-agenda-files :level . 1)))
-   #+end_src
+  (setq org-default-notes-file "~/org/notes.org")
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
+  (setq org-refile-targets '((nil :level . 1)
+                             (org-agenda-files :level . 1)))
+#+end_src
 ** CDLatex
 #+name: org-latex
 #+begin_src emacs-lisp
@@ -521,10 +521,10 @@ this org file.
   <<elisp>>
   <<c>>
   <<cpp>>
+  <<csv>>
   <<autoconf>>
   <<cmake>>
   <<docker>>
-  <<csv>>
   <<java>>
   <<javascript>>
   <<json>>

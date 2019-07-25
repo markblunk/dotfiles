@@ -1,8 +1,8 @@
 
 # Ignore files without extension
-*
-!*/
-!*.*
+# *
+# !*/
+# !*.*
 
 ._*
 
