@@ -258,6 +258,13 @@ directory of my project.
   (require 'dockerfile-mode)
     (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 #+end_src
+** Fstar
+[[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
+#+name: fstar
+#+begin_src emacs-lisp
+  (require 'fstar-mode)
+  (add-to-list 'auto-mode-alist '("\\.fs?\\'" . fstar-mode))
+#+end_src
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
 #+name: lisp
@@ -525,6 +532,7 @@ this org file.
   <<autoconf>>
   <<cmake>>
   <<docker>>
+  <<fstar>>
   <<java>>
   <<javascript>>
   <<json>>

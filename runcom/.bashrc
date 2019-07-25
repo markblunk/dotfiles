@@ -89,3 +89,6 @@ unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE DIRS
 
 # Export
 export SHELL_BASH OS DOTFILES_DIR
+
+# OPAM configuration
+. /home/mblunk/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
