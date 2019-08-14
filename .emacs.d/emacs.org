@@ -30,125 +30,129 @@
 ** Spell Checking
    Emacs does not come with a spell checker reloaded. I installed
    Aspell on the Mac by running the following commands:
-    #+name: install Aspell
-    #+begin_src /bin/bash
-      brew install aspell --with-lang-en
-    #+end_src
+#+NAME: install Aspell
+#+BEGIN_SRC shell
+  brew install aspell --with-lang-en
+#+END_SRC
    This auto-magically installed a spellchecker that emacs can use.
 ** Adding your own modifications
     Here are some problems I have run into more than once when
     attempting to modify this configuration file:
-    1. Every code block should be begin with ~#+name: SECTION_NAME~,
-       in addition the begin_src and end_src wrapped around the
-       code. I find that I am repeatedly forgetting to add the ~#+name:
+    1. Every code block should be begin with ~#+NAME: SECTION_NAME~,
+       in addition the BEGIN_SRC and END_SRC wrapped around the
+       code. I find that I am repeatedly forgetting to add the ~#+NAME:
     SECTION_NAME~ line.
     2. If you add a new section, named say ~NEW_SECTION~, then don't forget
        to add the line ~<<NEW_SECTION>>~ in the Configuration file layout
        code block below.
-
 * Graphics and looks
 ** Color theme
 Load a default theme. This version of solarized doesn't play well
 with iTerm2, but not sure how to fix this.
-#+name: color-theme
-#+begin_src emacs-lisp
-  (require 'color-theme-sanityinc-solarized)
-  (load-theme 'sanityinc-solarized-dark t)
-#+end_src
+#+NAME: color-theme
+#+BEGIN_SRC emacs-lisp
+  (use-package color-theme-sanityinc-solarized
+    :config
+    (load-theme 'sanityinc-solarized-dark t))
+#+END_SRC
 ** Font
-Load default font of Inconsolata
-#+name: font
-#+begin_src emacs-lisp
+Load default font of Monospace
+#+NAME: font
+#+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-  :family "Monospace"
-  :height 140
-  :weight 'normal
-  :width 'normal)
-#+end_src
+		      :family "Monospace"
+		      :height 140
+		      :weight 'normal
+		      :width 'normal)
+#+END_SRC
 ** Blinking cursor
 Turn the cursor off
-#+name: cursor
-#+begin_src emacs-lisp
+#+NAME: cursor
+#+BEGIN_SRC emacs-lisp
   (blink-cursor-mode 0)
-#+end_src
+#+END_SRC
 ** Reduce clutter
 Remove the toolbar and the  scroll bars. The position will be set
 up to show in the buffer. When running emacs in a terminal, remove the menu bar.
-#+name: clutter
-#+begin_src emacs-lisp
-  (when (window-system)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1))
-  (when (not (window-system))
+#+NAME: clutter
+#+BEGIN_SRC emacs-lisp
+  (if (window-system)
+      (progn
+        (tool-bar-mode -1)
+        (scroll-bar-mode -1))
     (menu-bar-mode -1))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+end_src
+#+END_SRC
 ** Fringe decorations
-[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
+[[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
 buffer.  Set up git diffs and buffer position in the fringe.
-#+name: fringe
-#+begin_src emacs-lisp
-  (require 'git-gutter)
-  (global-git-gutter-mode +1)
-  (setq-default indicate-buffer-boundaries 'left)
-  (setq-default indicate-empty-lines +1)
-#+end_src
+#+NAME: fringe
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :init
+    (setq-default indicate-buffer-boundaries 'left)
+    (setq-default indicate-empty-lines +1)
+    :config
+    (global-git-gutter-mode +1))
+#+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
-#+name: mode
-#+begin_src emacs-lisp
-  (sml/setup)
-  (sml/apply-theme 'dark)
-  (setq sml/shorten-directory t)
-  (setq sml/shorten-modes t)
-  (setq column-number-mode t)
-#+end_src
+#+NAME: mode
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :init
+    (setq column-number-mode t)
+    :config
+    (setq sml/shorten-directory t
+          sml/shorten-modes t)
+    (sml/setup)
+    (sml/apply-theme 'dark))
+
+#+END_SRC
 ** Scrolling behavior
 Replace default keyboard scrolling with a more smooth alternative
-#+name: scroll
-#+begin_src emacs-lisp
+#+NAME: scroll
+#+BEGIN_SRC emacs-lisp
   (setq redisplay-dont-pause t
-  scroll-margin 1
-  scroll-step 1
-  scroll-conservatively 10000
-  scroll-preserve-screen-position 1)
-  (setq mouse-wheel-follow-mouse 't)
-  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-#+end_src
+        scroll-margin 1
+        scroll-step 1
+        scroll-conservatively 10000
+        scroll-preserve-screen-position 1
+        mouse-wheel-follow-mouse 't
+        mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+#+END_SRC
 ** Buffer names
 Setup uniquify so that non-unique buffer names get the parent path
 included to make them unique.
-#+name: buffer-names
-#+begin_src emacs-lisp
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward)
-#+end_src
+#+NAME: buffer-names
+#+BEGIN_SRC emacs-lisp
+  (use-package uniquify
+    :config
+    (setq uniquify-buffer-name-style 'forward))
+#+END_SRC
 ** Window systems and terminals
 Make mouse clicks work in xterm (and iTerm)
-#+name: mouse-clicks
-#+begin_src emacs-lisp
+#+NAME: mouse-clicks
+#+BEGIN_SRC emacs-lisp
   (when (not (window-system))
     (xterm-mouse-mode +1))
-#+end_src
+#+END_SRC
 * Start up
-#+name: startup
-#+begin_src emacs-lisp
-  (require 'projectile)
-  (projectile-global-mode)
-
+#+NAME: startup
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist '(height . 35))
   (add-to-list 'default-frame-alist '(width . 140))
 
-  (require 'multi-term)
-  (setq multi-term-program "/bin/bash")
+  (use-package multi-term
+    :config
+    (setq multi-term-program "/bin/bash"))
 
   (setq inhibit-startup-screen +1)
-
   (setq-default indent-tabs-mode nil)
   (setq-default show-trailing-whitespace t)
 
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
-#+end_src
+#+END_SRC
 * Programming
 ** General programming
 Use prettify-symbols mode for all programming.  Currentlly this only
@@ -156,251 +160,275 @@ Use prettify-symbols mode for all programming.  Currentlly this only
  is an external package for earlier versions, which I might include in
  the else portion below later.
 
-Syntax highlighting Show matching parentheses
-#+name: programming-setup
-#+begin_src emacs-lisp
++ use projectile
++ Syntax highlighting
++ Show matching parentheses
++ Rainbow parens
++ completion with company
++ lsp
+  + disable document hover because it's too distracting
+  + bump the file-watch threshold
+#+NAME: programming-setup
+#+BEGIN_SRC emacs-lisp
   (if (and (>= emacs-major-version 24)
-	 (>= emacs-minor-version 4))
-    (global-prettify-symbols-mode +1) ())
-(global-font-lock-mode t)
-(require 'smartparens)
-(smartparens-global-mode t)
-(show-paren-mode 1)
-(setq show-paren-delay 0)
-(defadvice show-paren-function
-    (after show-matching-paren-offscreen activate)
-  "If the matching paren is offscreen, show the matching line in the
-        echo area. Has no effect if the character before point is not of
-        the syntax class ')'."
-  (interactive)
-  (let* ((cb (char-before (point)))
-         (matching-text (and cb
-                             (char-equal (char-syntax cb) ?\) )
-                             (blink-matching-open))))
-    (when matching-text (message matching-text))))
-  (require 'flycheck)
-  (require 'flycheck-color-mode-line)
-  (eval-after-load "flycheck"
-    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+           (>= emacs-minor-version 4))
+      (global-prettify-symbols-mode +1) ())
+  (global-font-lock-mode t)
 
-  (require 'rainbow-delimiters)
-  (require 'company)
-  (add-hook 'after-init-hook 'global-company-mode)
+  (show-paren-mode 1)
+  (setq show-paren-delay 0)
+  (defadvice show-paren-function
+      (after show-matching-paren-offscreen activate)
+    "If the matching paren is offscreen, show the matching line in the echo area.  Has no effect if the character before point is not of the syntax class ')'."
+    (interactive)
+    (let* ((cb (char-before (point)))
+           (matching-text (and cb
+                               (char-equal (char-syntax cb) ?\) )
+                               (blink-matching-open))))
+      (when matching-text (message matching-text))))
 
-  (require 'lsp-mode)
-  (require 'lsp-ui)
-  (require 'company-lsp)
+  (use-package projectile
+    :config
+    (projectile-mode t))
 
-  (push 'company-lsp company-backends)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (custom-set-variables '(lsp-response-timeout 60)
-                        '(lsp-auto-guess-root t))
+  (use-package smartparens
+    :config
+    (smartparens-global-mode t))
 
-  (require 'yasnippet)
-  (yas-global-mode 1)
-#+end_src
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+
+  (use-package flycheck
+    :no-require t
+    :hook
+    ((c-mode . flycheck-mode)
+     (c++-mode . flycheck-mode)
+     (java-mode . flycheck-mode)
+     (python-mode . flycheck-mode)
+     (rust-mode . flycheck-mode))
+
+    :custom (flycheck-checker-error-threshold 2000)
+    :config
+    (use-package flycheck-color-mode-line
+      :hook (flycheck-mode . flycheck-color-mode-line-mode)))
+
+  (use-package lsp-mode
+    :hook
+    ((c-mode . lsp)
+     (c++-mode . lsp)
+     (java-mode . lsp)
+     (rust-mode . lsp))
+    :commands lsp
+    :custom
+    (lsp-response-timout 60)
+    (lsp-auto-guess-root t)
+    (lsp-file-watch-threshold 100000)
+    (lsp-clients-clangd-executable "clangd-7"))
+
+  (use-package company
+    :hook (racer-mode . company-mode)
+    :custom (company-tooltip-align-annotations t))
+
+  (use-package company-lsp
+    :after (lsp-mode company)
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends)
+    :custom
+    (company-clang-executable "/usr/bin/clang-7"))
+
+  (use-package lsp-ui
+    :after lsp-mode
+    :commands lsp-ui-mode
+    :custom
+    (lsp-ui-doc-enable nil)
+    (lsp-prefer-flymake nil)
+    :bind
+    ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+    ([remap xref-find-references] .  lsp-ui-peek-find-references))
+
+  (use-package yasnippet
+    :config (yas-global-mode 1))
+#+END_SRC
 ** C
-#+name: c
-#+begin_src emacs-lisp
-  (add-hook 'c-mode-hook #'flycheck-mode)
+#+NAME: c
+#+BEGIN_SRC emacs-lisp
 
-  (require 'google-c-style)
-  (add-hook 'c-mode-common-hook 'google-set-c-style)
-  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
-#+end_src
+  (use-package google-c-style
+    :commands (google-set-c-style google-make-newline-indent)
+    :hook ((c-mode-common . google-set-c-style)
+           (c-mode-common . google-make-newline-indent)))
+#+END_SRC
 ** Cpp
 
 To get ccls to behave correctly I followed the build & install
 sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
 directory of my project.
 
-#+name: cpp
-#+begin_src emacs-lisp
-  (custom-set-variables;
-    '(company-clang-executable "/usr/bin/clang-7")
-    '(lsp-prefer-flymake nil) ;; use flycheck in lsp-ui instead
-    '(lsp-clients-clangd-executable "clangd-7"))
-
-  ;; https://github.com/emacs-lsp/lsp-mode#how-it-works
-  ;; if you want to force starting a particular language server in a file
-  ;; you may use C-u M-x lsp which will prompt you to select language server to start.
-  (add-hook 'c++-mode-hook #'flycheck-mode)
-  (add-hook 'c++-mode-hook #'lsp)
-  (add-hook 'c++-mode-hook  'rainbow-delimiters-mode)
-
-  (require 'ccls)
-  (setq ccls-executable "/home/mblunk/code/misc/ccls/Release/ccls")
-
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-  (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
-#+end_src
+#+NAME: cpp
+#+BEGIN_SRC emacs-lisp
+  (use-package ccls
+    :config
+    (setq ccls-executable "~/code/misc/ccls/Release/ccls"))
+#+END_SRC
 ** CSV
-#+name: csv
-#+begin_src emacs-lisp
-  (require 'csv-mode)
-  (add-to-list 'auto-mode-alist '("\\.csv" . csv-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsv" . csv-mode))
-#+end_src
+#+NAME: csv
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode)
+#+END_SRC
 ** Autoconf
-#+name: autoconf
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.m4\\'" . autoconf-mode))
-#+end_src
+#+NAME: autoconf
+#+BEGIN_SRC emacs-lisp
+  (use-package autoconf-mode
+    :mode "\\.m4\\'")
+#+END_SRC
 ** Cmake
-#+name: cmake
-#+begin_src emacs-lisp
-  (require 'cmake-mode)
-#+end_src
-
+#+NAME: cmake
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode)
+#+END_SRC
 ** Docker
-#+name: docker
-#+begin_src emacs-lisp
-  (require 'dockerfile-mode)
-    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
-#+end_src
+#+NAME: docker
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode)
+#+END_SRC
 ** Fstar
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
-#+name: fstar
-#+begin_src emacs-lisp
-  (require 'fstar-mode)
-  (add-to-list 'auto-mode-alist '("\\.fs?\\'" . fstar-mode))
-#+end_src
+#+NAME: fstar
+#+BEGIN_SRC emacs-lisp
+  (use-package fstar-mode
+    :mode ("\\.fs?\\'" . fstar-mode))
+#+END_SRC
 ** Lisp
 For lisp code, I want ParEdit plus general highlighting etc.
-#+name: lisp
-#+begin_src emacs-lisp
-  (require 'paredit)
-  (autoload 'enable-paredit-mode "paredit"
-      "Turn on pseudo-structural editing of Lisp code."   t)
-  (add-hook 'lisp-mode-hook             'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook             'rainbow-delimiters-mode)
-  (add-hook 'lisp-interaction-mode-hook 'rainbow-delimiters-mode)
-#+end_src
+#+NAME: lisp
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+    :config (autoload 'enable-paredit-mode "paredit"
+              "Turn on pseudo-structural editing of Lisp code."   t)
+    :commands enable-paredit-mode
+    :hook ((lisp-mode . enable-paredit-mode)
+           (lisp-interaction-mode . enable-paredit-mode)))
+
+#+END_SRC
 ** Emacs Lisp
-#+name: elisp
-#+begin_src emacs-lisp
+#+NAME: elisp
+#+BEGIN_SRC emacs-lisp
   (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook       'rainbow-delimiters-mode)
+;  (add-hook 'emacs-lisp-mode-hook       'rainbow-delimiters-mode)
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-#+end_src
+#+END_SRC
+** Haskell
+#+NAME: haskell
+Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode
+    :mode "\\.wy.*\\'")
+#+END_SRC
 ** Java
-Use Java-mode for java
-#+name: java
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.java$'" . java-mode))
-#+end_src
+enable lsp-java when editing java projects
+#+NAME: java
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-java
+    :after lsp-mode)
+
+#+END_SRC
 ** Javascript
 Use JS2-mode for javascript source.
-#+name: programming-setup
-#+begin_src emacs-lisp
-  (require 'js2-mode)
-  (add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . js2-mode))
-#+end_src
+#+NAME: programming-setup
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode
+    :mode "\\.js[x]?\\'")
+#+END_SRC
 ** JSON
 For JSON-formatted files, use the default js-mode.
-#+name: json
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
-  (add-to-list 'auto-mode-alist '("\\.jshintrc$" . js-mode))
-#+end_src
+#+NAME: json
+#+BEGIN_SRC emacs-lisp
+  (use-package js-mode
+    :mode "\\.jshintrc$")
+#+END_SRC
 ** Markdown
-For markdown files, start markdown mode.
-#+name: markdown
-#+begin_src emacs-lisp
-  (require 'markdown-mode)
-  (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-#+end_src
+#+NAME: markdown
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode)
+#+END_SRC
 ** Python
-In order for flycheck to work, install pylint with pip in your
-local environment
-#+name: python
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
-  (require 'highlight-indentation)
-  (add-hook 'python-mode-hook 'highlight-indentation-mode)
-  (add-hook 'python-mode-hook
-       (lambda ()
-         (setq indent-tabs-mode nil)
-         (setq tab-width 4)
-         (setq python-indent 4)
-	 (setq tab-stop-list (number-sequence 4 120 4))
-         (set-face-background 'highlight-indentation-face "DarkRed")))
-	 ;;jedi stuff
-  (require 'virtualenvwrapper)
-  (add-hook 'python-mode-hook
-    (lambda ()
-      (hack-local-variables)
-      (when (boundp 'project-venv-name)
-      (venv-workon project-venv-name))))
-  (require 'epc)
-  (require 'jedi)
-;  (add-to-list 'ac-sources 'ac-source-jedi-direct)
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:setup-keys t)
-  (setq jedi:complete-on-dot t)
-#+end_src
+#+NAME: python
+#+BEGIN_SRC emacs-lisp
+  (use-package python
+    :config
+    (setq python-indent-offset 4
+          tab-stop-list (number-sequence 4 120 4)))
+  (use-package highlight-indentation
+    :after python
+    :hook (python-mode . highlight-indentation-mode)
+    :config (set-face-background 'highlight-indentation-face "DarkRed"))
+#+END_SRC
 ** Rust
-#+name: rust
-#+begin_src emacs-lisp
-  (setq exec-path (append exec-path '("~/.cargo/bin")))
-  (require 'rust-mode)
+#+NAME: rust
+#+BEGIN_SRC emacs-lisp
   ;; this hook requires stable toolchain
-  (add-hook 'rust-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+  (use-package rust-mode
+  ;  :bind (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+    :no-require t
+    :mode "\\.rs\\'"
+    :config
+    (use-package flycheck-rust
+      :commands flycheck-rust-setup
+      :hook (rust-mode . flycheck-rust-setup)))
 
-  (require 'racer)
-  (add-hook 'rust-mode-hook #'flycheck-mode)
-  ;code completion
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq company-tooltip-align-annotations t)
-  ; this line could break if we disable global flycheck
-  (add-hook 'rust-mode-hook #'flycheck-rust-setup)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-#+end_src
+  (use-package racer
+    :hook (rust-mode . racer-mode)
+    :init
+    (add-hook 'racer-mode-hook #'eldoc-mode))
+
+#+END_SRC
 ** Scala
-#+name: scala
-#+begin_src emacs-lisp
-  (require 'ensime)
-  (add-hook 'scala-mode-hook #'rainbow-delimiters-mode)
-  (add-to-list 'auto-mode-alist '("\\.sc$" . scala-mode))
-#+end_src
+#+NAME: scala
+#+BEGIN_SRC emacs-lisp
+  (use-package scala-mode
+    :mode "\\.s\\(cala\\|bt\\)$")
+#+END_SRC
 ** SQL
 Load Hive files with sql mode.
-#+name: sql
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.sql$" . sql-mode))
-  (add-to-list 'auto-mode-alist '("\\.hql$" . sql-mode))
-  (eval-after-load "sql"
-      '(load-library "sql-indent"))
-#+end_src
-** YAML
-#+name: yaml
-#+begin_src emacs-lisp
-  (require 'yaml-mode)
-  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-#+end_src
-* Global key bindings
-Some miminal global key bindings. Consult
-  http://www.masteringemacs.org/article/my-emacs-keybindings
-  for some more ideas.
+#+NAME: sql
+#+BEGIN_SRC emacs-lisp
+  (use-package sql-mode
+    :mode "\\.hql$"
+    :config
+    (load-library "sql-indent"))
 
-#+name: global-keys
-#+begin_src emacs-lisp
-  (global-set-key "\C-c g" 'magit-status)
+#+END_SRC
+** YAML
+#+NAME: yaml
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+** PSL
+Add psl-mode, which is symlinked to a local copy hiding elsewhere
+#+NAME: psl
+#+BEGIN_SRC emacs-lisp
+  (use-package psl-mode
+    :load-path "external/psl-mode.el"
+    :mode "\\.psl\\'")
+#+END_SRC
+* Global key bindings
+Some miminal global key bindings. Consult [[https://www.masteringemacs.org/article/my-emacs-keybindings][Mastering Emacs]] for some
+more ideas.
+#+NAME: global-keys
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind ("\C-c g" . magit-status))
+
   (global-set-key "\C-c q" 'delete-indentation)
-#+end_src
+#+END_SRC
 * Global navigation
 Set emacs configuration file location, and
 bind that function.
-#+name: global-navigation
-#+begin_src emacs-lisp
+#+NAME: global-navigation
+#+BEGIN_SRC emacs-lisp
   (defun mb-edit-emacs-configuration ()
     "Open emacs configuration file"
     (interactive)
@@ -408,52 +436,57 @@ bind that function.
   (global-set-key "\C-ce" 'mb-edit-emacs-configuration)
 
   ;  enable ido-mode
-  (setq ido-enable-flex-matching t)
-  (ido-mode t)
-  (ido-yes-or-no-mode +1)
-  (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil)
+  (use-package ido
+    :config
+    (setq ido-enable-flex-matching t)
+    (ido-mode t)
+    (ido-yes-or-no-mode +1))
 
   (cua-mode t)
   (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
   (transient-mark-mode 1) ;; No region when it is not highlighted
   (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
- #+end_src
+ #+END_SRC
 * Backups
 Save all backups to a universal location
-#+name: global-backup
-#+begin_src emacs-lisp
+#+NAME: global-backup
+#+BEGIN_SRC emacs-lisp
   (setq backup-by-copying t
-    backup-directory-alist '(("." . "~/.emacs.d/backup/persave"))
-    delete-old-versions t
-    kept-new-versions 6
-    kept-old-versions 2
-    version-control t)
-#+end_src
+	backup-directory-alist '(("." . "~/.emacs.d/backup/persave"))
+	delete-old-versions t
+	kept-new-versions 6
+	kept-old-versions 2
+	version-control t)
+#+END_SRC
 * Org Mode
 ** Bullets
 use [[https://github.com/sabof/org-bullets][org-bullets]]
 
-#+name: org-bullets
+#+NAME: org-bullets
 #+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+END_SRC
+  (use-package org-bullets
+    :after org
+    :commands org-bullets-mode
+    :hook (org-mode . org-bullets-mode))
 
+#+END_SRC
 ** Global keys
 Short key bindings for capturing notes/links and switching to agenda.
-#+name: org-commands
-#+begin_src emacs-lisp
+#+NAME: org-commands
+#+BEGIN_SRC emacs-lisp
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
 
-  (require 'org-agenda)
-  (custom-set-variables
-  '(org-directory "~/org")
-  '(org-agenda-files (list org-directory))
-  '(org-archive-location  "~/org/archive.org::")
-  '(org-log-done 'time))
-#+end_src
+  (setq org-directory "~/org"
+        org-archive-location  "~/org/archive.org::"
+        org-log-done 'time)
+
+  (use-package org-agenda
+    :after org
+    :config (setq org-agenda-files (list org-directory)))
+#+END_SRC
 ** Notes / Tasks / TODOs
 Make custom markers for todo items:
 - TODO :: something that needs to be done at some point. If it
@@ -465,49 +498,64 @@ Make custom markers for todo items:
 - DONE :: done.
 - CANCELED :: can be ignored. May include a note on why it's been
               cancelled.
-#+name: todos
-#+begin_src emacs-lisp
+#+NAME: todos
+#+BEGIN_SRC emacs-lisp
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-todo-keywords
         '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (setq org-refile-targets '((nil :level . 1)
                              (org-agenda-files :level . 1)))
-#+end_src
-** CDLatex
-#+name: org-latex
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-#+end_src
+#+END_SRC
 ** Org-Babel
 Enable syntax highlighting in src blocks.
-#+name: org-babel-syntax
-#+begin_src emacs-lisp
+#+NAME: org-babel-syntax
+#+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
-#+end_src
+
+  (when (boundp 'org-export-backends)
+    (custom-set-variables
+     '(org-export-backends '(ascii beamer html latex md texinfo))))
+#+END_SRC
 *** Language evaluation support
 Org-Babel needs to be told that evaluation of certain languages is
 allowed. I collect all languages here, then enable all of them at
 the end of the section.
 
-#+name: org-babel-languages
-#+begin_src emacs-lisp
+#+NAME: org-babel-languages
+#+BEGIN_SRC emacs-lisp
   (setq org-babel-load-languages
-        '((emacs-lisp . t)))
+	'((emacs-lisp . t)
+	  (shell . t)
+	  (sql . t)))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   org-babel-load-languages)
-#+end_src
+#+END_SRC
 * Other libraries
-Loading neotree instead of ~dired~
-#+name: libraries
-#+begin_src emacs-lisp
-  (require 'neotree)
-#+end_src
+Make sure .class.d files are ignored (.class files are already
+ignored) in [[info:emacs#Dired%20Enter][ Dired-mode]], the mode of the minibuffer when trying to
+find a file with C-x C-f).
+#+NAME: dired
+#+BEGIN_SRC emacs-lisp
+  (setq completion-ignored-extensions (cons ".class.d" completion-ignored-extensions))
+  (use-package dired-x
+    :config (setq dired-omit-mode t))
+
+#+END_SRC
+Using treemacs instead of ~dired~
+#+NAME: treemacs
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+    :init
+    (defun treemacs-ignore-example (filename absolute-path)
+      (string-match
+       "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))
+    :config
+    (add-to-list 'treemacs-ignored-file-predicates #'treemacs-ignore-example))
+
+#+END_SRC
 * Configuration file layout
 Define the emacs.el file that gets generated by the code in
 this org file.
-#+begin_src emacs-lisp :tangle yes :noweb no-export :exports code
+#+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
   ;;;; package --- Summary
   ;;;; Do not modify this file by hand.  It was automatically generated
   ;;;; from `emacs.org` in the same directory. See that file for more
@@ -537,29 +585,32 @@ this org file.
   <<javascript>>
   <<json>>
   <<markdown>>
+  <<ocaml>>
   <<python>>
   <<rust>>
   <<scala>>
   <<sql>>
   <<yaml>>
+  <<psl>>
   <<org-bullets>>
   <<global-keys>>
   <<global-navigation>>
   <<global-backup>>
   <<org-commands>>
   <<todos>>
-  <<org-latex>>
   <<org-babel-syntax>>
   <<org-babel-languages>>
-  <<libraries>>
+  <<dired>>
+  <<treemacs>>
   <<startup>>
-#+end_src
+#+END_SRC
 * Environment
-  External packages may be dropped in the .emacs.d/external directory.
-  #+name: environment
-  #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/external")
-  #+end_src
+External packages may be dropped in the .emacs.d/external directory.
+#+NAME: environment
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/external")
+  (require 'use-package)
+#+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
   functions in the user init file, which is "~/.emacs.d/init.el" in
@@ -567,10 +618,10 @@ this org file.
   it's not there, by first creating an empty file and then loading the
   needed content.
 
-  #+name: customize-config
-  #+begin_src emacs-lisp
-    (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
-    (unless (file-exists-p custom-file)
-      (shell-command (concat "touch " custom-file)))
-    (load custom-file)
-  #+end_src
+#+NAME: customize-config
+#+BEGIN_SRC emacs-lisp
+  (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (unless (file-exists-p custom-file)
+    (shell-command (concat "touch " custom-file)))
+  (load custom-file)
+#+END_SRC

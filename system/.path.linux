@@ -6,6 +6,9 @@ if [[ $HOSTNAME = markbott ]]; then
     export JAVA_HOME="/usr/lib/jvm/default-java"
     prepend "$JAVA_HOME/bin"
 
+    CLASSPATH="$JAVA_HOME/lib:/usr/local/share/java:/usr/local/share/java/*:/usr/share/java:/usr/share/java/*"
+    export CLASSPATH
+
     #emacs package manager
     if [ -d $HOME/.cask/bin ]; then
         prepend "$HOME/.cask/bin"

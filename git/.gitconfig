@@ -1,7 +1,6 @@
 [user]
     name = Mark Blunk
     email = mblunk@gmail.com
-
 [color]
     ui = auto
 [color "branch"]
@@ -17,7 +16,6 @@
     added = yellow
     changed = green
     untracked = cyan
-
 [alias]
     st = status
     ci = commit
@@ -37,4 +35,6 @@
     editor = emacs
     excludesfile = ~/.gitignore_global
 [push]
-     default = current
+    default = current
+[gpg]
+    program = gpg2

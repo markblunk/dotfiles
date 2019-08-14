@@ -3,7 +3,7 @@
 (require 'pallet)
 (pallet-mode t)
 
-(when (not (cl-remove-if-not 
+(when (not (cl-remove-if-not
 	    (lambda (p) (equal 'org (car p)))
 	    package-alist))
   (message "No org-mode package found; installing now...")

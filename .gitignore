@@ -10,7 +10,10 @@ ido.last
 ensime
 tramp
 Games
-.emacs.d/elpa
 .emacs.d/.cask
-.emacs.d/bookmarks
 .emacs.d/.lsp*
+.emacs.d/bookmarks
+.emacs.d/eclipse.jdt.ls
+.emacs.d/elpa
+.emacs.d/projectile.cache
+.emacs.d/workspace

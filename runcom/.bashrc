@@ -50,7 +50,7 @@ DOTFILES_DIR="$HOME/dotfiles"
 #fi
 
 # Finally we can source the dotfiles (order matters)
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,path,env,alias,completion,grep,prompt,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,path,env,alias,grep,prompt,custom}; do
     [[ -f "$DOTFILE" ]] && source "$DOTFILE"
 done
 

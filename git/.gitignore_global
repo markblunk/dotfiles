@@ -20,6 +20,14 @@
 .ensime_cache/
 .emacs.d/network-security.data
 
+#autotools
+*.class.d
+*.class
+*.o
+*.lo
+*.im
+*.out
+
 # lsp for cpp
 .ccls
 .ccls-cache/
