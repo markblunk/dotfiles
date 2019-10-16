@@ -1,6 +1,5 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Mark Blunk
-#+EMAIL: mblunk@gmail.com
 * Configuring Emacs
   Giving this Cask and org-mode format for Emacs configuration a
   chance. This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for
@@ -336,7 +335,6 @@ enable lsp-java when editing java projects
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-java
     :after lsp-mode)
-
 #+END_SRC
 ** Javascript
 Use JS2-mode for javascript source.
