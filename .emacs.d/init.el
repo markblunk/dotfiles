@@ -1,16 +1,15 @@
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
-(require 'pallet)
-(pallet-mode t)
+(require 'package)
 
-(when (not (cl-remove-if-not
-	    (lambda (p) (equal 'org (car p)))
-	    package-alist))
-  (message "No org-mode package found; installing now...")
-  (package-install 'org))
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("org" . "https://orgmode.org/elpa/"))
 
-(require 'org)
-(when (string-match "^[1234567]" (org-version))
-  (warn "Org-Mode is out of date. We expect org 8 or higher, but instead we have %s" (org-version)))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (org-babel-load-file "~/.emacs.d/emacs.org")

@@ -9,11 +9,6 @@ if [[ $HOSTNAME = markbott ]]; then
     CLASSPATH="$JAVA_HOME/lib:/usr/local/share/java:/usr/local/share/java/*:/usr/share/java:/usr/share/java/*"
     export CLASSPATH
 
-    #emacs package manager
-    if [ -d $HOME/.cask/bin ]; then
-        prepend "$HOME/.cask/bin"
-    fi
-
     if [ -d $HOME/.cargo/bin ]; then
         prepend "$HOME/.cargo/bin"
     fi
