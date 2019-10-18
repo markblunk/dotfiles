@@ -262,11 +262,9 @@ setting google style for c and c++, but not for java.
            (c++-mode . google-make-newline-indent)))
 #+END_SRC
 ** Cpp
-
 To get ccls to behave correctly I followed the build & install
 sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
 directory of my project.
-
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package ccls
@@ -438,10 +436,13 @@ bind that function.
 
   ;  enable ido-mode
   (use-package ido
-    :config
-    (setq ido-enable-flex-matching t)
-    (ido-mode t)
-    (ido-yes-or-no-mode +1))
+    :custom
+    (ido-ignore-extensions 1)
+    (ido-mode 1)
+    (ido-everywhere 1)
+    (ido-yes-or-no-mode 1)
+    (ido-enable-flex-matching t)
+    (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".org" )))
 
   (cua-mode t)
   (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
