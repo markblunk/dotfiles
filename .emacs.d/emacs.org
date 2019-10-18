@@ -391,14 +391,12 @@ For JSON-formatted files, use the default js-mode.
     :mode "\\.s\\(cala\\|bt\\)$")
 #+END_SRC
 ** SQL
-Load Hive files with sql mode.
 #+NAME: sql
 #+BEGIN_SRC emacs-lisp
   (use-package sql-mode
-    :mode "\\.hql$"
+    :no-require t
     :config
     (load-library "sql-indent"))
-
 #+END_SRC
 ** YAML
 #+NAME: yaml
@@ -529,7 +527,6 @@ the end of the section.
 	'((emacs-lisp . t)
 	  (shell . t)
 	  (sql . t)))
-
 #+END_SRC
 * Other libraries
 Make sure .class.d files are ignored (.class files are already
