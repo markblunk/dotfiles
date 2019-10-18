@@ -408,6 +408,7 @@ For JSON-formatted files, use the default js-mode.
     :mode "\\.s\\(cala\\|bt\\)$")
 #+END_SRC
 ** SQL
+Use [[https://github.com/alex-hhh/emacs-sql-indent][emacs-sql-indent]] for nice formatting
 #+NAME: sql
 #+BEGIN_SRC emacs-lisp
   (use-package sql-indent
