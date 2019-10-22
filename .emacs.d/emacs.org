@@ -68,11 +68,16 @@ up to show in the buffer. When running emacs in a terminal, remove the menu bar.
     (menu-bar-mode -1))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+  (use-package delight
+    :ensure t)
+
   (use-package abbrev
-    :diminish abbrev-mode)
+    :delight abbrev-mode)
 
   (use-package eldoc
-    :diminish eldoc-mode)
+    :delight eldoc-mode
+    :hook (racer-mode . eldoc-mode))
+
 #+END_SRC
 ** Fringe decorations
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
@@ -81,7 +86,7 @@ buffer.  Set up git diffs and buffer position in the fringe.
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
     :ensure t
-    :diminish git-gutter-mode
+    :delight git-gutter-mode
     :init
     (setq-default indicate-buffer-boundaries 'left
                   indicate-empty-lines +1)
@@ -188,7 +193,7 @@ Use prettify-symbols mode for all programming.  Currentlly this only
     (projectile-mode t))
 
   (use-package smartparens
-    :diminish smartparens-mode
+    :delight smartparens-mode
     :ensure t
     :config
     (smartparens-global-mode t))
@@ -200,7 +205,7 @@ Use prettify-symbols mode for all programming.  Currentlly this only
   (use-package flycheck
     :ensure t
     :no-require t
-    :diminish flycheck-mode
+    :delight flycheck-mode
     :hook
     ((c-mode . flycheck-mode)
      (c++-mode . flycheck-mode)
@@ -230,7 +235,7 @@ Use prettify-symbols mode for all programming.  Currentlly this only
 
   (use-package company
     :ensure t
-    :diminish company
+    :delight company-mode
     :after racer
     :hook racer
     :custom (company-tooltip-align-annotations t))
@@ -257,7 +262,7 @@ Use prettify-symbols mode for all programming.  Currentlly this only
 
   (use-package yasnippet
     :ensure t
-    :diminish yas-minor-mode
+    :delight yas-minor-mode
     :config (yas-global-mode 1))
 
   (use-package yasnippet-snippets
@@ -395,6 +400,7 @@ For JSON-formatted files, use the default js-mode.
 #+NAME: rust
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
+    :delight rust-mode
     :ensure t
     :no-require t
     :mode "\\.rs\\'"
@@ -405,10 +411,9 @@ For JSON-formatted files, use the default js-mode.
       :hook (rust-mode . flycheck-rust-setup)))
 
   (use-package racer
+    :delight racer-mode
     :ensure t
-    :hook (rust-mode . racer-mode)
-    :init
-    (add-hook 'racer-mode-hook #'eldoc-mode))
+    :hook (rust-mode . racer-mode))
 
 #+END_SRC
 ** Scala

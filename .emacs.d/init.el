@@ -10,7 +10,6 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)
-  (package-install 'diminish))
+  (package-install 'use-package))
 
 (org-babel-load-file "~/.emacs.d/emacs.org")
