@@ -347,8 +347,8 @@ For lisp code, I want ParEdit plus general highlighting etc.
   (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 #+END_SRC
 ** Haskell
-#+NAME: haskell
 Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
+#+NAME: haskell
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
     :ensure t
@@ -616,6 +616,7 @@ this org file.
   <<cmake>>
   <<docker>>
   <<fstar>>
+  <<haskell>>
   <<java>>
   <<javascript>>
   <<json>>
