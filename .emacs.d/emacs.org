@@ -527,7 +527,7 @@ Short key bindings for capturing notes/links and switching to agenda.
           org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)"))
           org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1))
           org-src-fontify-natively t
-          org-babel-python-command "python3")
+          org-babel-python-command "~/.virtualenvs/emacs/bin/python")
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((emacs-lisp . t)
                                    (shell . t)
