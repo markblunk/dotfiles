@@ -31,36 +31,55 @@
        code block below.
 * Graphics and looks
 ** Color theme
-Load a default theme. This version of solarized doesn't play well
-with iTerm2, but not sure how to fix this.
 #+NAME: color-theme
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme-sanityinc-solarized
+  (use-package solarized-theme
     :ensure t
     :config
-    (load-theme 'sanityinc-solarized-dark t))
+    (setq solarized-emphasize-indicators nil
+          solarized-scale-org-headlines nil)
+    (load-theme 'solarized-dark t))
 #+END_SRC
 ** Font
 Load default font of Monospace
 #+NAME: font
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-		      :family "Monospace"
-		      :height 140
-		      :weight 'normal
-		      :width 'normal)
-#+END_SRC
-** Blinking cursor
-Turn the cursor off
-#+NAME: cursor
-#+BEGIN_SRC emacs-lisp
-  (blink-cursor-mode 0)
+                      :family "Monospace"
+                      :height 140
+                      :weight 'normal
+                      :width 'normal)
+
+  (global-font-lock-mode t)
+
+  (if (or
+       (> emacs-major-version 24)
+       (and
+        (== emacs-major-version 24)
+        (>= emacs-minor-version 4)))
+      (global-prettify-symbols-mode +1) ())
+
+  (set-language-environment "UTF-8")
+  (set-default-coding-systems 'utf-8)
+
 #+END_SRC
 ** Reduce clutter
-Remove the toolbar and the  scroll bars. The position will be set
-up to show in the buffer. When running emacs in a terminal, remove the menu bar.
 #+NAME: clutter
 #+BEGIN_SRC emacs-lisp
+  (blink-cursor-mode 0)
+  (setq show-paren-delay 0)
+  (show-paren-mode 1)
+
+  (defadvice show-paren-function
+      (after show-matching-paren-offscreen activate)
+    "If the matching paren is offscreen, show the matching line in the echo area.  Has no effect if the character before point is not of the syntax class ')'."
+    (interactive)
+    (let* ((cb (char-before (point)))
+           (matching-text (and cb
+                               (char-equal (char-syntax cb) ?\) )
+                               (blink-matching-open))))
+      (when matching-text (message matching-text))))
+
   (if (window-system)
       (progn
         (tool-bar-mode -1)
@@ -92,6 +111,7 @@ buffer.  Set up git diffs and buffer position in the fringe.
                   indicate-empty-lines +1)
     :config
     (global-git-gutter-mode +1))
+
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -99,26 +119,26 @@ Use smart mode line to clean up the modeline display a little.
 #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line
     :ensure t
-    :init
-    (setq column-number-mode t)
     :config
-    (setq sml/shorten-directory t
-          sml/shorten-modes t)
-    (sml/setup)
-    (sml/apply-theme 'dark))
+    (setq
+     column-number-mode t
+     sml/shorten-directory t
+     sml/shorten-modes t
+     sml/no-confirm-load-theme t)
+    (sml/setup))
 
 #+END_SRC
 ** Scrolling behavior
 Replace default keyboard scrolling with a more smooth alternative
 #+NAME: scroll
 #+BEGIN_SRC emacs-lisp
-  (setq redisplay-dont-pause t
-        scroll-margin 1
+  (setq scroll-margin 1
         scroll-step 1
         scroll-conservatively 10000
         scroll-preserve-screen-position 1
         mouse-wheel-follow-mouse 't
         mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
 #+END_SRC
 ** Buffer names
 Setup uniquify so that non-unique buffer names get the parent path
@@ -128,6 +148,7 @@ included to make them unique.
   (use-package uniquify
     :config
     (setq uniquify-buffer-name-style 'forward))
+
 #+END_SRC
 ** Window systems and terminals
 Make mouse clicks work in xterm (and iTerm)
@@ -135,6 +156,7 @@ Make mouse clicks work in xterm (and iTerm)
 #+BEGIN_SRC emacs-lisp
   (when (not (window-system))
     (xterm-mouse-mode +1))
+
 #+END_SRC
 * Start up
 #+NAME: startup
@@ -148,47 +170,19 @@ Make mouse clicks work in xterm (and iTerm)
     (setq multi-term-program "/bin/bash"))
 
   (setq inhibit-startup-screen +1)
-  (setq-default indent-tabs-mode nil)
-  (setq-default show-trailing-whitespace t)
+  (setq-default indent-tabs-mode nil
+                show-trailing-whitespace t
+                tab-width 4)
 
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 * Programming
 ** General programming
-Use prettify-symbols mode for all programming.  Currentlly this only
- works for Emacs 24.4.X and higher, so add in a version check. There
- is an external package for earlier versions, which I might include in
- the else portion below later.
-
-+ use projectile
-+ Syntax highlighting
-+ Show matching parentheses
-+ Rainbow parens
-+ completion with company
-+ lsp
-  + disable document hover because it's too distracting
-  + bump the file-watch threshold
 #+NAME: programming-setup
 #+BEGIN_SRC emacs-lisp
-  (if (and (>= emacs-major-version 24)
-           (>= emacs-minor-version 4))
-      (global-prettify-symbols-mode +1) ())
-  (global-font-lock-mode t)
-
-  (show-paren-mode 1)
-  (setq show-paren-delay 0)
-  (defadvice show-paren-function
-      (after show-matching-paren-offscreen activate)
-    "If the matching paren is offscreen, show the matching line in the echo area.  Has no effect if the character before point is not of the syntax class ')'."
-    (interactive)
-    (let* ((cb (char-before (point)))
-           (matching-text (and cb
-                               (char-equal (char-syntax cb) ?\) )
-                               (blink-matching-open))))
-      (when matching-text (message matching-text))))
-
   (use-package projectile
     :ensure t
+    :delight '(:eval (concat " " (projectile-project-name)))
     :config
     (projectile-mode t))
 
@@ -203,21 +197,19 @@ Use prettify-symbols mode for all programming.  Currentlly this only
     :hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package flycheck
-    :ensure t
+    :ensure flycheck-color-mode-line
     :no-require t
     :delight flycheck-mode
     :hook
     ((c-mode . flycheck-mode)
      (c++-mode . flycheck-mode)
+     (emacs-lisp-mode . flycheck-mode)
      (java-mode . flycheck-mode)
      (python-mode . flycheck-mode)
-     (rust-mode . flycheck-mode))
-
-    :custom (flycheck-checker-error-threshold 2000)
-    :config
-    (use-package flycheck-color-mode-line
-      :ensure t
-      :hook (flycheck-mode . flycheck-color-mode-line-mode)))
+     (rust-mode . flycheck-mode)
+     (sh-mode . flycheck-mode)
+     (flycheck-mode . flycheck-color-mode-line-mode))
+    :custom (flycheck-checker-error-threshold 2000))
 
   (use-package lsp-mode
     :ensure t
@@ -292,29 +284,19 @@ directory of my project.
     :config
     (setq ccls-executable "~/code/misc/ccls/Release/ccls"))
 #+END_SRC
-** CSV
-#+NAME: csv
+** Emacs-Lisp
+   For emacs-lisp code, use paredit for dealing with parentheses.
+#+NAME: elisp
 #+BEGIN_SRC emacs-lisp
-  (use-package csv-mode
-    :ensure t)
-#+END_SRC
-** Autoconf
-#+NAME: autoconf
-#+BEGIN_SRC emacs-lisp
-  (use-package autoconf-mode
-    :mode "\\.m4\\'")
-#+END_SRC
-** Cmake
-#+NAME: cmake
-#+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode
-    :ensure t)
-#+END_SRC
-** Docker
-#+NAME: docker
-#+BEGIN_SRC emacs-lisp
-  (use-package dockerfile-mode
-    :ensure t)
+  (use-package paredit
+    :ensure t
+    :delight paredit-mode
+    :commands enable-paredit-mode
+    :config (autoload 'enable-paredit-mode "paredit"
+              "Turn on pseudo-structural editing of Lisp code."   t)
+    :hook
+    ((emacs-lisp-mode . enable-paredit-mode)))
+
 #+END_SRC
 ** Fstar
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
@@ -323,28 +305,7 @@ directory of my project.
   (use-package fstar-mode
     :ensure t
     :mode ("\\.fs?\\'" . fstar-mode))
-#+END_SRC
-** Lisp
-For lisp code, I want ParEdit plus general highlighting etc.
-#+NAME: lisp
-#+BEGIN_SRC emacs-lisp
-  (use-package paredit
-    :ensure t
-    :config (autoload 'enable-paredit-mode "paredit"
-              "Turn on pseudo-structural editing of Lisp code."   t)
-    :commands enable-paredit-mode
-    :hook ((lisp-mode . enable-paredit-mode)
-           (lisp-interaction-mode . enable-paredit-mode)))
 
-#+END_SRC
-** Emacs Lisp
-#+NAME: elisp
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
-;  (add-hook 'emacs-lisp-mode-hook       'rainbow-delimiters-mode)
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 #+END_SRC
 ** Haskell
 Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
@@ -353,91 +314,7 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
   (use-package haskell-mode
     :ensure t
     :mode "\\.wy.*\\'")
-#+END_SRC
-** Java
-enable lsp-java when editing java projects
-#+NAME: java
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-java
-    :ensure t
-    :after lsp-mode)
-#+END_SRC
-** Javascript
-Use JS2-mode for javascript source.
-#+NAME: programming-setup
-#+BEGIN_SRC emacs-lisp
-  (use-package js2-mode
-    :ensure t
-    :mode "\\.js[x]?\\'")
-#+END_SRC
-** JSON
-For JSON-formatted files, use the default js-mode.
-#+NAME: json
-#+BEGIN_SRC emacs-lisp
-  (use-package js-mode
-    :mode "\\.jshintrc$")
-#+END_SRC
-** Markdown
-#+NAME: markdown
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-    :ensure t)
-#+END_SRC
-** Python
-#+NAME: python
-#+BEGIN_SRC emacs-lisp
-  (use-package python
-    :config
-    (setq python-indent-offset 4
-          tab-stop-list (number-sequence 4 120 4)))
-  (use-package highlight-indentation
-    :ensure t
-    :after python
-    :hook (python-mode . highlight-indentation-mode)
-    :config (set-face-background 'highlight-indentation-face "DarkRed"))
-#+END_SRC
-** Rust
-#+NAME: rust
-#+BEGIN_SRC emacs-lisp
-  (use-package rust-mode
-    :delight rust-mode
-    :ensure t
-    :no-require t
-    :mode "\\.rs\\'"
-    :config
-    (use-package flycheck-rust
-      :ensure t
-      :commands flycheck-rust-setup
-      :hook (rust-mode . flycheck-rust-setup)))
 
-  (use-package racer
-    :delight racer-mode
-    :ensure t
-    :hook (rust-mode . racer-mode))
-
-#+END_SRC
-** Scala
-#+NAME: scala
-#+BEGIN_SRC emacs-lisp
-  (use-package scala-mode
-    :ensure t
-    :mode "\\.s\\(cala\\|bt\\)$")
-#+END_SRC
-** SQL
-Use [[https://github.com/alex-hhh/emacs-sql-indent][emacs-sql-indent]] for nice formatting
-#+NAME: sql
-#+BEGIN_SRC emacs-lisp
-  (use-package sql-indent
-    :ensure t
-    :commands sqlind-minor-mode
-    :hook (sql-mode . sqlind-minor-mode))
-
-#+END_SRC
-** YAML
-#+NAME: yaml
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t)
 #+END_SRC
 ** PSL
 Add psl-mode, which is symlinked to a local copy hiding elsewhere
@@ -446,17 +323,99 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
   (use-package psl-mode
     :load-path "external/psl-mode.el"
     :mode "\\.psl\\'")
+
+#+END_SRC
+** Python
+#+NAME: python
+#+BEGIN_SRC emacs-lisp
+  (use-package python
+    :config
+    (setq python-indent-offset 4
+          tab-stop-list (number-sequence 4 120 4)))
+
+  (use-package highlight-indentation
+    :ensure t
+    :after python
+    :hook (python-mode . highlight-indentation-mode)
+    :config (set-face-background 'highlight-indentation-face "DarkRed"))
+
+#+END_SRC
+** Rust
+#+NAME: rust
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :delight rust-mode
+    :ensure flycheck-rust
+    :no-require t
+    :mode "\\.rs\\'"
+    :commands flycheck-rust-setup
+    :hook (rust-mode . flycheck-rust-setup))
+
+  (use-package racer
+    :after rust-mode
+    :delight racer-mode
+    :ensure t
+    :hook
+    ((rust-mode . racer-mode)
+     (racer-mode . eldoc-mode)))
+
+#+END_SRC
+** Misc
+#+NAME: misc
+#+BEGIN_SRC emacs-lisp
+  (use-package autoconf-mode
+    :mode "\\.m4\\'")
+
+  (use-package cmake-mode
+    :ensure t)
+
+  (use-package csv-mode
+    :ensure t)
+
+  (use-package dockerfile-mode
+    :ensure t)
+
+  (use-package groovy-mode
+    :ensure t)
+
+  (use-package lsp-java
+    :ensure t
+    :after lsp-mode)
+
+  (use-package js2-mode
+    :ensure t
+    :mode "\\.js[x]?\\'")
+
+  (use-package js-mode
+    :mode "\\.jshintrc$")
+
+  (use-package markdown-mode
+    :ensure t)
+
+  (use-package scala-mode
+    :ensure t
+    :mode "\\.s\\(cala\\|bt\\)$")
+
+  (use-package sml-mode
+    :ensure t
+    :mode "\\.ml$")
+
+  (use-package sql-indent
+    :ensure t
+    :commands sqlind-minor-mode
+    :hook (sql-mode . sqlind-minor-mode))
+
+  (use-package yaml-mode
+    :ensure t)
+
 #+END_SRC
 * Global key bindings
 Some miminal global key bindings. Consult [[https://www.masteringemacs.org/article/my-emacs-keybindings][Mastering Emacs]] for some
 more ideas.
 #+NAME: global-keys
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t
-    :bind ("\C-c g" . magit-status))
-
   (global-set-key "\C-c q" 'delete-indentation)
+
 #+END_SRC
 * Global navigation
 Set emacs configuration file location, and
@@ -464,7 +423,7 @@ bind that function.
 #+NAME: global-navigation
 #+BEGIN_SRC emacs-lisp
   (defun mb-edit-emacs-configuration ()
-    "Open emacs configuration file"
+    "Open Emacs configuration file."
     (interactive)
     (find-file "~/.emacs.d/emacs.org"))
   (global-set-key "\C-ce" 'mb-edit-emacs-configuration)
@@ -477,7 +436,7 @@ bind that function.
     (ido-mode 1)
     (ido-everywhere 1)
     (ido-enable-flex-matching t)
-    (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".org" )))
+    (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".org")))
 
   (use-package ido-yes-or-no
     :ensure t
@@ -485,9 +444,9 @@ bind that function.
     :custom (ido-yes-or-no-mode 1))
 
   (cua-mode t)
-  (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
   (transient-mark-mode 1) ;; No region when it is not highlighted
   (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
+
  #+END_SRC
 * Backups
 Save all backups to a universal location
@@ -499,21 +458,9 @@ Save all backups to a universal location
 	kept-new-versions 6
 	kept-old-versions 2
 	version-control t)
+
 #+END_SRC
 * Org Mode
-** Bullets
-use [[https://github.com/sabof/org-bullets][org-bullets]]
-
-#+NAME: org-bullets
-#+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :after org
-    :commands org-bullets-mode
-    :hook (org-mode . org-bullets-mode))
-
-#+END_SRC
-** Global keys
 Short key bindings for capturing notes/links and switching to agenda.
 #+NAME: org-commands
 #+BEGIN_SRC emacs-lisp
@@ -531,21 +478,32 @@ Short key bindings for capturing notes/links and switching to agenda.
           org-agenda-files (list org-directory)
           org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)"))
           org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1))
-          org-src-fontify-natively t
-          org-babel-python-command "~/.virtualenvs/emacs/bin/python")
+          org-src-fontify-natively t)
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((emacs-lisp . t)
                                    (shell . t)
                                    (sql . t)
-                                   (python . t)))
+                                   (python . t)
+                                   (latex . t)))
     :custom
     (org-export-backends '(ascii beamer html latex md texinfo)))
+
+  (use-package ob-python
+    :config
+    (setq org-babel-python-command "~/.virtualenvs/emacs/bin/python"))
+
+  (use-package org-bullets
+    :ensure t
+    :after org
+    :commands org-bullets-mode
+    :hook (org-mode . org-bullets-mode))
+
 #+END_SRC
 * Other libraries
-Make sure .class.d files are ignored (.class files are already
+Make sure /.class.d/ files are ignored (/.class/ files are already
 ignored) in [[info:emacs#Dired%20Enter][ Dired-mode]], the mode of the minibuffer when trying to
-find a file with C-x C-f).
-#+NAME: dired
+find a file with ~\C-x\C-f~).
+#+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
   (setq completion-ignored-extensions (cons ".class.d" completion-ignored-extensions))
   (use-package dired-x
@@ -557,20 +515,20 @@ Using treemacs instead of ~dired~
 #+BEGIN_SRC emacs-lisp
   (use-package treemacs
     :ensure t
-    :init
-    (defun treemacs-ignore-example (filename absolute-path)
-      (string-match
-       "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))
     :config
-    (add-to-list 'treemacs-ignored-file-predicates #'treemacs-ignore-example))
+    (add-to-list 'treemacs-ignored-file-predicates
+                 (lambda (filename absolute-path)
+                   "Ignore compile java class files"
+                   (string-match "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))))
 
 #+END_SRC
 * Environment
-External packages may be dropped in the .emacs.d/external directory.
+External packages may be dropped in the [[file:./external][external]] directory.
 #+NAME: environment
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/external")
   (require 'use-package)
+
 #+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
@@ -586,57 +544,45 @@ External packages may be dropped in the .emacs.d/external directory.
   (unless (file-exists-p custom-file)
     (shell-command (concat "touch " custom-file)))
   (load custom-file)
+
 #+END_SRC
 * Configuration file layout
 Define the emacs.el file that gets generated by the code in
 this org file.
 #+BEGIN_SRC emacs-lisp :tangle yes :noweb no-export :exports code
-  ;;;; package --- Summary
+  ;; dotemacs --- Autogenerated emacs.el via org-babel
+  ;;; Commentary:
   ;;;; Do not modify this file by hand.  It was automatically generated
-  ;;;; from `emacs.org` in the same directory. See that file for more
+  ;;;; from `emacs.org` in the same directory.  See that file for more
   ;;;; information.
+
+  ;;; Code:
   <<environment>>
   <<customize-config>>
   <<color-theme>>
   <<font>>
-  <<cursor>>
   <<clutter>>
   <<fringe>>
   <<mode>>
   <<scroll>>
   <<buffer-names>>
   <<mouse-clicks>>
-  <<programming-setup>>
-  <<lisp>>
-  <<elisp>>
-  <<c>>
-  <<cpp>>
-  <<csv>>
-  <<autoconf>>
-  <<cmake>>
-  <<docker>>
-  <<fstar>>
-  <<haskell>>
-  <<java>>
-  <<javascript>>
-  <<json>>
-  <<markdown>>
-  <<ocaml>>
-  <<python>>
-  <<rust>>
-  <<scala>>
-  <<sql>>
-  <<yaml>>
-  <<psl>>
-  <<org-bullets>>
   <<global-keys>>
   <<global-navigation>>
   <<global-backup>>
+  <<programming-setup>>
+  <<c>>
+  <<cpp>>
+  <<elisp>>
+  <<fstar>>
+  <<haskell>>
+  <<psl>>
+  <<python>>
+  <<rust>>
+  <<misc>>
   <<org-commands>>
-  <<todos>>
-  <<org-babel-syntax>>
-  <<org-babel-languages>>
-  <<dired>>
+  <<dired-omit>>
   <<treemacs>>
   <<startup>>
+  ;;; emacs.el ends here.
 #+END_SRC
