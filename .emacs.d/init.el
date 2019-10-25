@@ -1,3 +1,10 @@
+;;; init --- initialization script for emails
+;;; Commentary:
+;; Set up the package archives, download use-package, and use the file
+;; emacs.org to generate the corresponding emacs.el file
+
+;;; Code:
+
 (require 'package)
 
 (setq package-enable-at-startup nil)
@@ -13,3 +20,4 @@
   (package-install 'use-package))
 
 (org-babel-load-file "~/.emacs.d/emacs.org")
+;;; init.el ends here
