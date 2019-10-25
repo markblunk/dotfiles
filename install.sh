@@ -17,16 +17,6 @@ ln -sfv "$DOTFILES_DIR/.emacs.d" $HOME
 ln -sfv "$DOTFILES_DIR/.tmux.conf" $HOME
 #ln -sfv "$DOTFILES_DIR/plugins.sbt" $HOME/.sbt/*/plugins
 
-if [ ! -d $HOME/.cask ]; then
-    mkdir $HOME/.cask
-fi
-
-for i in "cask.el" "cask-bootstrap.el"
-do
-    if [ -e "/usr/local/share/emacs/site-lisp/cask/$i" ]; then
-       ln -sfv "/usr/local/share/emacs/site-lisp/cask/$i"  $HOME/.cask
-    fi
-done
 if [ ! -d $HOME/.virtualenvs ]; then
     mkdir $HOME/.virtualenvs
 fi
