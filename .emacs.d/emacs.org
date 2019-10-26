@@ -167,11 +167,6 @@ Make mouse clicks work in xterm (and iTerm)
   (add-to-list 'default-frame-alist '(height . 35))
   (add-to-list 'default-frame-alist '(width . 140))
 
-  (use-package multi-term
-    :ensure t
-    :config
-    (setq multi-term-program "/bin/bash"))
-
   (setq inhibit-startup-screen +1)
   (setq-default indent-tabs-mode nil
                 show-trailing-whitespace t
