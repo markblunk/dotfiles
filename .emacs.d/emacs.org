@@ -62,6 +62,9 @@ Load default font of Monospace
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
 
+  (use-package latex-pretty-symbols
+    :ensure t)
+
 #+END_SRC
 ** Reduce clutter
 #+NAME: clutter
