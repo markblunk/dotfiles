@@ -7,15 +7,15 @@
   didn't understand.
 * How to use this configuration
 ** Obtaining the source
-   You can find the latest public version of the configuration in
-   [[https://github.com/markblunk/dotfiles][the Github repository]] The meat of it is here, in the ~emacs.org~ file.
+   You can find the latest public version of this configuration in [[https://github.com/markblunk/dotfiles][the
+   Github repository]] The meat of it is right here in this file.
 ** Installation
    This configuration is intended to be installable from scratch.
 ** Spell Checking
    Emacs does not come with a spell checker reloaded. I installed
    Aspell on the Mac by running the following commands:
 #+NAME: install Aspell
-#+BEGIN_SRC shell
+#+BEGIN_SRC sh
   brew install aspell --with-lang-en
 #+END_SRC
    This auto-magically installed a spellchecker that emacs can use.
@@ -57,14 +57,13 @@ Load default font of Monospace
        (and
         (== emacs-major-version 24)
         (>= emacs-minor-version 4)))
-      (global-prettify-symbols-mode +1) ())
+      (global-prettify-symbols-mode +1))
 
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
 
   (use-package latex-pretty-symbols
     :ensure t)
-
 #+END_SRC
 ** Reduce clutter
 #+NAME: clutter
@@ -99,7 +98,6 @@ Load default font of Monospace
   (use-package eldoc
     :delight eldoc-mode
     :hook (racer-mode . eldoc-mode))
-
 #+END_SRC
 ** Fringe decorations
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
@@ -114,7 +112,6 @@ buffer.  Set up git diffs and buffer position in the fringe.
                   indicate-empty-lines +1)
     :config
     (global-git-gutter-mode +1))
-
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -129,7 +126,6 @@ Use smart mode line to clean up the modeline display a little.
      sml/shorten-modes t
      sml/no-confirm-load-theme t)
     (sml/setup))
-
 #+END_SRC
 ** Scrolling behavior
 Replace default keyboard scrolling with a more smooth alternative
@@ -141,7 +137,6 @@ Replace default keyboard scrolling with a more smooth alternative
         scroll-preserve-screen-position 1
         mouse-wheel-follow-mouse 't
         mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-
 #+END_SRC
 ** Buffer names
 Setup uniquify so that non-unique buffer names get the parent path
@@ -151,7 +146,6 @@ included to make them unique.
   (use-package uniquify
     :config
     (setq uniquify-buffer-name-style 'forward))
-
 #+END_SRC
 ** Window systems and terminals
 Make mouse clicks work in xterm (and iTerm)
@@ -159,7 +153,6 @@ Make mouse clicks work in xterm (and iTerm)
 #+BEGIN_SRC emacs-lisp
   (when (not (window-system))
     (xterm-mouse-mode +1))
-
 #+END_SRC
 * Start up
 #+NAME: startup
@@ -211,12 +204,12 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package lsp-mode
     :ensure t
+    :commands lsp
     :hook
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
      (rust-mode . lsp))
-    :commands lsp
     :custom
     (lsp-response-timout 60)
     (lsp-auto-guess-root t)
@@ -226,8 +219,8 @@ Make mouse clicks work in xterm (and iTerm)
   (use-package company
     :ensure t
     :delight company-mode
-    :after racer
-    :hook racer
+    :hook ((racer-mode . company-mode)
+           (emacs-lisp-mode . company-mode))
     :custom (company-tooltip-align-annotations t))
 
   (use-package company-lsp
@@ -257,7 +250,6 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package yasnippet-snippets
     :ensure t)
-
 #+END_SRC
 ** C
 setting google style for c and c++, but not for java.
@@ -274,7 +266,7 @@ setting google style for c and c++, but not for java.
 ** Cpp
 To get ccls to behave correctly I followed the build & install
 sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
-directory of my project.
+directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package ccls
@@ -294,7 +286,6 @@ directory of my project.
               "Turn on pseudo-structural editing of Lisp code."   t)
     :hook
     ((emacs-lisp-mode . enable-paredit-mode)))
-
 #+END_SRC
 ** Fstar
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
@@ -303,7 +294,6 @@ directory of my project.
   (use-package fstar-mode
     :ensure t
     :mode ("\\.fs?\\'" . fstar-mode))
-
 #+END_SRC
 ** Haskell
 Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
@@ -312,7 +302,21 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
   (use-package haskell-mode
     :ensure t
     :mode "\\.wy.*\\'")
+#+END_SRC
+** Latex
+#+NAME: latex
+#+BEGIN_SRC emacs-lisp
+  (use-package auctex
+    :defer t
+    :ensure t)
 
+  (use-package cdlatex
+    :ensure t
+    :after auctex
+    :commands turn-on-cdlatex
+    :hook
+    ((latex-mode . turn-on-cdlatex)
+     (org-mode . turn-on-cdlatex)))
 #+END_SRC
 ** PSL
 Add psl-mode, which is symlinked to a local copy hiding elsewhere
@@ -321,7 +325,6 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
   (use-package psl-mode
     :load-path "external/psl-mode.el"
     :mode "\\.psl\\'")
-
 #+END_SRC
 ** Python
 #+NAME: python
@@ -336,9 +339,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :after python
     :hook (python-mode . highlight-indentation-mode)
     :config (set-face-background 'highlight-indentation-face "DarkRed"))
-
 #+END_SRC
 ** Rust
+
 #+NAME: rust
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
@@ -346,6 +349,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure flycheck-rust
     :no-require t
     :mode "\\.rs\\'"
+    :init (setq exec-path (append exec-path '("~/.cargo/bin")))
     :commands flycheck-rust-setup
     :hook (rust-mode . flycheck-rust-setup))
 
@@ -356,7 +360,6 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :hook
     ((rust-mode . racer-mode)
      (racer-mode . eldoc-mode)))
-
 #+END_SRC
 ** Misc
 #+NAME: misc
@@ -405,7 +408,6 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 
   (use-package yaml-mode
     :ensure t)
-
 #+END_SRC
 * Global key bindings
 Some miminal global key bindings. Consult [[https://www.masteringemacs.org/article/my-emacs-keybindings][Mastering Emacs]] for some
@@ -413,7 +415,6 @@ more ideas.
 #+NAME: global-keys
 #+BEGIN_SRC emacs-lisp
   (global-set-key "\C-c q" 'delete-indentation)
-
 #+END_SRC
 * Global navigation
 Set emacs configuration file location, and
@@ -456,7 +457,6 @@ Save all backups to a universal location
 	kept-new-versions 6
 	kept-old-versions 2
 	version-control t)
-
 #+END_SRC
 * Org Mode
 Short key bindings for capturing notes/links and switching to agenda.
@@ -474,7 +474,8 @@ Short key bindings for capturing notes/links and switching to agenda.
           org-log-done 'time
           org-default-notes-file "~/org/notes.org"
           org-agenda-files (list org-directory)
-          org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)"))
+          org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
+                                   (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
           org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1))
           org-src-fontify-natively t)
     (org-babel-do-load-languages 'org-babel-load-languages
@@ -493,22 +494,19 @@ Short key bindings for capturing notes/links and switching to agenda.
   (use-package org-bullets
     :ensure t
     :after org
-    :commands org-bullets-mode
     :hook (org-mode . org-bullets-mode))
-
 #+END_SRC
 * Other libraries
 Make sure /.class.d/ files are ignored (/.class/ files are already
-ignored) in [[info:emacs#Dired%20Enter][ Dired-mode]], the mode of the minibuffer when trying to
-find a file with ~\C-x\C-f~).
+ignored) in [[info:emacs#Dired%20Enter][Dired-mode]] (the mode of the minibuffer when trying to find
+a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
   (setq completion-ignored-extensions (cons ".class.d" completion-ignored-extensions))
   (use-package dired-x
     :config (setq dired-omit-mode t))
-
 #+END_SRC
-Using treemacs instead of ~dired~
+Use treemacs for exploring projects/workspaces.
 #+NAME: treemacs
 #+BEGIN_SRC emacs-lisp
   (use-package treemacs
@@ -516,9 +514,8 @@ Using treemacs instead of ~dired~
     :config
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
-                   "Ignore compile java class files"
+                   "Ignore compiled java class files"
                    (string-match "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))))
-
 #+END_SRC
 * Environment
 External packages may be dropped in the [[file:./external][external]] directory.
@@ -526,7 +523,6 @@ External packages may be dropped in the [[file:./external][external]] directory.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/external")
   (require 'use-package)
-
 #+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
@@ -542,7 +538,6 @@ External packages may be dropped in the [[file:./external][external]] directory.
   (unless (file-exists-p custom-file)
     (shell-command (concat "touch " custom-file)))
   (load custom-file)
-
 #+END_SRC
 * Configuration file layout
 Define the emacs.el file that gets generated by the code in
@@ -557,31 +552,59 @@ this org file.
 
   ;;; Code:
   <<environment>>
+
   <<customize-config>>
+
   <<color-theme>>
+
   <<font>>
+
   <<clutter>>
+
   <<fringe>>
+
   <<mode>>
+
   <<scroll>>
+
   <<buffer-names>>
+
   <<mouse-clicks>>
+
   <<global-keys>>
+
   <<global-navigation>>
+
   <<global-backup>>
+
   <<programming-setup>>
+
   <<c>>
+
   <<cpp>>
+
   <<elisp>>
+
   <<fstar>>
+
   <<haskell>>
+
+  <<latex>>
+
   <<psl>>
+
   <<python>>
+
   <<rust>>
+
   <<misc>>
+
   <<org-commands>>
+
   <<dired-omit>>
+
   <<treemacs>>
+
   <<startup>>
   ;;; emacs.el ends here.
 #+END_SRC

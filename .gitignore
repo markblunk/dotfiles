@@ -7,14 +7,13 @@ auto-save-list
 backup
 projectile-bookmarks.eld
 ido.last
-ensime
 tramp
 Games
 .emacs.d/.cache/treemacs-persist
-.emacs.d/.cask
 .emacs.d/.lsp*
 .emacs.d/bookmarks
 .emacs.d/eclipse.jdt.ls
 .emacs.d/elpa
+.emacs.d/history
 .emacs.d/projectile.cache
 .emacs.d/workspace
