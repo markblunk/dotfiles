@@ -470,9 +470,9 @@ Short key bindings for capturing notes/links and switching to agenda.
            ("\C-cb" . org-iswitchb))
     :config
     (setq org-directory "~/org"
-          org-archive-location  "~/org/archive.org::"
+          org-archive-location (concat org-directory  "/archive.org::")
           org-log-done 'time
-          org-default-notes-file "~/org/notes.org"
+          org-default-notes-file (concat org-directory "/notes.org")
           org-agenda-files (list org-directory)
           org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
                                    (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))

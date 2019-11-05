@@ -6,19 +6,29 @@
 
 ._*
 
+#intellij
 .idea
+*.iml
+
+#eclipse
+.classpath
+.project
 
 #mac
 .DS_Store
-
 
 #emacs
 *~
 .#*
 .projectile
 .dir-locals.el
-.ensime_cache/
-.emacs.d/network-security.data
+
+#lsp for cpp
+.ccls
+.ccls-cache/
+
+#vscode
+.vscode/
 
 #autotools
 *.class.d
@@ -27,10 +37,3 @@
 *.lo
 *.im
 *.out
-
-# lsp for cpp
-.ccls
-.ccls-cache/
-
-#vscode
-.vscode/
