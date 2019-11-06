@@ -166,6 +166,11 @@ Make mouse clicks work in xterm (and iTerm)
                 tab-width 4)
 
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+  (use-package exec-path-from-shell
+    :ensure t
+    :config (exec-path-from-shell-initialize))
+
 #+END_SRC
 * Programming
 ** General programming
@@ -349,7 +354,6 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure flycheck-rust
     :no-require t
     :mode "\\.rs\\'"
-    :init (setq exec-path (append exec-path '("~/.cargo/bin")))
     :commands flycheck-rust-setup
     :hook (rust-mode . flycheck-rust-setup))
 
