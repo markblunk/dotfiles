@@ -289,8 +289,7 @@ directory of every project.
     :commands enable-paredit-mode
     :config (autoload 'enable-paredit-mode "paredit"
               "Turn on pseudo-structural editing of Lisp code."   t)
-    :hook
-    ((emacs-lisp-mode . enable-paredit-mode)))
+    :hook (emacs-lisp-mode . enable-paredit-mode))
 #+END_SRC
 ** Fstar
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
