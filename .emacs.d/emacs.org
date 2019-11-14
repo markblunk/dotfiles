@@ -276,6 +276,8 @@ directory of every project.
 #+BEGIN_SRC emacs-lisp
   (use-package ccls
     :ensure t
+    :hook ((c-mode c++-mode) .
+           (lambda () (require 'ccls) (lsp)))
     :config
     (setq ccls-executable "~/code/misc/ccls/Release/ccls"))
 #+END_SRC
