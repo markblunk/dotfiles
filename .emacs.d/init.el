@@ -19,5 +19,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(require 'use-package)
 (org-babel-load-file "~/.emacs.d/emacs.org")
 ;;; init.el ends here

@@ -523,12 +523,11 @@ Use treemacs for exploring projects/workspaces.
                    "Ignore compiled java class files"
                    (string-match "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))))
 #+END_SRC
-* Environment
+* External
 External packages may be dropped in the [[file:./external][external]] directory.
-#+NAME: environment
+#+NAME: external
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/external")
-  (require 'use-package)
 #+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
@@ -557,7 +556,7 @@ this org file.
   ;; information.
 
   ;;; Code:
-  <<environment>>
+  <<external>>
 
   <<customize-config>>
 
@@ -612,5 +611,5 @@ this org file.
   <<treemacs>>
 
   <<startup>>
-  ;;; emacs.el ends here.
+  ;;; emacs.el ends here
 #+END_SRC
