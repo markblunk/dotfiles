@@ -27,8 +27,14 @@
 .ccls
 .ccls-cache/
 
+#lsp for java
+.settings/
+
 #vscode
 .vscode/
+
+#maven
+target/
 
 #autotools
 *.class.d
@@ -36,4 +42,8 @@
 *.o
 *.lo
 *.im
+*.im.in
 *.out
+.deps/
+*.ac
+*.am
