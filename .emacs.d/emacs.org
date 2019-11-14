@@ -373,7 +373,8 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :mode "\\.m4\\'")
 
   (use-package cmake-mode
-    :ensure t)
+    :load-path "/usr/share/emacs/site-lisp"
+    :delight)
 
   (use-package csv-mode
     :ensure t)
