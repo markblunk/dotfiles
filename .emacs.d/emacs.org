@@ -307,6 +307,7 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
     :ensure t
+    :delight
     :mode "\\.wy.*\\'")
 #+END_SRC
 ** Latex
@@ -370,7 +371,8 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package autoconf-mode
-    :mode "\\.m4\\'")
+    :mode "\\.m4\\'"
+    :delight)
 
   (use-package cmake-mode
     :load-path "/usr/share/emacs/site-lisp"
@@ -397,6 +399,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :mode "\\.jshintrc$")
 
   (use-package markdown-mode
+    :delight
     :ensure t)
 
   (use-package scala-mode
@@ -469,6 +472,7 @@ Short key bindings for capturing notes/links and switching to agenda.
 #+NAME: org-commands
 #+BEGIN_SRC emacs-lisp
   (use-package org
+    :delight
     :ensure org-plus-contrib
     :bind (("\C-cl" . org-store-link)
            ("\C-cc" . org-capture)
