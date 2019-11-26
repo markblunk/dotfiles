@@ -255,6 +255,10 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package yasnippet-snippets
     :ensure t)
+
+  (use-package highlight-doxygen
+    :ensure t
+    :config (highlight-doxygen-global-mode 1))
 #+END_SRC
 ** C
 setting google style for c and c++, but not for java.
@@ -402,6 +406,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :delight
     :ensure t)
 
+  (use-package proof-general
+    :ensure t)
+
   (use-package scala-mode
     :ensure t
     :mode "\\.s\\(cala\\|bt\\)$")
@@ -516,9 +523,13 @@ a file with ~\C-x\C-f~).
   (use-package dired-x
     :config (setq dired-omit-mode t))
 #+END_SRC
+
 Use treemacs for exploring projects/workspaces.
 #+NAME: treemacs
 #+BEGIN_SRC emacs-lisp
+  (use-package man-addons
+    :load-path "/usr/share/doc/manpages")
+
   (use-package treemacs
     :ensure t
     :config
