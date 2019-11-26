@@ -278,6 +278,9 @@ sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added 
 directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
+  (use-package c++-mode
+    :mode "\\.h\\'")
+
   (use-package ccls
     :ensure t
     :hook ((c-mode c++-mode) .
@@ -334,7 +337,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 #+NAME: psl
 #+BEGIN_SRC emacs-lisp
   (use-package psl-mode
-    :load-path "external/psl-mode.el"
+    :load-path "external"
     :mode "\\.psl\\'")
 #+END_SRC
 ** Python
