@@ -279,6 +279,7 @@ directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package c++-mode
+    :delight
     :mode "\\.h\\'")
 
   (use-package ccls
@@ -402,8 +403,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure t
     :mode "\\.js[x]?\\'")
 
-  (use-package js-mode
-    :mode "\\.jshintrc$")
+  (use-package json-mode
+    :ensure t
+    :delight)
 
   (use-package markdown-mode
     :delight
@@ -414,7 +416,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 
   (use-package scala-mode
     :ensure t
-    :mode "\\.s\\(cala\\|bt\\)$")
+    :mode "\\.s\\(cala\\|bt\\)\\'")
 
   (use-package sml-mode
     :ensure t
@@ -522,7 +524,7 @@ ignored) in [[info:emacs#Dired%20Enter][Dired-mode]] (the mode of the minibuffer
 a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
-  (setq completion-ignored-extensions (cons ".class.d" completion-ignored-extensions))
+  (push ".class.d" completion-ignored-extensions)
   (use-package dired-x
     :config (setq dired-omit-mode t))
 #+END_SRC
