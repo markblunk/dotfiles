@@ -418,14 +418,14 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure t
     :mode "\\.s\\(cala\\|bt\\)\\'")
 
-  (use-package sml-mode
-    :ensure t
-    :mode "\\.ml$")
-
   (use-package sql-indent
     :ensure t
     :commands sqlind-minor-mode
     :hook (sql-mode . sqlind-minor-mode))
+
+  (use-package tuareg
+    :ensure t
+    :delight)
 
   (use-package yaml-mode
     :ensure t)
