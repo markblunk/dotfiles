@@ -493,13 +493,13 @@ Short key bindings for capturing notes/links and switching to agenda.
     :config
     (setq org-directory "~/org"
           org-archive-location (concat org-directory  "/archive.org::")
-          org-log-done 'time
           org-default-notes-file (concat org-directory "/notes.org")
           org-agenda-files (list org-directory)
-          org-todo-keywords      '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
-                                   (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
+          org-log-done 'time
           org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1))
-          org-src-fontify-natively t)
+          org-src-fontify-natively t
+          org-todo-keywords '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
+                              (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((emacs-lisp . t)
                                    (shell . t)
