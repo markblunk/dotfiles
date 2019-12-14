@@ -216,7 +216,7 @@ Make mouse clicks work in xterm (and iTerm)
      (java-mode . lsp)
      (rust-mode . lsp))
     :custom
-    (lsp-response-timout 60)
+    (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
     (lsp-clients-clangd-executable "clangd-7"))
