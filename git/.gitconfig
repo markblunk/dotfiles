@@ -38,3 +38,5 @@
     default = current
 [gpg]
     program = gpg2
+[status]
+    showUntrackedFiles = no

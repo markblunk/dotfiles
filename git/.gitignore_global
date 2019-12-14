@@ -48,5 +48,3 @@ target/
 *.im.in
 *.out
 .deps/
-*.ac
-*.am
