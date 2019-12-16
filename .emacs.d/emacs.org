@@ -541,7 +541,14 @@ Use treemacs for exploring projects/workspaces.
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled java class files"
-                   (string-match "^[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?$" filename))))
+                   (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)))
+    (add-to-list 'treemacs-ignored-file-predicates
+                 (lambda (filename absolute-path)
+                   "Ignore compiled autotools files"
+                   (or
+                    (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\)?o\\'" filename)
+                    (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename))))
+    )
 #+END_SRC
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
