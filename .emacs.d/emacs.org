@@ -374,10 +374,6 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 ** Misc
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
-  (use-package autoconf-mode
-    :mode "\\.m4\\'"
-    :delight)
-
   (use-package cmake-mode
     :load-path "/usr/share/emacs/site-lisp"
     :delight)
@@ -404,8 +400,8 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :delight)
 
   (use-package markdown-mode
-    :delight
-    :ensure t)
+    :ensure t
+    :delight)
 
   (use-package proof-general
     :ensure t)
