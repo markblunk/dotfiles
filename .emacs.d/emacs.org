@@ -525,12 +525,16 @@ a file with ~\C-x\C-f~).
     :config (setq dired-omit-mode t))
 #+END_SRC
 
-Use treemacs for exploring projects/workspaces.
-#+NAME: treemacs
+view manpages inside emacs for greater readability.
+#+NAME: man
 #+BEGIN_SRC emacs-lisp
   (use-package man-addons
     :load-path "/usr/share/doc/manpages")
+#+END_SRC
 
+Use treemacs for exploring projects/workspaces.
+#+NAME: treemacs
+#+BEGIN_SRC emacs-lisp
   (use-package treemacs
     :ensure t
     :config
@@ -623,6 +627,8 @@ this org file.
   <<org-commands>>
 
   <<dired-omit>>
+
+  <<man>>
 
   <<treemacs>>
 
