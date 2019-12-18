@@ -557,6 +557,18 @@ External packages may be dropped in the [[file:./external][external]] directory.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/external")
 #+END_SRC
+* Update packages
+
+Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
+#+NAME: update-packages
+#+BEGIN_SRC emacs-lisp
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+#+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
   functions in the user init file, which is "~/.emacs.d/init.el" in
@@ -587,6 +599,8 @@ this org file.
   <<external>>
 
   <<customize-config>>
+
+  <<update-packages>>
 
   <<color-theme>>
 
