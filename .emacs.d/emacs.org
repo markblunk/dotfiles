@@ -543,7 +543,12 @@ Use treemacs for exploring projects/workspaces.
                    "Ignore compiled autotools files"
                    (or
                     (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\)?o\\'" filename)
-                    (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename))))
+                    (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename)
+                    (string-match "\\`\\.dirstamp\\'" filename))))
+    (add-to-list 'treemacs-ignored-file-predicates
+                 (lambda (filename absolute-path)
+                   "Ignore random files"
+                   (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)))
     )
 #+END_SRC
 * External
