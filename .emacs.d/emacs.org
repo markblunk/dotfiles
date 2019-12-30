@@ -215,7 +215,7 @@ Make mouse clicks work in xterm (and iTerm)
      (java-mode . lsp)
      (rust-mode . lsp))
     :custom
-    (lsp-response-timeout 300)
+    (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
     (lsp-clients-clangd-executable "clangd-7"))
@@ -370,9 +370,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :after rust-mode
     :delight racer-mode
     :ensure t
-    :hook
-    ((rust-mode . racer-mode)
-     (racer-mode . eldoc-mode))
+    :hook (rust-mode . racer-mode)
     :config
     (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
     )
@@ -526,6 +524,8 @@ a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
   (push ".class.d" completion-ignored-extensions)
+  (push ".libs" completion-ignored-extensions)
+
   (use-package dired-x
     :config (setq dired-omit-mode t))
 #+END_SRC
