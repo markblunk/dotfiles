@@ -196,7 +196,9 @@ Make mouse clicks work in xterm (and iTerm)
     :no-require t
     :delight flycheck-mode
     :hook
-    ((c-common-mode . flycheck-mode)
+    ((c-mode . flycheck-mode)
+     (c++-mode . flycheck-mode)
+     (java-mode . flycheck-mode)
      (emacs-lisp-mode . flycheck-mode)
      (python-mode . flycheck-mode)
      (rust-mode . flycheck-mode)
@@ -208,7 +210,9 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :commands lsp
     :hook
-    ((c-common-mode . lsp)
+    ((c-mode . lsp)
+     (c++-mode . lsp)
+     (java-mode . lsp)
      (rust-mode . lsp))
     :custom
     (lsp-response-timeout 300)
