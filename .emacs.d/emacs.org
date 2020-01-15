@@ -258,6 +258,10 @@ Make mouse clicks work in xterm (and iTerm)
   (use-package highlight-doxygen
     :ensure t
     :config (highlight-doxygen-global-mode 1))
+
+  (use-package autoconf
+    :delight autoconf-mode
+    )
 #+END_SRC
 ** C
 setting google style for c and c++, but not for java.
@@ -287,6 +291,11 @@ directory of every project.
            (lambda () (require 'ccls) (lsp)))
     :config
     (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls")))
+
+  (use-package modern-cpp-font-lock
+    :ensure t
+    :delight modern-c++-font-lock-mode
+    :hook (c++-mode . modern-c++-font-lock-mode))
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -355,16 +364,21 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :config (set-face-background 'highlight-indentation-face "DarkRed"))
 #+END_SRC
 ** Rust
-
 #+NAME: rust
 #+BEGIN_SRC emacs-lisp
+  ;; Pre-requisites:
+  ;; rustup default nightly
+  ;; cargo component add rust-src
+  ;; cargo +nightly install racer
+
   (use-package rust-mode
     :delight rust-mode
     :ensure flycheck-rust
     :no-require t
     :mode "\\.rs\\'"
     :commands flycheck-rust-setup
-    :hook (rust-mode . flycheck-rust-setup))
+    :hook (rust-mode . flycheck-rust-setup)
+    :config (setq rust-format-on-save t))
 
   (use-package racer
     :after rust-mode
@@ -373,6 +387,12 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :hook (rust-mode . racer-mode)
     :config
     (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+    )
+
+  (use-package cargo
+    :ensure t
+    :delight cargo-minor-mode
+    :hook (rust-mode . cargo-minor-mode)
     )
 #+END_SRC
 ** Misc
@@ -543,6 +563,7 @@ Use treemacs for exploring projects/workspaces.
   (use-package treemacs
     :ensure t
     :config
+    ;(setq treemacs-width 20)
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled java class files"
@@ -563,23 +584,23 @@ Use treemacs for exploring projects/workspaces.
                     )))
     )
 #+END_SRC
+
+Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
+#+NAME: update-packages
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :ensure t
+    :config
+    (setq
+     auto-package-update-delete-old-versions t
+     auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+#+END_SRC
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
 #+NAME: external
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/external"))
-#+END_SRC
-* Update packages
-
-Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
-#+NAME: update-packages
-#+BEGIN_SRC emacs-lisp
-(use-package auto-package-update
-  :ensure t
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
 #+END_SRC
 * Options set using the customize interface
   By default, Emacs saves the options you set via the `customize-*`
