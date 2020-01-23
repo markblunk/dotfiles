@@ -55,7 +55,7 @@ Load default font of Monospace
   (if (or
        (> emacs-major-version 24)
        (and
-        (== emacs-major-version 24)
+        (= emacs-major-version 24)
         (>= emacs-minor-version 4)))
       (global-prettify-symbols-mode +1))
 
@@ -218,7 +218,7 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-executable "clangd-7"))
+    (lsp-clients-clangd-executable "clangd-9"))
 
   (use-package company
     :ensure t
@@ -234,15 +234,18 @@ Make mouse clicks work in xterm (and iTerm)
     :config
     (push 'company-lsp company-backends)
     :custom
-    (company-clang-executable "/usr/bin/clang-7"))
+    (company-clang-executable "/usr/bin/clang-9"))
 
   (use-package lsp-ui
     :ensure t
     :after lsp-mode
-    :commands lsp-ui-mode
+    :commands lsp-ui-peek-mode
+    :config
+    (lsp-ui-peek-mode)
     :custom
     (lsp-ui-doc-enable nil)
     (lsp-prefer-flymake nil)
+    (lsp-ui-flycheck-enable t)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
@@ -296,6 +299,10 @@ directory of every project.
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
+
+  (use-package clang-format
+    :load-path "/usr/share/emacs/site-lisp/clang-format-9"
+    :delight)
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -386,14 +393,14 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure t
     :hook (rust-mode . racer-mode)
     :config
-    (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-    )
+    (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+    (setq racer-rust-src-path (concat (getenv "HOME")
+    "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
 
   (use-package cargo
     :ensure t
     :delight cargo-minor-mode
-    :hook (rust-mode . cargo-minor-mode)
-    )
+    :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
 ** Misc
 #+NAME: misc
@@ -414,6 +421,13 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
   (use-package lsp-java
     :ensure t
     :after lsp-mode)
+
+  (use-package lean-mode
+    :delight
+    :ensure t)
+
+  (use-package company-lean
+    :ensure t)
 
   (use-package js2-mode
     :ensure t
@@ -441,6 +455,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 
   (use-package tuareg
     :ensure t
+    :delight)
+
+  (use-package nxml-mode
     :delight)
 
   (use-package yaml-mode
@@ -478,11 +495,9 @@ bind that function.
     :after ido
     :custom (ido-yes-or-no-mode 1))
 
-  (cua-mode t)
   (transient-mark-mode 1) ;; No region when it is not highlighted
-  (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
 
- #+END_SRC
+#+END_SRC
 * Backups
 Save all backups to a universal location
 #+NAME: global-backup
@@ -572,7 +587,7 @@ Use treemacs for exploring projects/workspaces.
                  (lambda (filename absolute-path)
                    "Ignore compiled autotools files"
                    (or
-                    (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\)?o\\'" filename)
+                    (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\|s\\)?o\\'" filename)
                     (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename)
                     (string-match "\\`\\.dirstamp\\'" filename))))
     (add-to-list 'treemacs-ignored-file-predicates
