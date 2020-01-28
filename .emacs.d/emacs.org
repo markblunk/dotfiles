@@ -19,16 +19,6 @@
   brew install aspell --with-lang-en
 #+END_SRC
    This auto-magically installed a spellchecker that emacs can use.
-** Adding your own modifications
-    Here are some problems I have run into more than once when
-    attempting to modify this configuration file:
-    1. Every code block should be begin with ~#+NAME: SECTION_NAME~,
-       in addition the BEGIN_SRC and END_SRC wrapped around the
-       code. I find that I am repeatedly forgetting to add the ~#+NAME:
-    SECTION_NAME~ line.
-    2. If you add a new section, named say ~NEW_SECTION~, then don't forget
-       to add the line ~<<NEW_SECTION>>~ in the Configuration file layout
-       code block below.
 * Graphics and looks
 ** Color theme
 #+NAME: color-theme
@@ -62,8 +52,6 @@ Load default font of Monospace
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
 
-  (use-package latex-pretty-symbols
-    :ensure t)
 #+END_SRC
 ** Reduce clutter
 #+NAME: clutter
@@ -223,8 +211,10 @@ Make mouse clicks work in xterm (and iTerm)
   (use-package company
     :ensure t
     :delight company-mode
-    :hook ((racer-mode . company-mode)
-           (emacs-lisp-mode . company-mode))
+    ;; :hook ((racer-mode . company-mode)
+    ;;        (emacs-lisp-mode . company-mode))
+    :commands global-company-mode
+    :hook (after-init . global-company-mode)
     :custom (company-tooltip-align-annotations t))
 
   (use-package company-lsp
@@ -263,8 +253,7 @@ Make mouse clicks work in xterm (and iTerm)
     :config (highlight-doxygen-global-mode 1))
 
   (use-package autoconf
-    :delight autoconf-mode
-    )
+    :delight autoconf-mode)
 #+END_SRC
 ** C
 setting google style for c and c++, but not for java.
@@ -302,7 +291,22 @@ directory of every project.
 
   (use-package clang-format
     :load-path "/usr/share/emacs/site-lisp/clang-format-9"
-    :delight)
+    :delight
+    :commands clang-format-buffer
+
+    ;disabling this for now so as not to upset my colleagues
+
+    ;; :hook (before-save .
+    ;;                         (lambda ()
+    ;;                           (when (member major-mode
+    ;;                                         '(c-mode c++-mode))
+    ;;                             (progn
+    ;;                               (clang-format-buffer) nil))))
+    )
+
+  (use-package clang-rename
+    :load-path "/usr/lib/llvm-9/share/clang"
+    :custom (clang-rename-binary "/usr/bin/clang-rename-9"))
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -336,17 +340,21 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
 ** Latex
 #+NAME: latex
 #+BEGIN_SRC emacs-lisp
+  (use-package latex-pretty-symbols
+    :ensure t)
+
   (use-package auctex
     :defer t
-    :ensure t)
+    :ensure t
+    :config (setq TeX-auto-save t
+                 TeX-parse-self t)
+    (setq-default TeX-master nil))
 
   (use-package cdlatex
     :ensure t
-    :after auctex
-    :commands turn-on-cdlatex
-    :hook
-    ((latex-mode . turn-on-cdlatex)
-     (org-mode . turn-on-cdlatex)))
+    :delight cdlatex-mode
+    :hook ((LaTeX-mode . cdlatex-mode)
+           (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** PSL
 Add psl-mode, which is symlinked to a local copy hiding elsewhere
@@ -394,8 +402,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :hook (rust-mode . racer-mode)
     :config
     (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
-    (setq racer-rust-src-path (concat (getenv "HOME")
-    "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+  (setq racer-rust-src-path (concat
+                             (getenv "HOME")
+                             "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
 
   (use-package cargo
     :ensure t
@@ -427,6 +436,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure t)
 
   (use-package company-lean
+    :after (lean-mode company)
     :ensure t)
 
   (use-package js2-mode
@@ -445,8 +455,7 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
     :ensure t)
 
   (use-package scala-mode
-    :ensure t
-    :mode "\\.s\\(cala\\|bt\\)\\'")
+    :ensure t)
 
   (use-package sql-indent
     :ensure t
@@ -522,11 +531,10 @@ Short key bindings for capturing notes/links and switching to agenda.
     :ensure org-plus-contrib
     :bind (("\C-cl" . org-store-link)
            ("\C-cc" . org-capture)
-           ("\C-ca" . org-agenda)
-           ("\C-cb" . org-iswitchb))
+           ("\C-ca" . org-agenda))
     :config
     (setq org-directory (concat (getenv "HOME") "/org")
-          org-archive-location (concat org-directory  "/archive.org::")
+          org-archive-location (concat org-directory "/archive.org::")
           org-default-notes-file (concat org-directory "/notes.org")
           org-agenda-files (list org-directory)
           org-log-done 'time
@@ -554,12 +562,13 @@ Short key bindings for capturing notes/links and switching to agenda.
 #+END_SRC
 * Other libraries
 Make sure /.class.d/ files are ignored (/.class/ files are already
-ignored) in [[info:emacs#Dired%20Enter][Dired-mode]] (the mode of the minibuffer when trying to find
+ignored) in [[info:emacs#Dired][dired-mode]] (the mode of the minibuffer when trying to find
 a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
   (push ".class.d" completion-ignored-extensions)
-  (push ".libs" completion-ignored-extensions)
+  (push ".libs/" completion-ignored-extensions)
+  (push ".deps/" completion-ignored-extensions)
 
   (use-package dired-x
     :config (setq dired-omit-mode t))
@@ -595,9 +604,7 @@ Use treemacs for exploring projects/workspaces.
                    "Ignore random files"
                    (or
                     (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)
-                    (string-match "\\`\\.ccls-cache\\'" filename)
-                    )))
-    )
+                    (string-match "\\`\\.ccls-cache\\'" filename)))))
 #+END_SRC
 
 Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
