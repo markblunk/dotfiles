@@ -56,8 +56,8 @@ Load default font of Monospace
 ** Reduce clutter
 #+NAME: clutter
 #+BEGIN_SRC emacs-lisp
-  (blink-cursor-mode 0)
-  (show-paren-mode 1)
+  (blink-cursor-mode nil)
+  (show-paren-mode t)
 
   (defadvice show-paren-function
       (after show-matching-paren-offscreen activate)
@@ -273,16 +273,15 @@ sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added 
 directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
-  (use-package c++-mode
-    :delight
-    :mode "\\.h\\'")
-
   (use-package ccls
     :ensure t
-    :hook ((c-mode c++-mode) .
-           (lambda () (require 'ccls) (lsp)))
+    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
     :config
     (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls")))
+
+  (use-package cwarn
+    :delight
+    :hook (c++-mode  . cwarn-mode))
 
   (use-package modern-cpp-font-lock
     :ensure t
