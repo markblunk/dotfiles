@@ -192,7 +192,9 @@ Make mouse clicks work in xterm (and iTerm)
      (rust-mode . flycheck-mode)
      (sh-mode . flycheck-mode)
      (flycheck-mode . flycheck-color-mode-line-mode))
-    :custom (flycheck-checker-error-threshold 2000))
+    :custom
+    (flycheck-checker-error-threshold 2000)
+    (flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
 
   (use-package lsp-mode
     :ensure t
