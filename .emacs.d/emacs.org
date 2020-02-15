@@ -617,6 +617,14 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
      auto-package-update-hide-results t)
     (auto-package-update-maybe))
 #+END_SRC
+
+#+NAME: which-key
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :delight
+    :config (which-key-mode 1))
+#+END_SRC
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
 #+NAME: external
@@ -655,6 +663,8 @@ this org file.
   <<customize-config>>
 
   <<update-packages>>
+
+  <<which-key>>
 
   <<color-theme>>
 
