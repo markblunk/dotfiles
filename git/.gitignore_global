@@ -23,9 +23,6 @@
 .projectile
 .dir-locals.el
 
-#clang
-.clang-format
-
 #lsp for cpp
 .ccls
 .ccls-cache/

@@ -208,7 +208,8 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-executable "clangd-9"))
+    (lsp-clients-clangd-executable "clangd-9")
+    (lsp-before-save-edits nil))
 
   (use-package company
     :ensure t
@@ -254,20 +255,32 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :config (highlight-doxygen-global-mode 1))
 
-  (use-package autoconf
-    :delight autoconf-mode)
+   ;; (setq c-default-style
+   ;;       '((java-mode . "k&r")
+   ;;         (c-mode . "k&r")
+   ;;         (c++-mode . "k&r")
+   ;;         (other . "gnu")))
 #+END_SRC
 ** C
-setting google style for c and c++, but not for java.
+Use Google newline, and clang-format for C/C++/Java
 #+NAME: c
 #+BEGIN_SRC emacs-lisp
-  (use-package google-c-style
-    :ensure t
-    :commands (google-set-c-style google-make-newline-indent)
-    :hook ((c-mode . google-set-c-style)
-           (c++-mode . google-set-c-style)
-           (c-mode . google-make-newline-indent)
-           (c++-mode . google-make-newline-indent)))
+
+  ;; (use-package google-c-style
+  ;;   :ensure t
+  ;;   :commands  google-make-newline-indent
+  ;;   :hook (c-mode-common . google-make-newline-indent))
+
+  (use-package clang-format
+    :load-path "/usr/share/emacs/site-lisp/clang-format-9"
+    :delight
+    :commands clang-format-buffer
+    :hook (before-save .
+                       (lambda ()
+                         (when (member major-mode
+                                       '(c-mode c++-mode java-mode))
+                           (progn
+                             (clang-format-buffer) nil)))))
 #+END_SRC
 ** Cpp
 To get ccls to behave correctly I followed the build & install
@@ -289,21 +302,6 @@ directory of every project.
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
-
-  (use-package clang-format
-    :load-path "/usr/share/emacs/site-lisp/clang-format-9"
-    :delight
-    :commands clang-format-buffer
-
-    ;disabling this for now so as not to upset my colleagues
-
-    ;; :hook (before-save .
-    ;;                         (lambda ()
-    ;;                           (when (member major-mode
-    ;;                                         '(c-mode c++-mode))
-    ;;                             (progn
-    ;;                               (clang-format-buffer) nil))))
-    )
 
   (use-package clang-rename
     :load-path "/usr/lib/llvm-9/share/clang"
@@ -358,7 +356,7 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
            (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** PSL
-Add psl-mode, which is symlinked to a local copy hiding elsewhere
+   Add psl-mode, which is symlinked to a local copy hiding elsewhere
 #+NAME: psl
 #+BEGIN_SRC emacs-lisp
   (use-package psl-mode
@@ -415,6 +413,9 @@ Add psl-mode, which is symlinked to a local copy hiding elsewhere
 ** Misc
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
+  (use-package autoconf
+    :delight autoconf-mode)
+
   (use-package cmake-mode
     :load-path "/usr/share/emacs/site-lisp"
     :delight)
