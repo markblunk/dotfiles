@@ -1,6 +1,5 @@
 [user]
-    name = Mark Blunk
-    email = mblunk@gmail.com
+    useConfigOnly = true
 [color]
     ui = auto
 [color "branch"]
@@ -23,6 +22,7 @@
     co = checkout
     df = diff
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
 [github]
     user = markblunk
 [grep]
@@ -41,3 +41,9 @@
     program = gpg2
 [status]
     showUntrackedFiles = no
+[user "gitlab"]
+    name = Mark Blunk
+    email = mark@stealthsoftwareinc.com
+[user "github"]
+    name = Mark Blunk
+    email = mblunk@gmail.com
