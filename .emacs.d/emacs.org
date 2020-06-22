@@ -148,15 +148,17 @@ Make mouse clicks work in xterm (and iTerm)
   (add-to-list 'default-frame-alist '(width . 140))
 
   (setq inhibit-startup-screen +1)
-  (setq-default indent-tabs-mode nil
-                show-trailing-whitespace t
-                tab-width 4)
-
+  (setq-default
+   indent-tabs-mode nil
+   show-trailing-whitespace t
+   tab-width 4)
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
   (use-package exec-path-from-shell
     :ensure t
     :config (exec-path-from-shell-initialize))
+
+  (setq tramp-default-method "ssh")
 
 #+END_SRC
 * Programming
@@ -181,20 +183,14 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package flycheck
     :ensure flycheck-color-mode-line
+    :init (global-flycheck-mode)
     :no-require t
     :delight flycheck-mode
-    :hook
-    ((c-mode . flycheck-mode)
-     (c++-mode . flycheck-mode)
-     (java-mode . flycheck-mode)
-     (emacs-lisp-mode . flycheck-mode)
-     (python-mode . flycheck-mode)
-     (rust-mode . flycheck-mode)
-     (sh-mode . flycheck-mode)
-     (flycheck-mode . flycheck-color-mode-line-mode))
-    :custom
-    (flycheck-checker-error-threshold 2000)
-    (flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
+    :hook (flycheck-mode . flycheck-color-mode-line-mode)
+    :config
+    (setq
+     flycheck-checker-error-threshold 2000
+     flycheck-disabled-checkers '(c/c++-cppcheck c/c++-gcc)))
 
   (use-package lsp-mode
     :ensure t
@@ -203,31 +199,38 @@ Make mouse clicks work in xterm (and iTerm)
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
-     (rust-mode . lsp))
+     (rust-mode . lsp)
+     (before-save .
+                  (lambda ()
+                    (when (member major-mode
+                                  '(c-mode c++-mode java-mode))
+                      (progn
+                        (lsp-format-buffer) nil)))))
     :custom
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
     (lsp-clients-clangd-executable "clangd-9")
-    (lsp-before-save-edits nil))
+    (lsp-clients-clangd-args (quote ("-j=4" "-background-index" "-clang-tidy")))
+    (lsp-before-save-edits nil)
+    )
+
 
   (use-package company
     :ensure t
     :delight company-mode
-    ;; :hook ((racer-mode . company-mode)
-    ;;        (emacs-lisp-mode . company-mode))
     :commands global-company-mode
     :hook (after-init . global-company-mode)
-    :custom (company-tooltip-align-annotations t))
+    :config (setq
+             company-tooltip-align-annotations t
+             company-clang-executable "/usr/bin/clang-9"))
 
   (use-package company-lsp
     :ensure t
     :after (lsp-mode company)
     :commands company-lsp
     :config
-    (push 'company-lsp company-backends)
-    :custom
-    (company-clang-executable "/usr/bin/clang-9"))
+    (push 'company-lsp company-backends))
 
   (use-package lsp-ui
     :ensure t
@@ -235,10 +238,8 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp-ui-peek-mode
     :config
     (lsp-ui-peek-mode)
-    :custom
-    (lsp-ui-doc-enable nil)
-    (lsp-prefer-flymake nil)
-    (lsp-ui-flycheck-enable t)
+    ;    :custom
+    ;    (lsp-ui-doc-enable t)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
@@ -255,44 +256,24 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :config (highlight-doxygen-global-mode 1))
 
-   ;; (setq c-default-style
-   ;;       '((java-mode . "k&r")
-   ;;         (c-mode . "k&r")
-   ;;         (c++-mode . "k&r")
-   ;;         (other . "gnu")))
+  ;; (use-package magit
+  ;;   :ensure t)
 #+END_SRC
 ** C
-Use Google newline, and clang-format for C/C++/Java
-#+NAME: c
-#+BEGIN_SRC emacs-lisp
-
-  ;; (use-package google-c-style
-  ;;   :ensure t
-  ;;   :commands  google-make-newline-indent
-  ;;   :hook (c-mode-common . google-make-newline-indent))
-
-  (use-package clang-format
-    :load-path "/usr/share/emacs/site-lisp/clang-format-9"
-    :delight
-    :commands clang-format-buffer
-    :hook (before-save .
-                       (lambda ()
-                         (when (member major-mode
-                                       '(c-mode c++-mode java-mode))
-                           (progn
-                             (clang-format-buffer) nil)))))
-#+END_SRC
+Nothing right now
 ** Cpp
 To get ccls to behave correctly I followed the build & install
 sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
 directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
+  ;; temporarily disabling this in favor of clangd
   (use-package ccls
     :ensure t
-    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
+;    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
     :config
-    (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls")))
+;    (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls"))
+    )
 
   (use-package cwarn
     :delight
@@ -303,9 +284,6 @@ directory of every project.
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
 
-  (use-package clang-rename
-    :load-path "/usr/lib/llvm-9/share/clang"
-    :custom (clang-rename-binary "/usr/bin/clang-rename-9"))
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -349,11 +327,11 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
                  TeX-parse-self t)
     (setq-default TeX-master nil))
 
-  (use-package cdlatex
-    :ensure t
-    :delight cdlatex-mode
-    :hook ((LaTeX-mode . cdlatex-mode)
-           (org-mode . org-cdlatex-mode)))
+  ;; (use-package cdlatex
+  ;;   :ensure t
+  ;;   :delight cdlatex-mode
+  ;;   :hook ((LaTeX-mode . cdlatex-mode)
+  ;;          (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** PSL
    Add psl-mode, which is symlinked to a local copy hiding elsewhere
@@ -461,6 +439,7 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
 
   (use-package sql-indent
     :ensure t
+    :delight sqlind-minor-mode
     :commands sqlind-minor-mode
     :hook (sql-mode . sqlind-minor-mode))
 
@@ -470,6 +449,9 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
 
   (use-package nxml-mode
     :delight)
+
+  (use-package autorevert
+    :delight auto-revert-mode)
 
   (use-package yaml-mode
     :ensure t)
@@ -569,8 +551,12 @@ a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
   (push ".class.d" completion-ignored-extensions)
-  (push ".libs/" completion-ignored-extensions)
   (push ".deps/" completion-ignored-extensions)
+  (push ".idea/" completion-ignored-extensions)
+  (push ".libs/" completion-ignored-extensions)
+  (push ".settings/" completion-ignored-extensions)
+  (push "target" completion-ignored-extensions)
+  (push ".out" completion-ignored-extensions)
 
   (use-package dired-x
     :config (setq dired-omit-mode t))
@@ -589,11 +575,15 @@ Use treemacs for exploring projects/workspaces.
   (use-package treemacs
     :ensure t
     :config
-    ;(setq treemacs-width 20)
+    (setq treemacs-width 20)
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled java class files"
-                   (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)))
+                   (or
+                    (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)
+                    (string-match "\\`\\.settings\\'" filename)
+                    (string-match "\\`target\\'" filename)
+                    )))
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled autotools files"
@@ -606,7 +596,10 @@ Use treemacs for exploring projects/workspaces.
                    "Ignore random files"
                    (or
                     (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)
-                    (string-match "\\`\\.ccls-cache\\'" filename)))))
+                    (string-match "\\`\\.ccls-cache\\'" filename)
+                    (string-match "\\`\\.clangd\\'" filename)
+                    (string-match "\\`[-_A-Za-z0-9]+\\.iml\\'" filename)
+                    (string-match "\\`\\.idea\\'" filename)))))
 #+END_SRC
 
 Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
@@ -617,7 +610,9 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
     :config
     (setq
      auto-package-update-delete-old-versions t
-     auto-package-update-hide-results t)
+     auto-package-update-hide-results t
+     auto-package-update-prompt-before-update t
+     auto-package-update-interval 14)
     (auto-package-update-maybe))
 #+END_SRC
 
@@ -625,8 +620,10 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
-    :delight
-    :config (which-key-mode 1))
+    :after lsp-mode
+    :delight which-key-mode
+    :config (which-key-mode t)
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 #+END_SRC
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
