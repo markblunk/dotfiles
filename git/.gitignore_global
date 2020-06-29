@@ -26,6 +26,7 @@
 #lsp for cpp
 .ccls
 .ccls-cache/
+compile_commands.json
 
 #lsp for java
 .settings/

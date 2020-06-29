@@ -183,14 +183,19 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package flycheck
     :ensure flycheck-color-mode-line
-    :init (global-flycheck-mode)
     :no-require t
     :delight flycheck-mode
-    :hook (flycheck-mode . flycheck-color-mode-line-mode)
-    :config
-    (setq
-     flycheck-checker-error-threshold 2000
-     flycheck-disabled-checkers '(c/c++-cppcheck c/c++-gcc)))
+    :hook ((python-mode . flycheck-mode)
+           (Texinfo-mode . flycheck-mode)
+           (emacs-lisp-mode . flycheck-mode)
+           (flycheck-mode . flycheck-color-mode-line-mode))
+
+    ;; :config
+    ;; (setq
+    ;;  flycheck-checker-error-threshold 2000
+    ;;  flycheck-disabled-checkers '(c/c++-cppcheck c/c++-gcc))
+
+    )
 
   (use-package lsp-mode
     :ensure t
@@ -210,7 +215,7 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-executable "clangd-9")
+    (lsp-clients-clangd-executable "/usr/bin/clangd-9")
     (lsp-clients-clangd-args (quote ("-j=4" "-background-index" "-clang-tidy")))
     (lsp-before-save-edits nil)
     )
@@ -234,12 +239,17 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package lsp-ui
     :ensure t
-    :after lsp-mode
-    :commands lsp-ui-peek-mode
-    :config
-    (lsp-ui-peek-mode)
-    ;    :custom
-    ;    (lsp-ui-doc-enable t)
+    :after (lsp-mode flycheck)
+    :custom
+    (lsp-ui-doc-enable t)
+    (lsp-ui-doc-position 'top)
+    (lsp-ui-doc-include-signature t)
+    (lsp-ui-flycheck-list-position 'right)
+    (lsp-ui-peek-enable t)
+    (lsp-ui-peek-show-directory t)
+    (lsp-ui-peek-list-width 60)
+    (lsp-ui-peek-peek-height 25)
+    (lsp-ui-sideline-enable nil)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
@@ -267,17 +277,13 @@ sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added 
 directory of every project.
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
-  ;; temporarily disabling this in favor of clangd
-  (use-package ccls
-    :ensure t
-;    :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
-    :config
-;    (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls"))
-    )
+    ;; temporarily disabling this in favor of clangd
 
-  (use-package cwarn
-    :delight
-    :hook (c++-mode  . cwarn-mode))
+  (use-package ccls
+     :ensure t
+  ;                                             :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
+  ;   :config    (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls"))
+     )
 
   (use-package modern-cpp-font-lock
     :ensure t
@@ -477,9 +483,10 @@ bind that function.
   (use-package ido
     :ensure t
     :custom
-    (ido-ignore-extensions 1)
-    (ido-mode 1)
-    (ido-everywhere 1)
+    (ido-enable-flex-matching t)
+    (ido-ignore-extensions t)
+    (ido-mode 'file)
+    (ido-everywhere t)
     (ido-enable-flex-matching t)
     (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".ac" ".org" ".tex")))
 

@@ -15,6 +15,8 @@
     added = yellow
     changed = green
     untracked = cyan
+[checkout]
+    defaultRemote = origin
 [alias]
     st = status
     ci = commit
@@ -22,7 +24,8 @@
     co = checkout
     df = diff
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
-	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
+    identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
+    up = "!git remote update -p; git merge --ff-only @{u}"
 [github]
     user = markblunk
 [grep]
@@ -34,9 +37,11 @@
 [core]
     editor = emacs
     excludesfile = ~/.gitignore_global
-	autocrlf = input
+    autocrlf = input
 [push]
     default = current
+[pull]
+    rebase = true
 [gpg]
     program = gpg2
 [status]
@@ -47,3 +52,8 @@
 [user "github"]
     name = Mark Blunk
     email = mblunk@gmail.com
+[filter "lfs"]
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
