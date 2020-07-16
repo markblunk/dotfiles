@@ -159,6 +159,8 @@ Make mouse clicks work in xterm (and iTerm)
 
   (setq tramp-default-method "ssh")
 
+  ;; (use-package magit
+  ;;   :ensure t)
 #+END_SRC
 * Programming
 ** General programming
@@ -180,12 +182,26 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
+  (use-package yasnippet
+    :ensure t
+    :delight yas-minor-mode
+    :config (yas-global-mode 1))
+
+  (use-package yasnippet-snippets
+    :ensure t)
+
+  ;; (use-package magit
+  ;;   :ensure t)
+#+END_SRC
+
+#+NAME: error-checking
+#+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure flycheck-color-mode-line
     :no-require t
     :delight flycheck-mode
     :hook ((python-mode . flycheck-mode)
-           (Texinfo-mode . flycheck-mode)
+;           (Texinfo-mode . flycheck-mode)
            (emacs-lisp-mode . flycheck-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
@@ -212,22 +228,6 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-clients-clangd-args (quote ("-j=4" "-background-index" "-clang-tidy")))
     (lsp-before-save-edits nil))
 
-  (use-package company
-    :ensure t
-    :delight company-mode
-    :commands global-company-mode
-    :hook (after-init . global-company-mode)
-    :config (setq
-             company-tooltip-align-annotations t
-             company-clang-executable "/usr/bin/clang-9"))
-
-  (use-package company-lsp
-    :ensure t
-    :after (lsp-mode company)
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends))
-
   (use-package lsp-ui
     :ensure t
     :after (lsp-mode flycheck)
@@ -244,21 +244,25 @@ Make mouse clicks work in xterm (and iTerm)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
+#+END_SRC
 
-  (use-package yasnippet
+#+NAME: auto-complete
+#+BEGIN_SRC emacs-lisp
+  (use-package company
     :ensure t
-    :delight yas-minor-mode
-    :config (yas-global-mode 1))
+    :delight company-mode
+    :commands global-company-mode
+    :hook (after-init . global-company-mode)
+    :config (setq
+             company-tooltip-align-annotations t
+             company-clang-executable "/usr/bin/clang-9"))
 
-  (use-package yasnippet-snippets
-    :ensure t)
-
-  (use-package highlight-doxygen
+  (use-package company-lsp
     :ensure t
-    :config (highlight-doxygen-global-mode 1))
-
-  ;; (use-package magit
-  ;;   :ensure t)
+    :after (lsp-mode company)
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends))
 #+END_SRC
 ** C
 Nothing right now
@@ -275,6 +279,9 @@ autotools projects. So I don't think I need ccls anymore!
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
 
+  (use-package highlight-doxygen
+    :ensure t
+    :config (highlight-doxygen-global-mode 1))
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -684,6 +691,10 @@ this org file.
   <<global-backup>>
 
   <<programming-setup>>
+
+  <<error-checking>>
+
+  <<auto-complete>>
 
   <<c>>
 
