@@ -190,12 +190,10 @@ Make mouse clicks work in xterm (and iTerm)
            (emacs-lisp-mode . flycheck-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
-    ;; :config
-    ;; (setq
-    ;;  flycheck-checker-error-threshold 2000
-    ;;  flycheck-disabled-checkers '(c/c++-cppcheck c/c++-gcc))
-
-    )
+    :config
+    (setq
+     flycheck-checker-error-threshold 2000
+     flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
 
   (use-package lsp-mode
     :ensure t
@@ -205,21 +203,23 @@ Make mouse clicks work in xterm (and iTerm)
      (c++-mode . lsp)
      (java-mode . lsp)
      (rust-mode . lsp)
-     (before-save .
-                  (lambda ()
-                    (when (member major-mode
-                                  '(c-mode c++-mode java-mode))
-                      (progn
-                        (lsp-format-buffer) nil)))))
+
+      ;; (before-save .
+      ;;              (lambda ()
+      ;;                (when (member major-mode
+      ;;                              '(c-mode c++-mode))
+      ;;                  (progn
+      ;;                    (lsp-format-buffer) nil))))
+
+     )
+
     :custom
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
     (lsp-clients-clangd-executable "/usr/bin/clangd-9")
     (lsp-clients-clangd-args (quote ("-j=4" "-background-index" "-clang-tidy")))
-    (lsp-before-save-edits nil)
-    )
-
+    (lsp-before-save-edits nil))
 
   (use-package company
     :ensure t
@@ -272,19 +272,13 @@ Make mouse clicks work in xterm (and iTerm)
 ** C
 Nothing right now
 ** Cpp
-To get ccls to behave correctly I followed the build & install
-sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
-directory of every project.
++To get ccls to behave correctly I followed the build & install+
++sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
+directory of every project.+
+Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I can use clangd for the
+autotools projects. So I don't think I need ccls anymore!
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
-    ;; temporarily disabling this in favor of clangd
-
-  (use-package ccls
-     :ensure t
-  ;                                             :hook ((c-mode c++-mode) . (lambda () (require 'ccls) (lsp)))
-  ;   :config    (setq ccls-executable (concat (getenv "HOME") "/code/misc/ccls/Release/ccls"))
-     )
-
   (use-package modern-cpp-font-lock
     :ensure t
     :delight modern-c++-font-lock-mode
@@ -482,20 +476,20 @@ bind that function.
 
   (use-package ido
     :ensure t
+    :config
+    (ido-mode 1) ; this has to be 1. it will break if you use 't' here
     :custom
     (ido-enable-flex-matching t)
     (ido-ignore-extensions t)
-    (ido-mode 'file)
     (ido-everywhere t)
-    (ido-enable-flex-matching t)
     (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".ac" ".org" ".tex")))
 
   (use-package ido-yes-or-no
     :ensure t
     :after ido
-    :custom (ido-yes-or-no-mode 1))
+    :custom (ido-yes-or-no-mode t))
 
-  (transient-mark-mode 1) ;; No region when it is not highlighted
+  (transient-mark-mode t) ;; No region when it is not highlighted
 
 #+END_SRC
 * Backups
@@ -557,13 +551,14 @@ ignored) in [[info:emacs#Dired][dired-mode]] (the mode of the minibuffer when tr
 a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
-  (push ".class.d" completion-ignored-extensions)
+  (push ".class.d/" completion-ignored-extensions)
+  (push ".dirstamp" completion-ignored-extensions)
   (push ".deps/" completion-ignored-extensions)
   (push ".idea/" completion-ignored-extensions)
   (push ".libs/" completion-ignored-extensions)
+  (push ".out" completion-ignored-extensions)
   (push ".settings/" completion-ignored-extensions)
   (push "target" completion-ignored-extensions)
-  (push ".out" completion-ignored-extensions)
 
   (use-package dired-x
     :config (setq dired-omit-mode t))
@@ -582,7 +577,9 @@ Use treemacs for exploring projects/workspaces.
   (use-package treemacs
     :ensure t
     :config
-    (setq treemacs-width 20)
+    (setq
+     treemacs-width 30
+     treemacs-show-hidden-files nil)
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled java class files"
