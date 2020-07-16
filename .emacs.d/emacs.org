@@ -31,7 +31,6 @@
     (load-theme 'solarized-dark t))
 #+END_SRC
 ** Font
-Load default font of Monospace
 #+NAME: font
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
@@ -203,14 +202,6 @@ Make mouse clicks work in xterm (and iTerm)
      (c++-mode . lsp)
      (java-mode . lsp)
      (rust-mode . lsp)
-
-      ;; (before-save .
-      ;;              (lambda ()
-      ;;                (when (member major-mode
-      ;;                              '(c-mode c++-mode))
-      ;;                  (progn
-      ;;                    (lsp-format-buffer) nil))))
-
      )
 
     :custom
