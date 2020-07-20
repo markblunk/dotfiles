@@ -4,6 +4,7 @@
 
 # for some reason I need to add these manually. I think I am doing something wrong
 source /usr/share/bash-completion/completions/apt
+source /usr/share/bash-completion/completions/cmake
 source /usr/share/bash-completion/completions/docker
 source /usr/share/bash-completion/completions/java
 source /usr/share/bash-completion/completions/maven

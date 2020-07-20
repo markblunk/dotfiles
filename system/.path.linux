@@ -21,4 +21,7 @@ if [[ $HOSTNAME = markbott ]]; then
     #virtualenv stuff
     prepend "$HOME/.local/bin"
 
+    # snap installed cmake
+    prepend "/snap/cmake/current/bin"
+
 fi

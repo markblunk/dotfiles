@@ -27,6 +27,7 @@
 .ccls
 .ccls-cache/
 compile_commands.json
+.clangd/
 
 #lsp for java
 .settings/
