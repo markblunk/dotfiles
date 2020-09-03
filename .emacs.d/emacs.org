@@ -47,6 +47,9 @@
 #+BEGIN_SRC emacs-lisp
   (blink-cursor-mode nil)
   (show-paren-mode t)
+  (setq indicate-buffer-boundaries 'left
+        indicate-empty-lines t)
+
 
   (defadvice show-paren-function
       (after show-matching-paren-offscreen activate)
@@ -80,14 +83,19 @@
 buffer.  Set up git diffs and buffer position in the fringe.
 #+NAME: fringe
 #+BEGIN_SRC emacs-lisp
+
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
-    :init
-    (setq-default indicate-buffer-boundaries 'left
-                  indicate-empty-lines +1)
     :config
-    (global-git-gutter-mode +1))
+    (global-git-gutter-mode t))
+
+  (use-package magit
+    :ensure t
+    :config
+    (global-set-key (kbd "C-x g") 'magit-status))
+
+  ;; (global-linum-mode)
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -149,8 +157,6 @@ Make mouse clicks work in xterm (and iTerm)
 
   (setq tramp-default-method "ssh")
 
-  ;; (use-package magit
-  ;;   :ensure t)
 #+END_SRC
 * Programming
 ** General programming
@@ -206,14 +212,15 @@ Make mouse clicks work in xterm (and iTerm)
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
-     (rust-mode . lsp))
+  ;   (rust-mode . lsp)
+     )
 
     :custom
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
     (lsp-clients-clangd-executable "/usr/bin/clangd-9")
-    (lsp-clients-clangd-args (quote ("-j=4" "-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
+    (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
     (lsp-before-save-edits nil))
 
   (use-package lsp-ui
@@ -289,23 +296,6 @@ autotools projects. So I don't think I need ccls anymore!
               "Turn on pseudo-structural editing of Lisp code."   t)
     :hook (emacs-lisp-mode . enable-paredit-mode))
 #+END_SRC
-** Fstar
-[[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
-#+NAME: fstar
-#+BEGIN_SRC emacs-lisp
-  (use-package fstar-mode
-    :ensure t
-    :mode ("\\.fs?\\'" . fstar-mode))
-#+END_SRC
-** Haskell
-Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
-#+NAME: haskell
-#+BEGIN_SRC emacs-lisp
-  (use-package haskell-mode
-    :ensure t
-    :delight
-    :mode "\\.wy.*\\'")
-#+END_SRC
 ** Latex
 #+NAME: latex
 #+BEGIN_SRC emacs-lisp
@@ -325,14 +315,6 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
   ;;   :delight cdlatex-mode
   ;;   :hook ((LaTeX-mode . cdlatex-mode)
   ;;          (org-mode . org-cdlatex-mode)))
-#+END_SRC
-** PSL
-   Add psl-mode, which is symlinked to a local copy hiding elsewhere
-#+NAME: psl
-#+BEGIN_SRC emacs-lisp
-  (use-package psl-mode
-    :load-path "external"
-    :mode "\\.psl\\'")
 #+END_SRC
 ** Python
 #+NAME: python
@@ -366,16 +348,16 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
     :custom
     (rust-format-on-save t))
 
-  (use-package racer
-    :after rust-mode
-    :delight racer-mode
-    :ensure t
-    :hook (rust-mode . racer-mode)
-    :config
-    (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
-  (setq racer-rust-src-path (concat
-                             (getenv "HOME")
-                             "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+  ;; (use-package racer
+  ;;   :after rust-mode
+  ;;   :delight racer-mode
+  ;;   :ensure t
+  ;;   :hook (rust-mode . racer-mode)
+  ;;   :config
+  ;;   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+  ;; (setq racer-rust-src-path (concat
+  ;;                            (getenv "HOME")
+  ;;                            "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
 
   (use-package cargo
     :ensure t
@@ -383,31 +365,66 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
     :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
 ** Misc
-+ cmake-mode.el comes installed via ~sudo snap install cmake --classic~
+   + cmake-mode.el comes installed via ~sudo snap install cmake --classic~
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
+    :ensure t
     :delight
     :mode ".adoc")
 
   (use-package autoconf
     :delight autoconf-mode)
 
+  (use-package autorevert
+    :delight auto-revert-mode)
+
   (use-package cmake-mode
     :load-path "/snap/cmake/current/share/emacs/site-lisp")
 
-  (use-package csv-mode
-    :ensure t)
-
   (use-package dockerfile-mode
-    :ensure t)
-
-  (use-package groovy-mode
     :ensure t)
 
   (use-package lsp-java
     :ensure t
     :after lsp-mode)
+
+  (use-package markdown-mode
+    :ensure t
+    :delight)
+
+  (use-package nxml-mode
+    :delight)
+
+  (use-package sql-indent
+    :ensure t
+    :delight sqlind-minor-mode
+    :commands sqlind-minor-mode
+    :hook (sql-mode . sqlind-minor-mode))
+
+  (use-package tuareg
+    :ensure t
+    :delight)
+#+END_SRC
+   + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
+   + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
+   + Add psl-mode, which is symlinked to a local copy hiding elsewhere
+#+NAME: misc-unused
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+    :ensure t)
+
+  (use-package fstar-mode
+    :ensure t
+    :mode ("\\.fs?\\'" . fstar-mode))
+
+  (use-package groovy-mode
+    :ensure t)
+
+  (use-package haskell-mode
+    :ensure t
+    :delight
+    :mode "\\.wy.*\\'")
 
   (use-package lean-mode
     :delight
@@ -425,31 +442,15 @@ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria
     :ensure t
     :delight)
 
-  (use-package markdown-mode
-    :ensure t
-    :delight)
-
   (use-package proof-general
     :ensure t)
 
+  (use-package psl-mode
+    :load-path "external"
+    :mode "\\.psl\\'")
+
   (use-package scala-mode
     :ensure t)
-
-  (use-package sql-indent
-    :ensure t
-    :delight sqlind-minor-mode
-    :commands sqlind-minor-mode
-    :hook (sql-mode . sqlind-minor-mode))
-
-  (use-package tuareg
-    :ensure t
-    :delight)
-
-  (use-package nxml-mode
-    :delight)
-
-  (use-package autorevert
-    :delight auto-revert-mode)
 
   (use-package yaml-mode
     :ensure t)
@@ -494,16 +495,19 @@ bind that function.
 Save all backups to a universal location
 #+NAME: global-backup
 #+BEGIN_SRC emacs-lisp
-    (setq
-     backup-by-copying t
-     backup-directory-alist '(("." . "~/.emacs.d/backup/persave"))
-     ;; this doesn't work for some reason
-     ;backup-directory-alist '(("." . (concat (getenv "HOME") "/.emacs.d/backup/persave")))
-     delete-old-versions t
-     kept-new-versions 6
-     kept-old-versions 2
-     version-control t)
+  (setq
+   backup-by-copying t
+   backup-directory-alist '(("." . "~/.emacs.d/backup/persave"))
+   ;; this doesn't work for some reason
+   ;; backup-directory-alist '(("." . (concat (getenv "HOME") "/.emacs.d/backup/persave")))
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t
+   vc-make-backup-files t)
 
+  (use-package no-littering
+    :ensure t)
 #+END_SRC
 * Org Mode
 Short key bindings for capturing notes/links and switching to agenda.
@@ -700,19 +704,15 @@ this org file.
 
   <<elisp>>
 
-  <<fstar>>
-
-  <<haskell>>
-
   <<latex>>
-
-  <<psl>>
 
   <<python>>
 
-  <<rust>>
+;  <<rust>>
 
   <<misc>>
+
+;  <<misc-unused>>
 
   <<org-commands>>
 
