@@ -83,7 +83,6 @@
 buffer.  Set up git diffs and buffer position in the fringe.
 #+NAME: fringe
 #+BEGIN_SRC emacs-lisp
-
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
@@ -91,11 +90,8 @@ buffer.  Set up git diffs and buffer position in the fringe.
     (global-git-gutter-mode t))
 
   (use-package magit
-    :ensure t
-    :config
-    (global-set-key (kbd "C-x g") 'magit-status))
-
-  ;; (global-linum-mode)
+    :ensure t)
+  ; (global-auto-revert-mode 1)
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -185,9 +181,6 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package yasnippet-snippets
     :ensure t)
-
-  ;; (use-package magit
-  ;;   :ensure t)
 #+END_SRC
 
 #+NAME: error-checking
@@ -212,14 +205,15 @@ Make mouse clicks work in xterm (and iTerm)
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
-  ;   (rust-mode . lsp)
+  ;  (cmake-mode . lsp)
+  ;  (rust-mode . lsp)
      )
 
     :custom
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-executable "/usr/bin/clangd-9")
+    (lsp-clients-clangd-executable "/usr/bin/clangd")
     (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
     (lsp-before-save-edits nil))
 
@@ -227,8 +221,8 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :after (lsp-mode flycheck)
     :custom
-    (lsp-ui-doc-enable t)
-    (lsp-ui-doc-position 'top)
+;    (lsp-ui-doc-enable t)
+;    (lsp-ui-doc-position 'top)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-list-position 'right)
     (lsp-ui-peek-enable t)
@@ -256,7 +250,7 @@ Make mouse clicks work in xterm (and iTerm)
     :hook (after-init . global-company-mode)
     :custom
     (company-tooltip-align-annotations t)
-;    (company-clang-executable "/usr/bin/clang-9")
+;    (company-clang-executable "/usr/bin/clang")
     (company-cmake-executable "/snap/cmake/current/bin/cmake"))
   (use-package company-lsp
     :ensure t
@@ -283,6 +277,9 @@ autotools projects. So I don't think I need ccls anymore!
   (use-package highlight-doxygen
     :ensure t
     :config (highlight-doxygen-global-mode 1))
+
+  (use-package bison-mode
+    :ensure t)
 #+END_SRC
 ** Emacs-Lisp
    For emacs-lisp code, use paredit for dealing with parentheses.
@@ -385,6 +382,9 @@ autotools projects. So I don't think I need ccls anymore!
   (use-package dockerfile-mode
     :ensure t)
 
+  (use-package flatbuffers-mode
+    :ensure t)
+
   (use-package lsp-java
     :ensure t
     :after lsp-mode)
@@ -405,6 +405,10 @@ autotools projects. So I don't think I need ccls anymore!
   (use-package tuareg
     :ensure t
     :delight)
+
+  (use-package yaml-mode
+    :ensure t
+    :mode ".clang-format")
 #+END_SRC
    + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
    + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
@@ -450,9 +454,6 @@ autotools projects. So I don't think I need ccls anymore!
     :mode "\\.psl\\'")
 
   (use-package scala-mode
-    :ensure t)
-
-  (use-package yaml-mode
     :ensure t)
 #+END_SRC
 * Global key bindings
@@ -506,8 +507,8 @@ Save all backups to a universal location
    version-control t
    vc-make-backup-files t)
 
-  (use-package no-littering
-    :ensure t)
+;  (use-package no-littering
+;    :ensure t)
 #+END_SRC
 * Org Mode
 Short key bindings for capturing notes/links and switching to agenda.

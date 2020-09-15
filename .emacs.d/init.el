@@ -7,13 +7,13 @@
 
 (require 'package)
 
-(setq package-enable-at-startup nil)
-(setq package-archives
-      '(("org"   .  "https://orgmode.org/elpa/")
-        ("gnu"   .  "https://elpa.gnu.org/packages/")
-        ("melpa" .  "https://melpa.org/packages/")))
+(setq package-enable-at-startup nil
+      package-archives '(("org"   .  "https://orgmode.org/elpa/")
+                         ("gnu"   .  "https://elpa.gnu.org/packages/")
+                         ("melpa" .  "https://melpa.org/packages/")))
 
-(package-initialize)
+(when (< emacs-major-version 27)
+  (package-initialize))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
