@@ -1,10 +1,9 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Mark Blunk
 * Configuring Emacs
-  Giving org-mode format for Emacs configuration a chance. This
-  template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]]. I have
-  removed some parts of it that either I didn't think I would need or
-  didn't understand.
+  This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]]. I
+  have removed some parts of it that either I didn't think I would
+  need or didn't understand.
 * How to use this configuration
 ** Obtaining the source
    You can find the latest public version of this configuration in [[https://github.com/markblunk/dotfiles][the
@@ -89,9 +88,9 @@ buffer.  Set up git diffs and buffer position in the fringe.
     :config
     (global-git-gutter-mode t))
 
-  (use-package magit
-    :ensure t)
-  ; (global-auto-revert-mode 1)
+;  (use-package magit
+;    :ensure t)
+   (global-auto-revert-mode 1)
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -190,7 +189,7 @@ Make mouse clicks work in xterm (and iTerm)
     :no-require t
     :delight flycheck-mode
     :hook ((python-mode . flycheck-mode)
-;           (Texinfo-mode . flycheck-mode)
+                                          ;           (Texinfo-mode . flycheck-mode)
            (emacs-lisp-mode . flycheck-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
@@ -205,8 +204,8 @@ Make mouse clicks work in xterm (and iTerm)
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
-  ;  (cmake-mode . lsp)
-  ;  (rust-mode . lsp)
+                                          ;  (cmake-mode . lsp)
+                                          ;  (rust-mode . lsp)
      )
 
     :custom
@@ -217,12 +216,13 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
     (lsp-before-save-edits nil))
 
+
   (use-package lsp-ui
     :ensure t
     :after (lsp-mode flycheck)
     :custom
-;    (lsp-ui-doc-enable t)
-;    (lsp-ui-doc-position 'top)
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-position 'top)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-list-position 'right)
     (lsp-ui-peek-enable t)
@@ -238,7 +238,6 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :after lsp-mode
     :config (dap-auto-configure-mode))
-
 #+END_SRC
 
 #+NAME: auto-complete
@@ -249,15 +248,8 @@ Make mouse clicks work in xterm (and iTerm)
     :commands global-company-mode
     :hook (after-init . global-company-mode)
     :custom
-    (company-tooltip-align-annotations t)
-;    (company-clang-executable "/usr/bin/clang")
-    (company-cmake-executable "/snap/cmake/current/bin/cmake"))
-  (use-package company-lsp
-    :ensure t
-    :after (lsp-mode company)
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends))
+    (company-tooltip-align-annotations t))
+
 #+END_SRC
 ** C
 Nothing right now
@@ -362,13 +354,16 @@ autotools projects. So I don't think I need ccls anymore!
     :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
 ** Misc
-   + cmake-mode.el comes installed via ~sudo snap install cmake --classic~
+   + cmake-mode.el comes installed via ~apt install cmake~
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
     :ensure t
     :delight
     :mode ".adoc")
+
+  (use-package antlr-mode
+    :mode ".g4")
 
   (use-package autoconf
     :delight autoconf-mode)
@@ -377,7 +372,7 @@ autotools projects. So I don't think I need ccls anymore!
     :delight auto-revert-mode)
 
   (use-package cmake-mode
-    :load-path "/snap/cmake/current/share/emacs/site-lisp")
+    :load-path "/usr/share/emacs/site-lisp")
 
   (use-package dockerfile-mode
     :ensure t)
@@ -600,7 +595,6 @@ Use treemacs for exploring projects/workspaces.
                    "Ignore random files"
                    (or
                     (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)
-                    (string-match "\\`\\.ccls-cache\\'" filename)
                     (string-match "\\`\\.clangd\\'" filename)
                     (string-match "\\`[-_A-Za-z0-9]+\\.iml\\'" filename)
                     (string-match "\\`\\.idea\\'" filename)))))
