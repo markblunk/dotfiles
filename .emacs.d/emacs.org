@@ -407,7 +407,6 @@ autotools projects. So I don't think I need ccls anymore!
 #+END_SRC
    + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
    + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
-   + Add psl-mode, which is symlinked to a local copy hiding elsewhere
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
@@ -443,10 +442,6 @@ autotools projects. So I don't think I need ccls anymore!
 
   (use-package proof-general
     :ensure t)
-
-  (use-package psl-mode
-    :load-path "external"
-    :mode "\\.psl\\'")
 
   (use-package scala-mode
     :ensure t)
