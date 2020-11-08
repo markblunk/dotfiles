@@ -24,4 +24,6 @@ if [[ $HOSTNAME = markbott ]]; then
     # snap bins
     prepend "/snap/bin"
 
+    #npm global location
+    PATH="$HOME/.npm-global/bin:${PATH}"
 fi

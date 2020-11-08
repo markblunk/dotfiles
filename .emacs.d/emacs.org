@@ -143,6 +143,7 @@ Make mouse clicks work in xterm (and iTerm)
   (setq-default
    indent-tabs-mode nil
    show-trailing-whitespace t
+   electric-indent-inhibit t
    tab-width 4)
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
@@ -182,6 +183,7 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t)
 #+END_SRC
 
+bash lsp server installation: ~npm i -g bash-language-server~
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
@@ -199,22 +201,27 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package lsp-mode
     :ensure t
+    :after (company which-key)
     :commands lsp
     :hook
     ((c-mode . lsp)
      (c++-mode . lsp)
      (java-mode . lsp)
-                                          ;  (cmake-mode . lsp)
-                                          ;  (rust-mode . lsp)
+     (haskell-mode . lsp)
+     (haskell-literate-mode . lsp)
+     (rust-mode . lsp)
+     (sh-mode . lsp)
+     (lsp-mode . lsp-enable-which-key-integration)
      )
 
     :custom
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-executable "/usr/bin/clangd")
     (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
-    (lsp-before-save-edits nil))
+    (lsp-before-save-edits nil)
+    (lsp-lens-enable t)
+    )
 
 
   (use-package lsp-ui
@@ -222,8 +229,9 @@ Make mouse clicks work in xterm (and iTerm)
     :after (lsp-mode flycheck)
     :custom
     (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-position 'top)
+    (lsp-ui-doc-show-with-cursor nil)
     (lsp-ui-doc-include-signature t)
+    (lsp-ui-doc-position 'top)
     (lsp-ui-flycheck-list-position 'right)
     (lsp-ui-peek-enable t)
     (lsp-ui-peek-show-directory t)
@@ -233,11 +241,6 @@ Make mouse clicks work in xterm (and iTerm)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
-
-  (use-package dap-mode
-    :ensure t
-    :after lsp-mode
-    :config (dap-auto-configure-mode))
 #+END_SRC
 
 #+NAME: auto-complete
@@ -249,18 +252,22 @@ Make mouse clicks work in xterm (and iTerm)
     :hook (after-init . global-company-mode)
     :custom
     (company-tooltip-align-annotations t))
-
 #+END_SRC
 ** C
-Nothing right now
+   Nothing right now
 ** Cpp
-+To get ccls to behave correctly I followed the build & install+
-+sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
-directory of every project.+
-Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I can use clangd for the
-autotools projects. So I don't think I need ccls anymore!
+   +To get ccls to behave correctly I followed the build & install+
+   +sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the
+   root directory of every project.+ Actually, now that I've installed
+   [[https://github.com/rizsotto/Bear][Bear]], I can use clangd for the autotools projects. So I don't think
+   I need ccls anymore!
+
+   *cmake-mode.el* comes installed via ~apt install cmake~
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+    :load-path "/usr/share/emacs/site-lisp")
+
   (use-package modern-cpp-font-lock
     :ensure t
     :delight modern-c++-font-lock-mode
@@ -320,33 +327,17 @@ autotools projects. So I don't think I need ccls anymore!
     :config (set-face-background 'highlight-indentation-face "DarkRed"))
 #+END_SRC
 ** Rust
+[[https://github.com/rust-lang/rls#step-2-install-the-rls][rls installation instructions]]
 #+NAME: rust
 #+BEGIN_SRC emacs-lisp
-  ;; Pre-requisites:
-  ;; rustup default nightly
-  ;; cargo component add rust-src
-  ;; cargo +nightly install racer
-
   (use-package rust-mode
     :delight rust-mode
     :ensure flycheck-rust
     :no-require t
-    :mode "\\.rs\\'"
     :commands flycheck-rust-setup
     :hook (rust-mode . flycheck-rust-setup)
     :custom
     (rust-format-on-save t))
-
-  ;; (use-package racer
-  ;;   :after rust-mode
-  ;;   :delight racer-mode
-  ;;   :ensure t
-  ;;   :hook (rust-mode . racer-mode)
-  ;;   :config
-  ;;   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
-  ;; (setq racer-rust-src-path (concat
-  ;;                            (getenv "HOME")
-  ;;                            "/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
 
   (use-package cargo
     :ensure t
@@ -354,16 +345,16 @@ autotools projects. So I don't think I need ccls anymore!
     :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
 ** Misc
-   + cmake-mode.el comes installed via ~apt install cmake~
+   + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
     :ensure t
     :delight
-    :mode ".adoc")
+    :mode "\\.adoc\\'")
 
   (use-package antlr-mode
-    :mode ".g4")
+    :mode "\\.g4\\'")
 
   (use-package autoconf
     :delight autoconf-mode)
@@ -371,14 +362,21 @@ autotools projects. So I don't think I need ccls anymore!
   (use-package autorevert
     :delight auto-revert-mode)
 
-  (use-package cmake-mode
-    :load-path "/usr/share/emacs/site-lisp")
-
   (use-package dockerfile-mode
     :ensure t)
 
   (use-package flatbuffers-mode
     :ensure t)
+
+  (use-package haskell-mode
+    :ensure t
+    :delight
+    :mode "\\.wy.*\\'")
+
+  (use-package lsp-haskell
+    :ensure t
+    :delight
+    :after (haskell-mode lsp-mode))
 
   (use-package lsp-java
     :ensure t
@@ -403,10 +401,9 @@ autotools projects. So I don't think I need ccls anymore!
 
   (use-package yaml-mode
     :ensure t
-    :mode ".clang-format")
+    :mode "\\.clang-format\\'")
 #+END_SRC
    + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
-   + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
@@ -418,11 +415,6 @@ autotools projects. So I don't think I need ccls anymore!
 
   (use-package groovy-mode
     :ensure t)
-
-  (use-package haskell-mode
-    :ensure t
-    :delight
-    :mode "\\.wy.*\\'")
 
   (use-package lean-mode
     :delight
@@ -698,7 +690,7 @@ this org file.
 
   <<python>>
 
-;  <<rust>>
+  <<rust>>
 
   <<misc>>
 

@@ -92,3 +92,6 @@ export SHELL_BASH OS DOTFILES_DIR
 
 # OPAM configuration
 . $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# https://www.haskell.org/ghcup
+[ -f "/home/mblunk/.ghcup/env" ] && source "/home/mblunk/.ghcup/env" # ghcup-env

@@ -3,8 +3,3 @@
 prepend() {
           [ -d $1 ] && PATH="$1:${PATH}"
 }
-prepend $JAVA_HOME/bin
-prepend $SPARK_HOME/bin
-
-#Finally, add this Haskell stuff to PATH even though it doesn't currently exist
-PATH=$HOME/.cabal/bin:$HOME/Library/Haskell/bin:$PATH
