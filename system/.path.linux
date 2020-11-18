@@ -26,4 +26,13 @@ if [[ $HOSTNAME = markbott ]]; then
 
     #npm global location
     PATH="$HOME/.npm-global/bin:${PATH}"
+
+    # https://www.haskell.org/ghcup
+    if [ -d "$HOME/.cabal" ]; then
+        prepend "$HOME/.cabal/bin"
+    fi
+
+    if [ -d "$HOME/.ghcup/bin" ]; then
+        prepend "$HOME/.ghcup/bin"
+    fi
 fi

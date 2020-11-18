@@ -93,5 +93,17 @@ export SHELL_BASH OS DOTFILES_DIR
 # OPAM configuration
 . $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-# https://www.haskell.org/ghcup
-[ -f "/home/mblunk/.ghcup/env" ] && source "/home/mblunk/.ghcup/env" # ghcup-env
+
+# Set this to the desired key timeout (in seconds), or leave it blank
+# for no timeout. Syntax like 12h30m (for 12 hours and 30 minutes) is
+# also accepted.
+t=
+
+# Set up ssh-agent. Don't edit this section.
+eval " $(ssh-agent ${t:+-t $t})"
+eval " x=( $(trap -p EXIT) )"
+trap " ${x[@]+${x[-2]}}"$'\n''ssh-agent -k' EXIT
+
+# Immediately unlock certain keys. Edit this section as desired. Make
+# sure to use "ssh-add ${t:+-t $t}" for every command.
+ssh-add ${t:+-t $t} ~/.ssh/gitlab.stealthsoftwareinc.com/mark/git
