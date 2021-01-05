@@ -103,7 +103,3 @@ t=
 eval " $(ssh-agent ${t:+-t $t})"
 eval " x=( $(trap -p EXIT) )"
 trap " ${x[@]+${x[-2]}}"$'\n''ssh-agent -k' EXIT
-
-# Immediately unlock certain keys. Edit this section as desired. Make
-# sure to use "ssh-add ${t:+-t $t}" for every command.
-ssh-add ${t:+-t $t} ~/.ssh/gitlab.stealthsoftwareinc.com/mark/git

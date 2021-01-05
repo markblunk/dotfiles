@@ -1,5 +1,7 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Mark Blunk
+#+STARTUP: indent
+#+STARTUP: overview
 * Configuring Emacs
   This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]]. I
   have removed some parts of it that either I didn't think I would
@@ -218,9 +220,12 @@ bash lsp server installation: ~npm i -g bash-language-server~
     (lsp-response-timeout 60)
     (lsp-auto-guess-root t)
     (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy" "-suggest-missing-includes" "-completion-style=detailed")))
+    (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy"
+                                     "-suggest-missing-includes"
+                                     "-completion-style=detailed")))
     (lsp-before-save-edits nil)
     (lsp-lens-enable t)
+    (lsp-headerline-breadcrumb-enable nil)
     )
 
 
@@ -521,11 +526,6 @@ Short key bindings for capturing notes/links and switching to agenda.
                                    (latex . t)))
     :custom
     (org-export-backends '(ascii beamer html latex md texinfo)))
-
-  (use-package org-bullets
-    :ensure t
-    :after org
-    :hook (org-mode . org-bullets-mode))
 #+END_SRC
 * Other libraries
 Make sure /.class.d/ files are ignored (/.class/ files are already
@@ -605,10 +605,10 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
+    :init (which-key-mode)
     :after lsp-mode
     :delight which-key-mode
     :config
-    (which-key-mode t)
     (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 #+END_SRC
 * External

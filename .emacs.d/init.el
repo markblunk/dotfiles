@@ -8,9 +8,9 @@
 (require 'package)
 
 (setq package-enable-at-startup nil
-      package-archives '(("org"   .  "https://orgmode.org/elpa/")
-                         ("gnu"   .  "https://elpa.gnu.org/packages/")
-                         ("melpa" .  "https://melpa.org/packages/")))
+      package-archives '(("org"   . "https://orgmode.org/elpa/")
+                         ("gnu"   . "https://elpa.gnu.org/packages/")
+			 ("melpa" . "https://melpa.org/packages/")))
 
 (when (< emacs-major-version 27)
   (package-initialize))

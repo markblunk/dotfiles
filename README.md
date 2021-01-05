@@ -8,11 +8,5 @@ systems I use, Mac and Linux, home and work. many of the files end in
 *.osx or *.linux so that they are loaded only when in that operating
 system.
 
-This directory should be placed in ~/.dotfiles to work correctly. To
-run first run the command
-source ~/.dotfiles/install.sh
-
-I also have a separate set of files, structured similarly, in the
-directory ~/.work-dotfiles . This directory contains all the stuff you
-don't want Github to see.
-
+This directory should be placed in ~/.dotfiles to work correctly. Then
+`source ~/.dotfiles/install.sh` to set up.

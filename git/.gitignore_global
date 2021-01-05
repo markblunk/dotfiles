@@ -24,8 +24,6 @@
 .dir-locals.el
 
 #lsp for cpp
-.ccls
-.ccls-cache/
 compile_commands.json
 .clangd/
 
