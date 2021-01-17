@@ -3,15 +3,15 @@
 #+STARTUP: indent
 #+STARTUP: overview
 * Configuring Emacs
-  This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]]. I
-  have removed some parts of it that either I didn't think I would
-  need or didn't understand.
+This template was heavily lifted from [[http://zeekat.nl/articles/making-emacs-work-for-me.html][Making Emacs work for me]]. I have
+removed some parts of it that either I didn't think I would need or
+didn't understand.
 * How to use this configuration
 ** Obtaining the source
-   You can find the latest public version of this configuration in [[https://github.com/markblunk/dotfiles][the
-   Github repository]] The meat of it is right here in this file.
+You can find the latest public version of this configuration in [[https://github.com/markblunk/dotfiles][the
+Github repository]] The meat of it is right here in this file.
 ** Installation
-   This configuration is intended to be installable from scratch.
+This configuration is intended to be installable from scratch.
 * Graphics and looks
 ** Color theme
 #+NAME: color-theme
@@ -54,7 +54,8 @@
 
   (defadvice show-paren-function
       (after show-matching-paren-offscreen activate)
-    "If the matching paren is offscreen, show the matching line in the echo area.  Has no effect if the character before point is not of the syntax class ')'."
+    "If the matching paren is offscreen, show the matching line in the echo area.
+    Has no effect if the character before point is not of the syntax class ')'."
     (interactive)
     (let* ((cb (char-before (point)))
            (matching-text (and cb
@@ -80,19 +81,21 @@
     :hook (racer-mode . eldoc-mode))
 #+END_SRC
 ** Fringe decorations
-[[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the
-buffer.  Set up git diffs and buffer position in the fringe.
+[[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the buffer.
+Set up git diffs and buffer position in the fringe.
 #+NAME: fringe
 #+BEGIN_SRC emacs-lisp
+    ;  (if (>= emacs-major-version 26)
+    ;      (global-display-line-numbers-mode))
+
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
     :config
     (global-git-gutter-mode t))
 
-;  (use-package magit
-;    :ensure t)
-   (global-auto-revert-mode 1)
+  (use-package magit
+    :ensure t)
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -154,7 +157,6 @@ Make mouse clicks work in xterm (and iTerm)
     :config (exec-path-from-shell-initialize))
 
   (setq tramp-default-method "ssh")
-
 #+END_SRC
 * Programming
 ** General programming
@@ -194,6 +196,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
     :delight flycheck-mode
     :hook ((python-mode . flycheck-mode)
                                           ;           (Texinfo-mode . flycheck-mode)
+           (c-mode . flycheck-mode)
            (emacs-lisp-mode . flycheck-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
@@ -206,8 +209,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
     :after (company which-key)
     :commands lsp
     :hook
-    ((c-mode . lsp)
-     (c++-mode . lsp)
+    ((c++-mode . lsp)
      (java-mode . lsp)
      (haskell-mode . lsp)
      (haskell-literate-mode . lsp)
@@ -227,7 +229,6 @@ bash lsp server installation: ~npm i -g bash-language-server~
     (lsp-lens-enable t)
     (lsp-headerline-breadcrumb-enable nil)
     )
-
 
   (use-package lsp-ui
     :ensure t
@@ -259,15 +260,15 @@ bash lsp server installation: ~npm i -g bash-language-server~
     (company-tooltip-align-annotations t))
 #+END_SRC
 ** C
-   Nothing right now
+Nothing right now
 ** Cpp
-   +To get ccls to behave correctly I followed the build & install+
-   +sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the
-   root directory of every project.+ Actually, now that I've installed
-   [[https://github.com/rizsotto/Bear][Bear]], I can use clangd for the autotools projects. So I don't think
-   I need ccls anymore!
++To get ccls to behave correctly I followed the build & install+
++sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
+directory of every project.+ Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I
+can use clangd for the autotools projects. So I don't think I need
+ccls anymore!
 
-   *cmake-mode.el* comes installed via ~apt install cmake~
+*cmake-mode.el* comes installed via ~apt install cmake~
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
@@ -286,7 +287,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
     :ensure t)
 #+END_SRC
 ** Emacs-Lisp
-   For emacs-lisp code, use paredit for dealing with parentheses.
+For emacs-lisp code, use paredit for dealing with parentheses.
 #+NAME: elisp
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
@@ -350,7 +351,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
     :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
 ** Misc
-   + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
++ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
@@ -451,8 +452,7 @@ more ideas.
   (global-set-key "\C-c q" 'delete-indentation)
 #+END_SRC
 * Global navigation
-Set emacs configuration file location, and
-bind that function.
+Set emacs configuration file location, and bind that function.
 #+NAME: global-navigation
 #+BEGIN_SRC emacs-lisp
   (defun mb-edit-emacs-configuration ()
@@ -618,13 +618,13 @@ External packages may be dropped in the [[file:./external][external]] directory.
   (add-to-list 'load-path (concat (getenv "HOME") "/.emacs.d/external"))
 #+END_SRC
 * Options set using the customize interface
-  By default, Emacs saves the options you set via the `customize-*`
-  functions in the user init file, which is "$HOME/.emacs.d/init.el" in
-  this setup. Instead, put it in a separate file, which we create if
-  it's not there, by first creating an empty file and then loading the
-  needed content. Of course, almost all of our custom variables are
-  set with use-package, but there are a couple left and this way they
-  don't clutter up the other files.
+By default, Emacs saves the options you set via the `customize-*`
+functions in the user init file, which is "$HOME/.emacs.d/init.el" in
+this setup. Instead, put it in a separate file, which we create if
+it's not there, by first creating an empty file and then loading the
+needed content. Of course, almost all of our custom variables are set
+with use-package, but there are a couple left and this way they don't
+clutter up the other files.
 #+NAME: customize-config
 #+BEGIN_SRC emacs-lisp
   (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
