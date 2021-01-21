@@ -83,11 +83,8 @@ This configuration is intended to be installable from scratch.
 ** Fringe decorations
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the buffer.
 Set up git diffs and buffer position in the fringe.
-#+NAME: fringe
+#+NAME: git
 #+BEGIN_SRC emacs-lisp
-    ;  (if (>= emacs-major-version 26)
-    ;      (global-display-line-numbers-mode))
-
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
@@ -96,6 +93,18 @@ Set up git diffs and buffer position in the fringe.
 
   (use-package magit
     :ensure t)
+
+  (use-package gitattributes-mode
+    :ensure t)
+
+  (use-package gitconfig-mode
+    :delight
+    :ensure t)
+
+  (use-package gitignore-mode
+    :delight
+    :ensure t
+    :mode "\\.gitignore_global\\'")
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
@@ -658,7 +667,7 @@ this org file.
 
   <<clutter>>
 
-  <<fringe>>
+  <<git>>
 
   <<mode>>
 
