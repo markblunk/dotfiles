@@ -4,7 +4,7 @@
 
 # for some reason I need to add these manually. I think I am doing something wrong
 source /usr/share/bash-completion/completions/apt
-/usr/share/bash-completion/completions/clang-10
+source /usr/share/bash-completion/completions/clang-10
 source /usr/share/bash-completion/completions/chmod
 source /usr/share/bash-completion/completions/cmake
 source /usr/share/bash-completion/completions/docker

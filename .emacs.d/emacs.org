@@ -80,7 +80,7 @@ This configuration is intended to be installable from scratch.
     :delight eldoc-mode
     :hook (racer-mode . eldoc-mode))
 #+END_SRC
-** Fringe decorations
+** Git stuff
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the buffer.
 Set up git diffs and buffer position in the fringe.
 #+NAME: git
