@@ -224,8 +224,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
      (haskell-literate-mode . lsp)
      (rust-mode . lsp)
      (sh-mode . lsp)
-     (lsp-mode . lsp-enable-which-key-integration)
-     )
+     (lsp-mode . lsp-enable-which-key-integration))
 
     :custom
     (lsp-response-timeout 60)
@@ -236,8 +235,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
                                      "-completion-style=detailed")))
     (lsp-before-save-edits nil)
     (lsp-lens-enable t)
-    (lsp-headerline-breadcrumb-enable nil)
-    )
+    (lsp-headerline-breadcrumb-enable nil))
 
   (use-package lsp-ui
     :ensure t
