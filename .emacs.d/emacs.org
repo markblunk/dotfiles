@@ -722,7 +722,7 @@ this org file.
 
   <<misc>>
 
-;  <<misc-unused>>
+;;  <<misc-unused>>
 
   <<org-commands>>
 

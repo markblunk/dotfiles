@@ -19,9 +19,30 @@
 
 #emacs
 *~
-.#*
+.\#*
+*.elc
+tramp
+.org-id-locations
+*_archive
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# Flycheck
+flycheck_*.el
+
+# server auth directory
+/server/
+
+# projectiles files
 .projectile
+
+# directory configuration
 .dir-locals.el
+
+# network security
+/network-security.data
 
 #lsp for cpp
 compile_commands.json
