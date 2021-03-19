@@ -77,8 +77,7 @@ This configuration is intended to be installable from scratch.
     :delight abbrev-mode)
 
   (use-package eldoc
-    :delight eldoc-mode
-    :hook (racer-mode . eldoc-mode))
+    :delight eldoc-mode)
 #+END_SRC
 ** Git stuff
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the buffer.
