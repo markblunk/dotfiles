@@ -238,8 +238,7 @@ bash lsp server installation: ~npm i -g bash-language-server~
     (lsp-rust-analyzer-cargo-watch-command "clippy")
     (lsp-eldoc-render-all t)
     (lsp-idle-delay 0.6)
-    (lsp-rust-analyzer-server-display-inlay-hints t)
-    )
+    (lsp-rust-analyzer-server-display-inlay-hints t))
 
   (use-package lsp-ui
     :ensure t
@@ -330,6 +329,13 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   ;;          (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** Python
++ I had to run ~lsp-python-ms-update-server~ first (auto-install
+  wasn't working) but now that the server is installed setting that
+  variable seems to work ok.
++ The ~hack-local-variables-hook~ hack is copied from [[https://emacs-lsp.github.io/lsp-python-ms][lsp notes]], so
+  that lsp looks for the virtualenv executable in /.dir-locals.el/ for
+  something like ~(python-mode . ((lsp-python-ms-python-executable . "/PATH/TO/VENV/PYTHONBINARY")))~
+
 #+NAME: python
 #+BEGIN_SRC emacs-lisp
   (use-package python
@@ -342,6 +348,16 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :after python
     :hook (python-mode . highlight-indentation-mode)
     :config (set-face-background 'highlight-indentation-face "DarkRed"))
+
+  (use-package lsp-python-ms
+    :ensure t
+    :init (setq lsp-python-ms-auto-install-server t))
+
+  (add-hook 'hack-local-variables-hook
+            (lambda ()
+              (when (derived-mode-p 'python-mode)
+                (require 'lsp-python-ms)
+                (lsp))))
 #+END_SRC
 ** Rust
 [[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs][rust with emacs]]
