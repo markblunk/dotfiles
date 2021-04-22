@@ -195,7 +195,7 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t)
 #+END_SRC
 
-bash lsp server installation: ~npm i -g bash-language-server~
+[[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation: ~npm i -g bash-language-server~
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
