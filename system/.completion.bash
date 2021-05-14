@@ -2,6 +2,9 @@
 # source /etc/profile.d/bash_completion.sh
 . /etc/bash_completion
 
+# completion for haskell build tool stack
+eval "$(stack --bash-completion-script stack)"
+
 # for some reason I need to add these manually. I think I am doing something wrong
 source /usr/share/bash-completion/completions/apt
 source /usr/share/bash-completion/completions/clang-10
