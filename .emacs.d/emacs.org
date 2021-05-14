@@ -257,6 +257,11 @@ Make mouse clicks work in xterm (and iTerm)
     :bind
     ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
     ([remap xref-find-references] .  lsp-ui-peek-find-references))
+
+  (use-package which-key
+    :ensure t
+    :init (which-key-mode)
+    :delight which-key-mode)
 #+END_SRC
 
 #+NAME: auto-complete
@@ -645,16 +650,6 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
     (auto-package-update-maybe))
 #+END_SRC
 
-#+NAME: which-key
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :ensure t
-    :init (which-key-mode)
-    :after lsp-mode
-    :delight which-key-mode
-    :config
-    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
-#+END_SRC
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
 #+NAME: external
@@ -693,8 +688,6 @@ this org file.
   <<customize-config>>
 
   <<update-packages>>
-
-  <<which-key>>
 
   <<color-theme>>
 
