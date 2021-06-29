@@ -1,3 +1,4 @@
+;;; package --- initialization file.
 ;;; Commentary:
 ;; Set up the package archives, download use-package, and use the file
 ;; emacs.org to generate the corresponding emacs.el file
