@@ -249,8 +249,8 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-     ;; (haskell-mode . lsp)
-     ;; (haskell-literate-mode . lsp)
+     (haskell-mode . lsp)
+     (haskell-literate-mode . lsp)
      (java-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
@@ -413,20 +413,25 @@ For emacs-lisp code, use paredit for dealing with parentheses.
                                           ;    :custom    (haskell-font-lock-symbols t)
     )
 
-  ;; (use-package lsp-haskell
-  ;;   :ensure t
-  ;;   :delight
-  ;;   :after (haskell-mode lsp-mode)
+  (use-package lsp-haskell
+    :ensure t
+    :delight
+    :after (haskell-mode lsp-mode)
 
-  ;;   :init
-  ;;   (add-hook 'hack-local-variables-hook
-  ;;             (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
+    :init
+    (add-hook 'hack-local-variables-hook
+              (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
 
   ;; load wizpl library from external directory
   (load-library "wizpl-mode")
   (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
   (add-hook 'wizpl-mode-hook
             (lambda () (set-input-method "mibbles")))
+  ;; (use-package wizpl-mode
+  ;;   :load-path "external"
+  ;;   :after haskell
+  ;;   )
+
 #+END_SRC
 
 ** Misc
