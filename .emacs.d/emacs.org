@@ -245,9 +245,9 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-     (haskell-mode . lsp)
-     (haskell-literate-mode . lsp)
-;     (java-mode . lsp)
+;     (haskell-mode . lsp)
+;     (haskell-literate-mode . lsp)
+     (java-mode . lsp)
      (rust-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
@@ -405,7 +405,10 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version
   used in a particular project. Setting the custom variable
   ~lsp-haskell-server-path~ should work directly without having to
-  mess around with ghcup, but I couldn't get it to work as expected.
+  mess around with ghcup, but I couldn't get it to work as
+  expected. So I ended up setting that variable per haskell project in
+  ~.dir-locals.el~, and thus I have to add that hook here like I did
+  for python.
 #+NAME: haskell
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
@@ -415,16 +418,14 @@ For emacs-lisp code, use paredit for dealing with parentheses.
                                           ;    :custom    (haskell-font-lock-symbols t)
     )
 
-  (use-package lsp-haskell
-    :ensure t
-    :delight
-    :after (haskell-mode lsp-mode)
+  ;; (use-package lsp-haskell
+  ;;   :ensure t
+  ;;   :delight
+  ;;   :after (haskell-mode lsp-mode)
 
-    :init
-    (add-hook 'hack-local-variables-hook
-              (lambda () (when (derived-mode-p 'haskell-mode)) (lsp)))
-
-    )
+  ;;   :init
+  ;;   (add-hook 'hack-local-variables-hook
+  ;;             (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
 
   ;; (use-package wizpl-mode
   ;;   :load-path "external"
@@ -484,6 +485,11 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package yaml-mode
     :ensure t
     :mode "\\.clang-format\\'")
+  ; be sure to add this line in lsp-mode if you use this
+  ; (java-mode . lsp)
+   (use-package lsp-java
+     :ensure t
+     :after lsp-mode)
 #+END_SRC
    + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
 ***  Unused
@@ -507,12 +513,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package company-lean
     :ensure t
     :after (lean-mode company))
-
-  ; be sure to add this line in lsp-mode if you use this
-  ; (java-mode . lsp)
-  ;; (use-package lsp-java
-  ;;   :ensure t
-  ;;   :after lsp-mode)
 
   (use-package js2-mode
     :ensure t
