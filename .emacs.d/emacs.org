@@ -249,8 +249,8 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-     (haskell-mode . lsp)
-     (haskell-literate-mode . lsp)
+;     (haskell-mode . lsp)
+;     (haskell-literate-mode . lsp)
      (java-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
@@ -341,41 +341,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
               "Turn on pseudo-structural editing of Lisp code."   t)
     :hook (emacs-lisp-mode . enable-paredit-mode))
 #+END_SRC
-** Haskell
-+ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
-+ to get lsp-haskell to behave, I have to first set the version of ghc
-  used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version
-  used in a particular project. Setting the custom variable
-  ~lsp-haskell-server-path~ should work directly without having to
-  mess around with ghcup, but I couldn't get it to work as
-  expected. So I ended up setting that variable per haskell project in
-  ~.dir-locals.el~, and thus I have to add that hook here like I did
-  for python.
-#+NAME: haskell
-#+BEGIN_SRC emacs-lisp
-  (use-package haskell-mode
-    :ensure t
-    :delight
-                                          ;  :mode "\\.wy.*\\'"
-                                          ;    :custom    (haskell-font-lock-symbols t)
-    )
-
-  (use-package lsp-haskell
-    :ensure t
-    :delight
-    :after (haskell-mode lsp-mode)
-
-;    :init    (add-hook 'hack-local-variables-hook              (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
-
-  ;; (use-package wizpl-mode
-  ;;   :load-path "external"
-  ;;   :after haskell
-  ;;   )
-
-;  (load-library "wizpl-mode")
-
-#+END_SRC
-
 ** Latex
 #+NAME: latex
 #+BEGIN_SRC emacs-lisp
@@ -462,11 +427,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
   (add-hook 'wizpl-mode-hook
             (lambda () (set-input-method "mibbles")))
-  ;; (use-package wizpl-mode
-  ;;   :load-path "external"
-  ;;   :after haskell
-  ;;   )
-
 #+END_SRC
 
 ** Misc
