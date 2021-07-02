@@ -399,44 +399,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   ;;               (lsp))))
 
 #+END_SRC
-** Rust
-[[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs][rust with emacs]]
-#+NAME: rust
-#+BEGIN_SRC emacs-lisp
-  ;; (defun mb/rustic-mode-hook ()
-  ;;   ;; so that run C-c C-c C-r works without having to confirm
-  ;;   (setq-local buffer-save-without-query t))
-
-  ;; (use-package rustic
-  ;;   :ensure t
-  ;;   :after lsp-mode
-  ;;                                         ;    :mode "\\.rs\\'"
-  ;;   :bind (:map rustic-mode-map
-  ;;               ("M-j" . lsp-ui-imenu)
-  ;;               ("M-?" . lsp-find-references)
-  ;;               ("C-c C-c l" . flycheck-list-errors)
-  ;;               ("C-c C-c a" . lsp-execute-code-action)
-  ;;               ("C-c C-c r" . lsp-rename)
-  ;;               ("C-c C-c q" . lsp-workspace-restart)
-  ;;               ("C-c C-c Q" . lsp-workspace-shutdown)
-  ;;               ("C-c C-c s" . lsp-rust-analyzer-status))
-  ;;   :config
-  ;;   ;; uncomment for less flashiness
-  ;;   ;; (setq lsp-eldoc-hook nil)
-  ;;   ;; (setq lsp-enable-symbol-highlighting nil)
-  ;;   ;; (setq lsp-signature-auto-activate nil)
-
-  ;;   ;; comment to disable rustfmt on save
-  ;;   (setq rustic-format-on-save t)
-  ;;   (add-hook 'rustic-mode-hook 'mb/rustic-mode-hook))
-
-
-  (use-package cargo
-    :ensure t
-    :delight cargo-minor-mode
-    :hook (rust-mode . cargo-minor-mode))
-#+END_SRC
-
 ** Haskell
 + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
 + to get lsp-haskell to behave, I have to first set the version of ghc
@@ -473,7 +435,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
 #+END_SRC
 
-**  Misc
+** Misc
+
+***  Used
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
@@ -522,6 +486,8 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :mode "\\.clang-format\\'")
 #+END_SRC
    + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
+***  Unused
+[[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs][rust with emacs]]
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
@@ -554,6 +520,39 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
   (use-package proof-general
     :ensure t)
+
+  (defun mb/rustic-mode-hook ()
+    ;; so that run C-c C-c C-r works without having to confirm
+    (setq-local buffer-save-without-query t))
+
+  (use-package rustic
+    :ensure t
+    :after lsp-mode
+                                          ;    :mode "\\.rs\\'"
+    :bind (:map rustic-mode-map
+                ("M-j" . lsp-ui-imenu)
+                ("M-?" . lsp-find-references)
+                ("C-c C-c l" . flycheck-list-errors)
+                ("C-c C-c a" . lsp-execute-code-action)
+                ("C-c C-c r" . lsp-rename)
+                ("C-c C-c q" . lsp-workspace-restart)
+                ("C-c C-c Q" . lsp-workspace-shutdown)
+                ("C-c C-c s" . lsp-rust-analyzer-status))
+    :config
+    ;; uncomment for less flashiness
+    ;; (setq lsp-eldoc-hook nil)
+    ;; (setq lsp-enable-symbol-highlighting nil)
+    ;; (setq lsp-signature-auto-activate nil)
+
+    ;; comment to disable rustfmt on save
+    (setq rustic-format-on-save t)
+    (add-hook 'rustic-mode-hook 'mb/rustic-mode-hook))
+
+
+  (use-package cargo
+    :ensure t
+    :delight cargo-minor-mode
+    :hook (rust-mode . cargo-minor-mode))
 
   (use-package scala-mode
     :ensure t)
@@ -792,12 +791,11 @@ this org file.
 
   <<python>>
 
-  ;;  <<rust>>
-
   <<haskell>>
 
   <<misc>>
 
+  ;; this should always be commented out since it's 'unused'
   ;;  <<misc-unused>>
 
   <<org-commands>>
