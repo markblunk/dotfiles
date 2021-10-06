@@ -8,7 +8,7 @@
 (require 'package)
 
 (setq package-enable-at-startup nil
-      package-archives '(("org"   . "https://orgmode.org/elpa/")
+      package-archives '(("nongnu"   . "https://elpa.nongnu.org/nongnu/")
                          ("gnu"   . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
