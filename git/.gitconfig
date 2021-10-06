@@ -47,8 +47,6 @@
     email = mark@stealthsoftwareinc.com
 [user "github"]
     email = mblunk@gmail.com
-[clangFormat]
-    binary = stealth-clang-format
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
