@@ -66,7 +66,8 @@ This configuration is intended to be installable from scratch.
   (set-default-coding-systems 'utf-8)
   (set-language-environment "UTF-8")
 
-
+  ;; load unicode symbols from external directory
+  (load-library "unicode")
 #+END_SRC
 ** Reduce clutter
 #+NAME: clutter
@@ -419,13 +420,11 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   ;;   (add-hook 'hack-local-variables-hook
   ;;             (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
 
-  ;; (use-package wizpl-mode
-  ;;   :load-path "external"
-  ;;   :after haskell
-  ;;   )
-
+  ;; load wizpl library from external directory
   (load-library "wizpl-mode")
-
+  (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
+  (add-hook 'wizpl-mode-hook
+            (lambda () (set-input-method "mibbles")))
 #+END_SRC
 
 ** Misc
