@@ -37,6 +37,7 @@
     autocrlf = input
 [push]
     default = current
+    followTags = true
 [pull]
     rebase = true
 [gpg]
