@@ -119,17 +119,20 @@ Set up git diffs and buffer position in the fringe.
   (use-package magit
     :ensure t)
 
-  (use-package gitattributes-mode
+  (use-package git-modes
     :ensure t)
+
+  (use-package gitattributes-mode
+    :after git-modes)
 
   (use-package gitconfig-mode
     :delight
-    :ensure t)
+    :after git-modes)
 
   (use-package gitignore-mode
     :delight
-    :ensure t
-    :mode "\\.gitignore_global\\'")
+    :after git-modes
+    :mode  "/.gitignore_global\\'")
 #+END_SRC
 ** Mode line
 Use smart mode line to clean up the modeline display a little.
