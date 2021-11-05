@@ -29,6 +29,8 @@ This configuration is intended to be installable from scratch.
    struck Z since it wasn't rendering properly in the GUI
 3. add ~:background "undefined"~ in terminal mode to make the
    solarized-dark colors render correctly.
+4. ~global-prettify-symbols~ to make some nice symbols (mostly greek
+   letters in .tex files).
 #+NAME: font
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
@@ -41,8 +43,7 @@ This configuration is intended to be installable from scratch.
       (set-face-attribute 'default nil
                           :background "undefined"))
 
-
-                                          ; small blackboard letters
+  ;; small blackboard letters
   (set-fontset-font "fontset-default"
                     '(#x01D552 . #x01D56B)
                     "Tex Gyre DejaVu Math-14")
@@ -51,7 +52,7 @@ This configuration is intended to be installable from scratch.
                     '(#x01D7D8 . #x01D7E1)
                     "Tex Gyre DejaVu Math-14")
 
-                                          ; lightbuld
+  ;; lightbuld
   (set-fontset-font "fontset-default"
                     '#x01F4A1
                     "Symbola-14")
@@ -72,11 +73,11 @@ This configuration is intended to be installable from scratch.
 ** Reduce clutter
 #+NAME: clutter
 #+BEGIN_SRC emacs-lisp
-  (blink-cursor-mode nil)
   (show-paren-mode t)
   (setq indicate-buffer-boundaries 'left
-        indicate-empty-lines t)
-
+        indicate-empty-lines t
+        show-trailing-whitespace t
+        blink-cursor-mode nil)
 
   (defadvice show-paren-function
       (after show-matching-paren-offscreen activate)
@@ -184,7 +185,6 @@ Make mouse clicks work in xterm (and iTerm)
   (setq inhibit-startup-screen +1)
   (setq-default
    indent-tabs-mode nil
-   show-trailing-whitespace t
    electric-indent-inhibit t
    tab-width 4)
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
