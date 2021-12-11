@@ -28,7 +28,7 @@
 [grep]
     lineNumber = true
 [help]
-    autocorrect = 1
+    autoCorrect = never
 [credential]
     helper = cache --timeout=3600
 [core]

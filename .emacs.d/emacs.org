@@ -249,8 +249,8 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-    ; (haskell-mode . lsp)
-    ; (haskell-literate-mode . lsp)
+     ;; (haskell-mode . lsp)
+     ;; (haskell-literate-mode . lsp)
      (java-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
@@ -355,11 +355,11 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (TeX-parse-self t)
     (TeX-master nil))
 
-  ;; (use-package cdlatex
-  ;;   :ensure t
-  ;;   :delight cdlatex-mode
-  ;;   :hook ((LaTeX-mode . cdlatex-mode)
-  ;;          (org-mode . org-cdlatex-mode)))
+  (use-package cdlatex
+    :ensure t
+    :delight cdlatex-mode
+    :hook ((LaTeX-mode . cdlatex-mode)
+           (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** Python
 + I had to run ~lsp-python-ms-update-server~ first (auto-install
