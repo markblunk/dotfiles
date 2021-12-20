@@ -249,8 +249,6 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-;     (haskell-mode . lsp)
-;     (haskell-literate-mode . lsp)
      (java-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
@@ -413,6 +411,17 @@ For emacs-lisp code, use paredit for dealing with parentheses.
                                           ;    :custom    (haskell-font-lock-symbols t)
     )
 
+  ;; load wizpl library from external directory
+  (load-library "wizpl-mode")
+  (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
+  (add-hook 'wizpl-mode-hook
+            (lambda () (set-input-method "mibbles")))
+
+  (defun my/lsp ()
+    "Prevent lsp from running in wizpl-mode, a derivative of haskell mode."
+    (unless (eq major-mode 'wizpl-mode)
+      (lsp)))
+
   (use-package lsp-haskell
     :ensure t
     :delight
@@ -420,13 +429,10 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
     :init
     (add-hook 'hack-local-variables-hook
-              (lambda () (when (derived-mode-p 'haskell-mode)) (lsp))))
-
-  ;; load wizpl library from external directory
-  (load-library "wizpl-mode")
-  (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
-  (add-hook 'wizpl-mode-hook
-            (lambda () (set-input-method "mibbles")))
+              (lambda () (when (derived-mode-p 'haskell-mode)) (my/lsp)))
+    )
+  ;; this doesn't load correctly inside use-package so it's stuck out here for now.
+  (add-hook 'haskell-mode-hook #'my/lsp)
 #+END_SRC
 
 ** Misc
