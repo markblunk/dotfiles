@@ -217,6 +217,10 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
+  (use-package highlight-doxygen
+    :ensure t
+    :config (highlight-doxygen-global-mode 1))
+
   (use-package yasnippet
     :ensure t
     :delight yas-minor-mode
@@ -234,7 +238,7 @@ Make mouse clicks work in xterm (and iTerm)
     :no-require t
     :delight flycheck-mode
     :hook ((python-mode . flycheck-mode)
-                                          ;           (Texinfo-mode . flycheck-mode)
+           (Texinfo-mode . flycheck-mode)
            (c-mode . flycheck-mode)
            (emacs-lisp-mode . flycheck-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
@@ -306,8 +310,8 @@ Nothing right now
 +To get ccls to behave correctly I followed the build & install+
 +sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
 directory of every project.+ Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I
-can use clangd for the autotools projects. So I don't think I need
-ccls anymore!
+can use clangd for the autotools projects. So I don't need ccls
+anymore!
 
 *cmake-mode.el* comes installed via ~apt install cmake~
 #+NAME: cpp
@@ -319,10 +323,6 @@ ccls anymore!
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
-
-  (use-package highlight-doxygen
-    :ensure t
-    :config (highlight-doxygen-global-mode 1))
 
   (use-package bison-mode
     :ensure t)
@@ -355,7 +355,7 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
   (use-package cdlatex
     :ensure t
-    :delight cdlatex-mode
+    :delight org-cdlatex-mode
     :hook ((LaTeX-mode . cdlatex-mode)
            (org-mode . org-cdlatex-mode)))
 #+END_SRC
@@ -485,6 +485,11 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :ensure t
     :mode "\\.clang-format\\'")
 
+  (use-package graphviz-dot-mode
+    :ensure t
+    :config
+    (setq graphviz-dot-indent-width 4))
+
   ;; be sure to add this line in lsp-mode if you use this
   ;; (java-mode . lsp)
   (use-package lsp-java
@@ -499,8 +504,8 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight cargo-minor-mode
     :hook (rust-mode . cargo-minor-mode))
 #+END_SRC
-   + [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
 ***  Unused
+[[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
