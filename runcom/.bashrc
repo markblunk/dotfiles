@@ -84,11 +84,12 @@ export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 source $HOME/.local/bin/virtualenvwrapper.sh
 
+
+# OPAM configuration
+. $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
 # Clean up
 unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE DIRS
 
 # Export
 export SHELL_BASH OS DOTFILES_DIR
-
-# OPAM configuration
-. $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true

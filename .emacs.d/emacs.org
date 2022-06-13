@@ -186,7 +186,7 @@ Make mouse clicks work in xterm (and iTerm)
   (setq-default
    indent-tabs-mode nil
    electric-indent-inhibit t
-   tab-width 4)
+   tab-width 2)
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
   (use-package exec-path-from-shell
@@ -460,6 +460,10 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package flatbuffers-mode
     :ensure t)
 
+  (use-package gnuplot-mode
+    :ensure t
+    :mode "\\.gnuplot\\'")
+
   (use-package json-mode
     :ensure t
     :delight)
@@ -470,6 +474,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
   (use-package nxml-mode
     :delight)
+
+  (use-package proof-general
+    :ensure t)
 
   (use-package sql-indent
     :ensure t
@@ -529,9 +536,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package js2-mode
     :ensure t
     :mode "\\.js[x]?\\'")
-
-  (use-package proof-general
-    :ensure t)
 
   (use-package scala-mode
     :ensure t)

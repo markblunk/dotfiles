@@ -23,18 +23,20 @@
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
     identity = "! git config user.email \"$(git config user.$1.email)\"; :"
     up = "!git remote update -p; git merge --ff-only @{u}"
-[github]
-    user = markblunk
-[grep]
-    lineNumber = true
-[help]
-    autoCorrect = never
 [credential]
     helper = cache --timeout=3600
 [core]
     editor = emacs
     excludesfile = ~/.gitignore_global
     autocrlf = input
+[github]
+    user = markblunk
+[grep]
+    lineNumber = true
+[help]
+    autoCorrect = never
+[init]
+    defaultBranch = main
 [push]
     default = current
     followTags = true
