@@ -317,7 +317,7 @@ anymore!
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
-    :load-path "/usr/share/emacs/site-lisp")
+    :ensure t)
 
   (use-package modern-cpp-font-lock
     :ensure t
