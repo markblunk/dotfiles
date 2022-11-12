@@ -91,12 +91,7 @@ bash_prompt_command() {
         P_EXIT+="${P_RED}✘ "
     fi
 
-    # Python virtual environment
-    if [[ $VIRTUAL_ENV != 0 ]]; then
-        P_VIRTUALENV=$(echo $VIRTUAL_ENV | sed -E 's/.*\/([^\/]+$)/\1/g')
-    fi
-
-    PS1="${P_EXIT}${P_VIRTUALENV} ${P_USER}${P_YELLOW}@${P_HOST} ${P_YELLOW}${P_PWD}${P_GREEN}${P_GIT}${P_YELLOW}$ ❯ ${P_RESET}"
+    PS1="${P_EXIT}${CONDA_PROMPT_MODIFIER}${P_USER}${P_YELLOW}@${P_HOST} ${P_YELLOW}${P_PWD}${P_GREEN}${P_GIT}${P_YELLOW}$ ❯ ${P_RESET}"
 }
 
 parse_git_branch() {

@@ -15,7 +15,3 @@ ln -sfv "$DOTFILES_DIR/git/.gitconfig" $HOME
 ln -sfv "$DOTFILES_DIR/git/.gitignore_global" $HOME
 ln -sfv "$DOTFILES_DIR/.emacs.d" $HOME
 ln -sfv "$DOTFILES_DIR/.tmux.conf" $HOME
-
-if [ ! -d $HOME/.virtualenvs ]; then
-    mkdir $HOME/.virtualenvs
-fi

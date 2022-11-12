@@ -18,9 +18,6 @@ if [[ $HOSTNAME = markbott ]]; then
         prepend "$HOME/bin"
     fi
 
-    #virtualenv stuff
-    prepend "$HOME/.local/bin"
-
     # snap bins
     prepend "/snap/bin"
 
