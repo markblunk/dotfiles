@@ -254,6 +254,7 @@ Make mouse clicks work in xterm (and iTerm)
     :hook
     ((c++-mode . lsp)
      (java-mode . lsp)
+     (kotlin-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
 
@@ -375,12 +376,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (setq python-indent-offset 4
           tab-stop-list (number-sequence 4 120 4)))
 
-  ;; (use-package highlight-indentation
-  ;;   :ensure t
-  ;;   :after python
-  ;;   :hook (python-mode . highlight-indentation-mode)
-  ;;   :config (set-face-background 'highlight-indentation-face "DarkRed"))
-
   ;; (use-package lsp-python-ms
   ;;   :ensure t
   ;;   :init (setq lsp-python-ms-auto-install-server t))
@@ -416,23 +411,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
   (add-hook 'wizpl-mode-hook
             (lambda () (set-input-method "mibbles")))
-
-  (defun my/lsp ()
-    "Prevent lsp from running in wizpl-mode, a derivative of haskell mode."
-    (unless (eq major-mode 'wizpl-mode)
-      (lsp)))
-
-  (use-package lsp-haskell
-    :ensure t
-    :delight
-    :after (haskell-mode lsp-mode)
-
-    :init
-    (add-hook 'hack-local-variables-hook
-              (lambda () (when (derived-mode-p 'haskell-mode)) (my/lsp)))
-    )
-  ;; this doesn't load correctly inside use-package so it's stuck out here for now.
-  (add-hook 'haskell-mode-hook #'my/lsp)
 #+END_SRC
 
 ** Misc
@@ -440,11 +418,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 [[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs][rust with emacs]]
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
-  (use-package adoc-mode
-    :ensure t
-    :delight
-    :mode "\\.adoc\\'")
-
   (use-package antlr-mode
     :mode "\\.g4\\'")
 
@@ -457,6 +430,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package dockerfile-mode
     :ensure t)
 
+  (use-package docker-tramp
+    :ensure t)
+
   (use-package flatbuffers-mode
     :ensure t)
 
@@ -464,7 +440,18 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :ensure t
     :mode "\\.gnuplot\\'")
 
+  (use-package gradle-mode
+    :ensure t
+    :mode "\\.gradle\\'")
+
+  (use-package hcl-mode
+    :ensure t)
+
   (use-package json-mode
+    :ensure t
+    :delight)
+
+  (use-package kotlin-mode
     :ensure t
     :delight)
 
@@ -476,6 +463,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight)
 
   (use-package proof-general
+    :ensure t)
+
+  (use-package sage-shell-mode
     :ensure t)
 
   (use-package sql-indent
