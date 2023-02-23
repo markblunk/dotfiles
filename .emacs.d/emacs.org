@@ -316,10 +316,25 @@ can use clangd for the autotools projects. So I don't need ccls
 anymore!
 
 *cmake-mode.el* comes installed via ~apt install cmake~
+
+
+Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment.
+#+BEGIN_SRC shell
+  conda create --name cmake-lsp
+  conda activate cmake-lsp
+  conda install pip
+  pip install cmake-language-server
+#+END_SRC
+
+
+
+
+
+
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
-    :ensure t)
+    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1")
 
   (use-package modern-cpp-font-lock
     :ensure t
