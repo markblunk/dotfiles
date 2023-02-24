@@ -253,6 +253,7 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
+     (cmake-mode . lsp)
      (java-mode . lsp)
      (kotlin-mode . lsp)
      (python-mode . lsp)
@@ -271,6 +272,8 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-headerline-breadcrumb-enable nil)
     (lsp-eldoc-render-all t)
     (lsp-idle-delay 0.6))
+
+  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
 
   (use-package lsp-ui
     :ensure t
@@ -318,18 +321,14 @@ anymore!
 *cmake-mode.el* comes installed via ~apt install cmake~
 
 
-Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment.
+Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
+with the following:
 #+BEGIN_SRC shell
   conda create --name cmake-lsp
   conda activate cmake-lsp
   conda install pip
   pip install cmake-language-server
 #+END_SRC
-
-
-
-
-
 
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
