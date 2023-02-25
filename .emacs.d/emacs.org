@@ -309,17 +309,8 @@ Make mouse clicks work in xterm (and iTerm)
     :custom
     (company-tooltip-align-annotations t))
 #+END_SRC
-** C
-Nothing right now
-** Cpp
-+To get ccls to behave correctly I followed the build & install+
-+sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
-directory of every project.+ Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I
-can use clangd for the autotools projects. So I don't need ccls
-anymore!
-
+** CMake
 *cmake-mode.el* comes installed via ~apt install cmake~
-
 
 Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
 with the following:
@@ -330,10 +321,28 @@ with the following:
   pip install cmake-language-server
 #+END_SRC
 
-#+NAME: cpp
+#+NAME: cmake
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
     :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1")
+#+END_SRC
+
+** C
+Nothing right now
+** Cpp
++To get ccls to behave correctly I followed the build & install+
++sections of [[https://github.com/MaskRay/ccls/wiki][this wiki]], and then added a file named [[https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file][.ccls]] in the root
+directory of every project.+ Actually, now that I've installed [[https://github.com/rizsotto/Bear][Bear]], I
+can use clangd for the autotools projects. So I don't need ccls
+anymore!
+
+#+NAME: cpp
+#+BEGIN_SRC emacs-lisp
+  (defun mb-add-clangd-keys ()
+    "add keybinding for Clangd's SwitchSourceHeader"
+    (local-set-key (kbd "C-c C-t") 'lsp-clangd-find-other-file))
+
+  (add-hook 'c++-mode-hook #'mb-add-clangd-keys)
 
   (use-package modern-cpp-font-lock
     :ensure t
@@ -766,6 +775,8 @@ this org file.
   <<error-checking>>
 
   <<auto-complete>>
+
+  <<cmake>>
 
   ;;  <<c>>
 
