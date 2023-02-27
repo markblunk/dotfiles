@@ -340,7 +340,8 @@ anymore!
 #+BEGIN_SRC emacs-lisp
   (defun mb-add-clangd-keys ()
     "add keybinding for Clangd's SwitchSourceHeader"
-    (local-set-key (kbd "C-c C-t") 'lsp-clangd-find-other-file))
+    (interactive)
+    (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
 
   (add-hook 'c++-mode-hook #'mb-add-clangd-keys)
 
