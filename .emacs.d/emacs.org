@@ -566,6 +566,18 @@ more ideas.
 Set emacs configuration file location, and bind that function.
 #+NAME: global-navigation
 #+BEGIN_SRC emacs-lisp
+  (defun mb-org-work ()
+    "Open work org file."
+    (interactive)
+    (find-file (concat (getenv "HOME") "/org/work.org")))
+  (global-set-key "\C-cw" 'mb-org-work)
+
+  (defun mb-org-personal ()
+    "Open personal org file."
+    (interactive)
+    (find-file (concat (getenv "HOME") "/org/personal.org")))
+  (global-set-key "\C-cp" 'mb-org-personal)
+
   (defun mb-edit-emacs-configuration ()
     "Open Emacs configuration file."
     (interactive)
