@@ -487,9 +487,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package nxml-mode
     :delight)
 
-  (use-package proof-general
-    :ensure t)
-
   (use-package sage-shell-mode
     :ensure t)
 
@@ -551,6 +548,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package js2-mode
     :ensure t
     :mode "\\.js[x]?\\'")
+
+  (use-package proof-general
+    :ensure t)
 
   (use-package scala-mode
     :ensure t)
