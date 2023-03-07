@@ -256,7 +256,6 @@ Make mouse clicks work in xterm (and iTerm)
      (cmake-mode . lsp)
      (java-mode . lsp)
      (kotlin-mode . lsp)
-     (python-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
 
@@ -272,8 +271,6 @@ Make mouse clicks work in xterm (and iTerm)
     (lsp-headerline-breadcrumb-enable nil)
     (lsp-eldoc-render-all t)
     (lsp-idle-delay 0.6))
-
-  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
 
   (use-package lsp-ui
     :ensure t
@@ -386,13 +383,8 @@ For emacs-lisp code, use paredit for dealing with parentheses.
            (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** Python
-+ I had to run ~lsp-python-ms-update-server~ first (auto-install
-  wasn't working) but now that the server is installed setting that
-  variable seems to work ok.
-+ The ~hack-local-variables-hook~ hack is copied from [[https://emacs-lsp.github.io/lsp-python-ms/#faq][lsp notes]], so
-  that lsp looks for the virtualenv executable in /.dir-locals.el/ for
-  something like ~(python-mode . ((lsp-python-ms-python-executable
-  . "/PATH/TO/VENV/PYTHONBINARY")))~
+Using [[https://github.com/microsoft/pyright/][pyright]] as the LSP server for Python. See [[https://github.com/microsoft/pyright/blob/main/docs/configuration.md#pyright-configuration][configuration]] on how
+to set up a ~pyrightconfig.json~ file in the root of a project
 
 #+NAME: python
 #+BEGIN_SRC emacs-lisp
@@ -401,16 +393,12 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (setq python-indent-offset 4
           tab-stop-list (number-sequence 4 120 4)))
 
-  (use-package lsp-python-ms
+  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
+  (use-package lsp-pyright
     :ensure t
-    :init (setq lsp-python-ms-auto-install-server t))
-
-  (add-hook 'hack-local-variables-hook
-            (lambda ()
-              (when (derived-mode-p 'python-mode)
-                (require 'lsp-python-ms)
-                (lsp))))
-
+    :hook (python-mode . (lambda ()
+                            (require 'lsp-pyright)
+                            (lsp))))
 #+END_SRC
 ** Haskell
 + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
