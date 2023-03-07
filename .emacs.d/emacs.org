@@ -718,6 +718,16 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
     (auto-package-update-maybe))
 #+END_SRC
 
+#+NAME: mastodon
+#+BEGIN_SRC emacs-lisp
+  (use-package mastodon
+    :ensure t
+    :config
+      (setq
+       mastodon-instance-url "https://mastodon.social"
+       mastodon-active-user "mibbles"))
+#+END_SRC
+
 * External
 External packages may be dropped in the [[file:./external][external]] directory.
 #+NAME: external
@@ -811,6 +821,8 @@ this org file.
   <<man>>
 
   <<treemacs>>
+
+  <<mastodon>>
 
   ;;; emacs.el ends here
 #+END_SRC
