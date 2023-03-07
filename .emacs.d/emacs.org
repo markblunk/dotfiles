@@ -253,9 +253,6 @@ Make mouse clicks work in xterm (and iTerm)
     :commands lsp
     :hook
     ((c++-mode . lsp)
-     (cmake-mode . lsp)
-     (java-mode . lsp)
-     (kotlin-mode . lsp)
      (sh-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
 
@@ -321,7 +318,9 @@ with the following:
 #+NAME: cmake
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
-    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1")
+    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
+    :commands lsp
+    :hook (cmake-mode . lsp))
 #+END_SRC
 
 ** C
@@ -497,11 +496,13 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :config
     (setq graphviz-dot-indent-width 4))
 
-  ;; be sure to add this line in lsp-mode if you use this
-  ;; (java-mode . lsp)
   (use-package lsp-java
     :ensure t
-    :after lsp-mode)
+    :after lsp-mode
+    :commands lsp
+    :hook (java-mode . (lambda ()
+                         (require 'lsp-java)
+                         (lsp))))
 
   (use-package rust-mode
     :ensure t)
