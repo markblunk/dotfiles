@@ -32,23 +32,6 @@ DOTFILES_DIR="$HOME/dotfiles"
 #    CURRENT_SCRIPT=${0}
 #fi
 
-#if [[ -n $CURRENT_SCRIPT && -x "$READLINK" ]]; then
-#    #THIS IS MAKING AN ERROR
-#    SCRIPT_PATH=$($READLINK -f "$CURRENT_SCRIPT")
-#    DOTFILES_DIR=$(dirname $(dirname ${SCRIPT_PATH}))
-#elif [ -d "$HOME/.dotfiles" ]; then
-#    DOTFILES_DIR="$HOME/.dotfiles"
-#else
-#    echo "Unable to find dotfiles, exiting."
- #   return # `exit 1` would quit the shell itself
-#fi
-
-#create an array of dotfiles_dir, add work_dotfiles if they exist
-#DIRS=($DOTFILES_DIR)
-#if [[ -d $HOME/.work-dotfiles ]]; then
-#    DIRS+=("$HOME/.work-dotfiles")
-#fi
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/mblunk/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"

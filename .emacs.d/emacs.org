@@ -316,6 +316,7 @@ with the following:
 
 #+NAME: cmake
 #+BEGIN_SRC emacs-lisp
+  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
   (use-package cmake-mode
     :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
     :commands lsp
@@ -392,7 +393,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     (setq python-indent-offset 4
           tab-stop-list (number-sequence 4 120 4)))
 
-  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
   (use-package lsp-pyright
     :ensure t
     :hook (python-mode . (lambda ()
@@ -432,6 +432,7 @@ to set up a ~pyrightconfig.json~ file in the root of a project
 #+BEGIN_SRC emacs-lisp
   (use-package adoc-mode
     :ensure t)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
   (use-package antlr-mode
     :mode "\\.g4\\'")
