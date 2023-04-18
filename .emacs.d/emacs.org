@@ -76,8 +76,7 @@ This configuration is intended to be installable from scratch.
 
   (defadvice show-paren-function
       (after show-matching-paren-offscreen activate)
-    "If the matching paren is offscreen, show the matching line in the echo area.
-    Has no effect if the character before point is not of the syntax class ')'."
+    "If matching paren is offscreen, show the matching line in the echo area."
     (interactive)
     (let* ((cb (char-before (point)))
            (matching-text (and cb
@@ -177,20 +176,20 @@ Make mouse clicks work in xterm (and iTerm)
   (add-to-list 'default-frame-alist '(height . 35))
   (add-to-list 'default-frame-alist '(width . 140))
 
-  (setq inhibit-startup-screen +1)
-  (setq-default
-   indent-tabs-mode nil
-   electric-indent-inhibit t
-   tab-width 2)
+  (setq inhibit-startup-screen +1
+        ; Faster than the default scp (for small files)
+        tramp-default-method "ssh"
+        enable-local-variables :all)
+
+  (setq-default indent-tabs-mode nil
+                electric-indent-inhibit t
+                tab-width 2)
+
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
   (use-package exec-path-from-shell
     :ensure t
     :config (exec-path-from-shell-initialize))
-
-  (setq tramp-default-method "ssh")
-
-  (setq enable-local-variables :all)
 #+END_SRC
 * Programming
 ** General programming
@@ -232,10 +231,7 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure flycheck-color-mode-line
     :no-require t
     :delight flycheck-mode
-    :hook ((python-mode . flycheck-mode)
-           (Texinfo-mode . flycheck-mode)
-           (c-mode . flycheck-mode)
-           (emacs-lisp-mode . flycheck-mode)
+    :hook ((python-mode Texinfo-mode c-mode c++-mode emacs-lisp-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
     :custom
@@ -336,7 +332,7 @@ anymore!
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (defun mb-add-clangd-keys ()
-    "add keybinding for Clangd's SwitchSourceHeader"
+    "Add keybinding for Clangd's SwitchSourceHeader."
     (interactive)
     (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
 
@@ -346,9 +342,6 @@ anymore!
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-mode . modern-c++-font-lock-mode))
-
-  (use-package bison-mode
-    :ensure t)
 #+END_SRC
 ** Emacs-Lisp
 For emacs-lisp code, use paredit for dealing with parentheses.
@@ -395,6 +388,7 @@ to set up a ~pyrightconfig.json~ file in the root of a project
 
   (use-package lsp-pyright
     :ensure t
+    :after lsp-mode
     :hook (python-mode . (lambda ()
                             (require 'lsp-pyright)
                             (lsp))))
@@ -430,12 +424,10 @@ to set up a ~pyrightconfig.json~ file in the root of a project
 [[https://robert.kra.hn/posts/2021-02-07_rust-with-emacs][rust with emacs]]
 #+NAME: misc
 #+BEGIN_SRC emacs-lisp
-  (use-package adoc-mode
-    :ensure t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-  (use-package antlr-mode
-    :mode "\\.g4\\'")
+  (use-package adoc-mode
+    :ensure t)
 
   (use-package autoconf
     :delight autoconf-mode)
@@ -460,18 +452,10 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :mode "\\.gnuplot\\'")
 
-  (use-package gradle-mode
-    :ensure t
-    :mode "\\.gradle\\'")
-
   (use-package hcl-mode
     :ensure t)
 
   (use-package json-mode
-    :ensure t
-    :delight)
-
-  (use-package kotlin-mode
     :ensure t
     :delight)
 
@@ -524,6 +508,12 @@ to set up a ~pyrightconfig.json~ file in the root of a project
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
+  (use-package antlr-mode
+    :mode "\\.g4\\'")
+
+  (use-package bison-mode
+    :ensure t)
+
   (use-package csv-mode
     :ensure t)
 
@@ -531,8 +521,13 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :mode ("\\.fs?\\'" . fstar-mode))
 
-  (use-package groovy-mode
-    :ensure t)
+  (use-package gradle-mode
+    :ensure t
+    :mode "\\.gradle\\'")
+
+  (use-package kotlin-mode
+    :ensure t
+    :delight)
 
   (use-package lean-mode
     :ensure t
