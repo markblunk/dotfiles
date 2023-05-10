@@ -411,12 +411,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
                                           ;  :mode "\\.wy.*\\'"
                                           ;    :custom    (haskell-font-lock-symbols t)
     )
-
-  ;; load wizpl library from external directory
-  (load-library "wizpl-mode")
-  (add-to-list 'auto-mode-alist '("\\.wizpl\\'" . wizpl-mode))
-  (add-hook 'wizpl-mode-hook
-            (lambda () (set-input-method "mibbles")))
 #+END_SRC
 
 ** Misc
