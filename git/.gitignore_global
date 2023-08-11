@@ -24,12 +24,9 @@
 tramp
 .org-id-locations
 *_archive
-
-# eshell files
+.dir-locals.el
 /eshell/history
 /eshell/lastdir
-
-# Flycheck
 flycheck_*.el
 
 # server auth directory
@@ -38,8 +35,10 @@ flycheck_*.el
 # projectiles files
 .projectile
 
-# directory configuration
-.dir-locals.el
+#python
+__pycache__
+*.egg-info
+pyrightconfig.json
 
 # network security
 /network-security.data
