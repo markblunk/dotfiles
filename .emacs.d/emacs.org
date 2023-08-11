@@ -436,9 +436,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
   (use-package dockerfile-mode
     :ensure t)
 
-  (use-package docker-tramp
-    :ensure t)
-
   (use-package flatbuffers-mode
     :ensure t)
 
@@ -454,6 +451,10 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :delight)
 
   (use-package markdown-mode
+    :ensure t
+    :delight)
+
+  (use-package mermaid-mode
     :ensure t
     :delight)
 
