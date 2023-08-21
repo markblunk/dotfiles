@@ -193,6 +193,53 @@ Make mouse clicks work in xterm (and iTerm)
 #+END_SRC
 * Programming
 ** General programming
+
+1. ~sudo apt-get install libtree-sitter-dev~
+2. run ~treesit-install-language-grammar~ for every language grammer
+   in ~treesit-language-source-alist~
+
+
+NOTE: lsp has markdown as a dependent so we need to remap it
+here. Once we remove lsp we should be able to remove this
+
+#+NAME: tree-sitter
+#+BEGIN_SRC emacs-lisp
+  (setq treesit-language-source-alist
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (java "https://github.com/tree-sitter/tree-sitter-java")
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+
+  (setq major-mode-remap-alist
+        '(
+          (sh-mode . bash-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (c-or-c++-mode . c-or-c++-ts-mode)
+          (c-mode . c-ts-mode)
+          (java-mode . java-ts-mode)
+          (python-mode . python-ts-mode)
+          (conf-toml-mode . toml-ts-mode)))
+
+      ;;;###autoload
+                                          ;  (add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . dockerfile-ts-mode))
+                                          ;  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
+                                          ;  (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode))
+                                          ;  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-ts-mode))
+                                          ;  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'" . yaml-ts-mode))
+
+
+
+#+END_SRC
+
+
 #+NAME: programming-setup
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -231,7 +278,7 @@ Make mouse clicks work in xterm (and iTerm)
     :ensure flycheck-color-mode-line
     :no-require t
     :delight flycheck-mode
-    :hook ((python-mode Texinfo-mode c-mode c++-mode emacs-lisp-mode)
+    :hook ((python-ts-mode Texinfo-mode c-ts-mode c++-ts-mode emacs-lisp-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
     :custom
@@ -243,8 +290,8 @@ Make mouse clicks work in xterm (and iTerm)
     :after (company which-key)
     :commands lsp
     :hook
-    ((c++-mode . lsp)
-     (sh-mode . lsp)
+    ((c++-ts-mode . lsp)
+     (bash-ts-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
 
     :custom
@@ -313,11 +360,6 @@ with the following:
 #+NAME: cmake
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
-  (use-package cmake-mode
-    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
-    :commands lsp
-    :hook (cmake-mode . lsp)
-    :mode "CMakeLists\\.txt\\'")
 #+END_SRC
 
 ** C
@@ -336,12 +378,12 @@ anymore!
     (interactive)
     (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
 
-  (add-hook 'c++-mode-hook #'mb-add-clangd-keys)
+  (add-hook 'c++-ts-mode-hook #'mb-add-clangd-keys)
 
   (use-package modern-cpp-font-lock
     :ensure t
     :delight modern-c++-font-lock-mode
-    :hook (c++-mode . modern-c++-font-lock-mode))
+    :hook (c++-ts-mode . modern-c++-font-lock-mode))
 #+END_SRC
 ** Emacs-Lisp
 For emacs-lisp code, use paredit for dealing with parentheses.
@@ -389,7 +431,7 @@ to set up a ~pyrightconfig.json~ file in the root of a project
   (use-package lsp-pyright
     :ensure t
     :after lsp-mode
-    :hook (python-mode . (lambda ()
+    :hook (python-ts-mode . (lambda ()
                             (require 'lsp-pyright)
                             (lsp))))
 #+END_SRC
@@ -433,9 +475,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :config (bash-completion-setup))
 
-  (use-package dockerfile-mode
-    :ensure t)
-
   (use-package flatbuffers-mode
     :ensure t)
 
@@ -445,10 +484,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
 
   (use-package hcl-mode
     :ensure t)
-
-  (use-package json-mode
-    :ensure t
-    :delight)
 
   (use-package markdown-mode
     :ensure t
@@ -474,10 +509,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :delight)
 
-  (use-package yaml-mode
-    :ensure t
-    :mode "\\.clang-format\\'")
-
   (use-package graphviz-dot-mode
     :ensure t
     :config
@@ -487,7 +518,7 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :after lsp-mode
     :commands lsp
-    :hook (java-mode . (lambda ()
+    :hook (java-ts-mode . (lambda ()
                          (require 'lsp-java)
                          (lsp))))
 
@@ -531,10 +562,6 @@ to set up a ~pyrightconfig.json~ file in the root of a project
   (use-package company-lean
     :ensure t
     :after (lean-mode company))
-
-  (use-package js2-mode
-    :ensure t
-    :mode "\\.js[x]?\\'")
 
   (use-package proof-general
     :ensure t)
@@ -781,6 +808,8 @@ this org file.
   <<global-backup>>
 
   <<programming-setup>>
+
+  <<tree-sitter>>
 
   <<error-checking>>
 
