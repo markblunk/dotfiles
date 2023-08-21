@@ -193,7 +193,6 @@ Make mouse clicks work in xterm (and iTerm)
 #+END_SRC
 * Programming
 ** General programming
-
 1. ~sudo apt-get install libtree-sitter-dev~
 2. run ~treesit-install-language-grammar~ for every language grammer
    in ~treesit-language-source-alist~
@@ -201,44 +200,6 @@ Make mouse clicks work in xterm (and iTerm)
 
 NOTE: lsp has markdown as a dependent so we need to remap it
 here. Once we remove lsp we should be able to remove this
-
-#+NAME: tree-sitter
-#+BEGIN_SRC emacs-lisp
-  (setq treesit-language-source-alist
-        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-          (c "https://github.com/tree-sitter/tree-sitter-c")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-          (cmake "https://github.com/uyha/tree-sitter-cmake")
-          (html "https://github.com/tree-sitter/tree-sitter-html")
-          (java "https://github.com/tree-sitter/tree-sitter-java")
-          (json "https://github.com/tree-sitter/tree-sitter-json")
-          (python "https://github.com/tree-sitter/tree-sitter-python")
-          (toml "https://github.com/tree-sitter/tree-sitter-toml")
-          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
-
-
-  (setq major-mode-remap-alist
-        '(
-          (sh-mode . bash-ts-mode)
-          (c++-mode . c++-ts-mode)
-          (c-or-c++-mode . c-or-c++-ts-mode)
-          (c-mode . c-ts-mode)
-          (java-mode . java-ts-mode)
-          (python-mode . python-ts-mode)
-          (conf-toml-mode . toml-ts-mode)))
-
-      ;;;###autoload
-                                          ;  (add-to-list 'auto-mode-alist '("\\.dockerfile\\'" . dockerfile-ts-mode))
-                                          ;  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
-                                          ;  (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode))
-                                          ;  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-ts-mode))
-                                          ;  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'" . yaml-ts-mode))
-
-
-
-#+END_SRC
-
 
 #+NAME: programming-setup
 #+BEGIN_SRC emacs-lisp
@@ -271,7 +232,67 @@ here. Once we remove lsp we should be able to remove this
     :ensure t)
 #+END_SRC
 
-[[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation: ~npm i -g bash-language-server~
+#+NAME: tree-sitter
+#+BEGIN_SRC emacs-lisp
+  (setq treesit-language-source-alist
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")
+          (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+          (java "https://github.com/tree-sitter/tree-sitter-java")
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (rust "https://github.com/tree-sitter/tree-sitter-rust")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+  (setq major-mode-remap-alist
+        '((sh-mode . bash-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (c-or-c++-mode . c-or-c++-ts-mode)
+          (c-mode . c-ts-mode)
+          (java-mode . java-ts-mode)
+          (js-json-mode . json-ts-mode)
+          (python-mode . python-ts-mode)
+          (rust-mode . rust-ts-mode)
+          (conf-toml-mode . toml-ts-mode)))
+
+  (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'"
+                                  . yaml-ts-mode))
+#+END_SRC
+
+[[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation
+#+BEGIN_SRC shell
+npm i -g bash-language-server
+#+END_SRC
+Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
+with the following:
+#+BEGIN_SRC shell
+  conda create --name cmake-lsp
+  conda activate cmake-lsp
+  conda install pip
+  pip install cmake-language-server
+#+END_SRC
+
+Using [[https://github.com/microsoft/pyright/][pyright]] as the LSP server for Python. See [[https://github.com/microsoft/pyright/blob/main/docs/configuration.md#pyright-configuration][configuration]] on how
+to set up a ~pyrightconfig.json~ file in the root of a project
+
+To get lsp-haskell to behave, I have to first set the version of ghc
+used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version used
+in a particular project. Setting the custom variable
+~lsp-haskell-server-path~ should work directly without having to mess
+around with ghcup, but I couldn't get it to work as expected. So I
+ended up setting that variable per haskell project in
+~.dir-locals.el~, and thus I have to add that hook here like I did for
+java.
+
+#+BEGIN_SRC emacs-lisp
+  ((haskell-mode . ((lsp-haskell-server-path . "~/.ghcup/bin/haskell-language-server-8.10.4"))))
+#+END_SRC
+
+
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
@@ -285,13 +306,19 @@ here. Once we remove lsp we should be able to remove this
     (flycheck-checker-error-threshold 2000)
     (flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
 
+
+  (add-to-list 'exec-path
+               (concat (getenv "HOME") "/miniconda3/envs/cmake-lsp/bin"))
+
   (use-package lsp-mode
     :ensure t
     :after (company which-key)
     :commands lsp
     :hook
-    ((c++-ts-mode . lsp)
-     (bash-ts-mode . lsp)
+    ((bash-ts-mode . lsp)
+     (c++-ts-mode . lsp)
+     (cmake-ts-mode . lsp)
+     (yaml-ts-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration))
 
     :custom
@@ -306,6 +333,21 @@ here. Once we remove lsp we should be able to remove this
     (lsp-headerline-breadcrumb-enable nil)
     (lsp-eldoc-render-all t)
     (lsp-idle-delay 0.6))
+
+  (defun mb-add-clangd-keys ()
+    "Add keybinding for Clangd's SwitchSourceHeader."
+    (interactive)
+    (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
+
+  (add-hook 'c++-ts-mode-hook #'mb-add-clangd-keys)
+
+  (use-package lsp-pyright
+    :ensure t
+    :after lsp-mode
+    :hook (python-ts-mode . (lambda ()
+                              (require 'lsp-pyright)
+                              (lsp))))
+
 
   (use-package lsp-ui
     :ensure t
@@ -346,22 +388,8 @@ here. Once we remove lsp we should be able to remove this
     (company-tooltip-align-annotations t))
 #+END_SRC
 ** CMake
-*cmake-mode.el* comes installed via ~apt install cmake~
-
-Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
-with the following:
-#+BEGIN_SRC shell
-  conda create --name cmake-lsp
-  conda activate cmake-lsp
-  conda install pip
-  pip install cmake-language-server
-#+END_SRC
-
 #+NAME: cmake
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'exec-path
-               (concat (getenv "HOME") "/miniconda3/envs/cmake-lsp/bin"))
-
   (use-package cmake-font-lock
     :ensure t)
 #+END_SRC
@@ -377,12 +405,6 @@ anymore!
 
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
-  (defun mb-add-clangd-keys ()
-    "Add keybinding for Clangd's SwitchSourceHeader."
-    (interactive)
-    (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
-
-  (add-hook 'c++-ts-mode-hook #'mb-add-clangd-keys)
 
   (use-package modern-cpp-font-lock
     :ensure t
@@ -423,9 +445,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
            (org-mode . org-cdlatex-mode)))
 #+END_SRC
 ** Python
-Using [[https://github.com/microsoft/pyright/][pyright]] as the LSP server for Python. See [[https://github.com/microsoft/pyright/blob/main/docs/configuration.md#pyright-configuration][configuration]] on how
-to set up a ~pyrightconfig.json~ file in the root of a project
-
 #+NAME: python
 #+BEGIN_SRC emacs-lisp
   (use-package python
@@ -433,23 +452,9 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     (setq python-indent-offset 4
           tab-stop-list (number-sequence 4 120 4)))
 
-  (use-package lsp-pyright
-    :ensure t
-    :after lsp-mode
-    :hook (python-ts-mode . (lambda ()
-                            (require 'lsp-pyright)
-                            (lsp))))
 #+END_SRC
 ** Haskell
 + Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
-+ to get lsp-haskell to behave, I have to first set the version of ghc
-  used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version
-  used in a particular project. Setting the custom variable
-  ~lsp-haskell-server-path~ should work directly without having to
-  mess around with ghcup, but I couldn't get it to work as
-  expected. So I ended up setting that variable per haskell project in
-  ~.dir-locals.el~, and thus I have to add that hook here like I did
-  for python.
 #+NAME: haskell
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
@@ -480,19 +485,12 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t
     :config (bash-completion-setup))
 
-  (use-package flatbuffers-mode
-    :ensure t)
-
   (use-package gnuplot-mode
     :ensure t
     :mode "\\.gnuplot\\'")
 
   (use-package hcl-mode
     :ensure t)
-
-  (use-package markdown-mode
-    :ensure t
-    :delight)
 
   (use-package mermaid-mode
     :ensure t
@@ -527,13 +525,10 @@ to set up a ~pyrightconfig.json~ file in the root of a project
                          (require 'lsp-java)
                          (lsp))))
 
-  (use-package rust-mode
-    :ensure t)
-
   (use-package cargo
     :ensure t
     :delight cargo-minor-mode
-    :hook (rust-mode . cargo-minor-mode))
+    :hook (rust-ts-mode . cargo-minor-mode))
 #+END_SRC
 ***  Unused
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
@@ -546,6 +541,9 @@ to set up a ~pyrightconfig.json~ file in the root of a project
     :ensure t)
 
   (use-package csv-mode
+    :ensure t)
+
+  (use-package flatbuffers-mode
     :ensure t)
 
   (use-package fstar-mode
