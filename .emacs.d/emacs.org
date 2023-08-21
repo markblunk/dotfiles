@@ -359,7 +359,11 @@ with the following:
 
 #+NAME: cmake
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'exec-path "/home/mblunk/miniconda3/envs/cmake-lsp/bin")
+  (add-to-list 'exec-path
+               (concat (getenv "HOME") "/miniconda3/envs/cmake-lsp/bin"))
+
+  (use-package cmake-font-lock
+    :ensure t)
 #+END_SRC
 
 ** C
@@ -402,6 +406,7 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 #+BEGIN_SRC emacs-lisp
   (use-package latex-pretty-symbols
     :ensure t)
+  (setq latex-run-command "pdflatex")
 
   (use-package auctex
     :defer t
