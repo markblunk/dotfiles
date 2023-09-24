@@ -619,6 +619,8 @@ Short key bindings for capturing notes/links and switching to agenda.
                                    (latex . t)))
     :custom
     (org-export-backends '(ascii beamer html latex md texinfo)))
+
+  (use-package org-indent :delight)
 #+END_SRC
 * Other libraries
 Make sure /.class.d/ files are ignored (/.class/ files are already
