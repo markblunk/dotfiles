@@ -287,14 +287,15 @@ npm i -g bash-language-server
 Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
 with the following:
 #+BEGIN_SRC shell
-  conda create --name cmake-lsp
-  conda activate cmake-lsp
+  conda create --name lsp
+  conda activate lsp
   conda install pip
   pip install cmake-language-server
+  conda install -c conda-forge python-lsp-server[all]
 #+END_SRC
 
-Using [[https://github.com/microsoft/pyright/][pyright]] as the LSP server for Python. See [[https://github.com/microsoft/pyright/blob/main/docs/configuration.md#pyright-configuration][configuration]] on how
-to set up a ~pyrightconfig.json~ file in the root of a project
+Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as the LSP server for Python. See
+[[https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json][configuration]] for more details.
 
 To get lsp-haskell to behave, I have to first set the version of ghc
 used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version used
@@ -308,7 +309,6 @@ java.
 #+BEGIN_SRC emacs-lisp
   ((haskell-mode . ((lsp-haskell-server-path . "~/.ghcup/bin/haskell-language-server-8.10.4"))))
 #+END_SRC
-
 
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
@@ -325,20 +325,29 @@ java.
 
   (add-to-list 'exec-path
                (concat (getenv "HOME")
-                       "/miniconda3/envs/cmake-lsp/bin"))
+                       "/miniconda3/envs/lsp/bin"))
 
-  (add-to-list 'exec-path
-               (concat (getenv "HOME") "/.npm-global/bin/"))
+    (setq-default eglot-workspace-configuration
+                  '((:pylsp . (:configurationSources ["flake8"]
+                               :plugins (
+                                         :autopep8 (:enabled :json-false)
+                                         :mccabe (:enabled :json-false)
+                                         :pycodestyle (:enabled t :maxLinelength 80)
+                                         :pydocstyle (:enabled t :convention "numpy")
+                                         :pyflakes (:enabled :json-false)
+                                         :ruff (:enabled :json-false)
+                                         :yapf (:enabled :json-false))))))
 
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode) .
-                   ("pyright-langserver" "--stdio")))
     (add-to-list 'eglot-server-programs
                  '((c-mode c-ts-mode c++-mode c++-ts-mode) .
                    ("clangd" "-background-index" "-clang-tidy"
                     "-suggest-missing-includes"
-                    "-completion-style=detailed"))))
+                    "-completion-style=detailed")))
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) .
+                   ("pylsp")))
+    )
 
   (use-package which-key
     :ensure t
