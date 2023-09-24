@@ -225,10 +225,17 @@ Make mouse clicks work in xterm (and iTerm)
 #+END_SRC
 
 1. ~sudo apt-get install libtree-sitter-dev~
-2. run ~treesit-install-language-grammar~ for every language grammer
-   in ~treesit-language-source-alist~
+2. Run ~treesit-install-language-grammar~ for every language grammer
+   in ~treesit-language-source-alist~.
 
-#+NAME: tree-sitter
+Note that yasnippet doesn't work now since the modes in the snippets
+directory say things like "c++-mode" and not "c++-ts-mode".
+See https://github.com/joaotavora/yasnippet/issues/1169 for a workaround.
+something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
+'c++-mode))~should work but i'm making some silly mistake
+
+
+#+NAME: treesit
 #+BEGIN_SRC emacs-lisp
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -243,18 +250,26 @@ Make mouse clicks work in xterm (and iTerm)
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-  ;; install any grammars not already installed.
-  (mapc #'treesit-install-language-grammar
-        (mapcar #'car (seq-filter (lambda (x)
-                                    (not
-                                     (treesit-language-available-p (car x))))
-                                  treesit-language-source-alist)))
+  ;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+
+  ;; I shouldn't have to do this but the only way I see to 'load'
+  ;; dockerfile-ts-mode is to load dockerfile-mode and then remap. Ditto
+  ;; for cmake-mode.
+
+  (use-package dockerfile-mode
+    :ensure t)
+
+  (use-package cmake-mode
+    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
+    :mode "CMakeLists\\.txt\\'")
 
   (setq major-mode-remap-alist
         '((sh-mode . bash-ts-mode)
           (c++-mode . c++-ts-mode)
           (c-or-c++-mode . c-or-c++-ts-mode)
           (c-mode . c-ts-mode)
+          (cmake-mode . cmake-ts-mode)
+          (dockerfile-mode . dockerfile-ts-mode)
           (java-mode . java-ts-mode)
           (js-json-mode . json-ts-mode)
           (python-mode . python-ts-mode)
@@ -301,82 +316,34 @@ java.
     :ensure flycheck-color-mode-line
     :no-require t
     :delight flycheck-mode
-    :hook ((python-ts-mode Texinfo-mode c-ts-mode c++-ts-mode emacs-lisp-mode)
+    :hook ((Texinfo-mode emacs-lisp-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
 
     :custom
-    (flycheck-checker-error-threshold 2000)
-    (flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
+    (flycheck-checker-error-threshold 2000))
 
 
   (add-to-list 'exec-path
-               (concat (getenv "HOME") "/miniconda3/envs/cmake-lsp/bin"))
+               (concat (getenv "HOME")
+                       "/miniconda3/envs/cmake-lsp/bin"))
 
-  (use-package lsp-mode
-    :ensure t
-    :after (company which-key)
-    :commands lsp
-    :hook
-    ((bash-ts-mode . lsp)
-     (c++-ts-mode . lsp)
-     (cmake-ts-mode . lsp)
-     (yaml-ts-mode . lsp)
-     (lsp-mode . lsp-enable-which-key-integration))
+  (add-to-list 'exec-path
+               (concat (getenv "HOME") "/.npm-global/bin/"))
 
-    :custom
-    (lsp-response-timeout 60)
-    (lsp-auto-guess-root t)
-    (lsp-file-watch-threshold 100000)
-    (lsp-clients-clangd-args (quote ("-background-index" "-clang-tidy"
-                                     "-suggest-missing-includes"
-                                     "-completion-style=detailed")))
-    (lsp-before-save-edits nil)
-    (lsp-lens-enable nil)
-    (lsp-headerline-breadcrumb-enable nil)
-    (lsp-eldoc-render-all t)
-    (lsp-idle-delay 0.6))
-
-  (defun mb-add-clangd-keys ()
-    "Add keybinding for Clangd's SwitchSourceHeader."
-    (interactive)
-    (local-set-key "\C-cs" 'lsp-clangd-find-other-file))
-
-  (add-hook 'c++-ts-mode-hook #'mb-add-clangd-keys)
-
-  (use-package lsp-pyright
-    :ensure t
-    :after lsp-mode
-    :hook (python-ts-mode . (lambda ()
-                              (require 'lsp-pyright)
-                              (lsp))))
-
-
-  (use-package lsp-ui
-    :ensure t
-    :after (lsp-mode flycheck)
-    :custom
-    (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-show-with-cursor nil)
-    (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'top)
-    (lsp-ui-flycheck-list-position 'right)
-    (lsp-ui-peek-enable t)
-    (lsp-ui-peek-show-directory t)
-    (lsp-ui-peek-list-width 60)
-    (lsp-ui-peek-peek-height 25)
-    (lsp-ui-sideline-enable nil)
-    :bind
-    ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-    ([remap xref-find-references] .  lsp-ui-peek-find-references))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) .
+                   ("pyright-langserver" "--stdio")))
+    (add-to-list 'eglot-server-programs
+                 '((c-mode c-ts-mode c++-mode c++-ts-mode) .
+                   ("clangd" "-background-index" "-clang-tidy"
+                    "-suggest-missing-includes"
+                    "-completion-style=detailed"))))
 
   (use-package which-key
     :ensure t
     :init (which-key-mode)
     :delight which-key-mode)
-
-  (use-package dap-mode
-    :ensure t)
-  (require 'dap-cpptools)
 #+END_SRC
 
 #+NAME: auto-complete
@@ -390,11 +357,6 @@ java.
     (company-tooltip-align-annotations t))
 #+END_SRC
 ** CMake
-#+NAME: cmake
-#+BEGIN_SRC emacs-lisp
-  (use-package cmake-font-lock
-    :ensure t)
-#+END_SRC
 
 ** C
 Nothing right now
@@ -407,7 +369,6 @@ anymore!
 
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
-
   (use-package modern-cpp-font-lock
     :ensure t
     :delight modern-c++-font-lock-mode
@@ -422,14 +383,15 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight paredit-mode
     :commands enable-paredit-mode
     :config (autoload 'enable-paredit-mode "paredit"
-              "Turn on pseudo-structural editing of Lisp code."   t)
+              "Turn on pseudo-structural editing of Lisp code." t)
     :hook (emacs-lisp-mode . enable-paredit-mode))
 #+END_SRC
 ** Latex
 #+NAME: latex
 #+BEGIN_SRC emacs-lisp
-  (use-package latex-pretty-symbols
-    :ensure t)
+  ;; (use-package latex-pretty-symbols
+  ;;   :ensure t)
+
   (setq latex-run-command "pdflatex")
 
   (use-package auctex
@@ -453,18 +415,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :config
     (setq python-indent-offset 4
           tab-stop-list (number-sequence 4 120 4)))
-
-#+END_SRC
-** Haskell
-+ Use haskell-mode for [[https://bitbucket.org/aseemr/wysteria/wiki/Home][Wysteria]]
-#+NAME: haskell
-#+BEGIN_SRC emacs-lisp
-  (use-package haskell-mode
-    :ensure t
-    :delight
-                                          ;  :mode "\\.wy.*\\'"
-                                          ;    :custom    (haskell-font-lock-symbols t)
-    )
 #+END_SRC
 
 ** Misc
@@ -519,14 +469,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :config
     (setq graphviz-dot-indent-width 4))
 
-  (use-package lsp-java
-    :ensure t
-    :after lsp-mode
-    :commands lsp
-    :hook (java-ts-mode . (lambda ()
-                         (require 'lsp-java)
-                         (lsp))))
-
   (use-package cargo
     :ensure t
     :delight cargo-minor-mode
@@ -555,6 +497,10 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package gradle-mode
     :ensure t
     :mode "\\.gradle\\'")
+
+  (use-package haskell-mode
+    :ensure t
+    :delight)
 
   (use-package kotlin-mode
     :ensure t
@@ -814,13 +760,11 @@ this org file.
 
   <<programming-setup>>
 
-  <<tree-sitter>>
+  <<treesit>>
 
   <<error-checking>>
 
   <<auto-complete>>
-
-  <<cmake>>
 
   <<cpp>>
 
@@ -829,8 +773,6 @@ this org file.
   <<latex>>
 
   <<python>>
-
-  <<haskell>>
 
   <<misc>>
 
