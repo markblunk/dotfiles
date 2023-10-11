@@ -98,6 +98,7 @@ This configuration is intended to be installable from scratch.
     :delight abbrev-mode)
 
   (use-package eldoc
+    :defer t
     :delight eldoc-mode)
 #+END_SRC
 ** Git stuff
@@ -108,13 +109,16 @@ Set up git diffs and buffer position in the fringe.
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
+    :defer t
     :config
     (global-git-gutter-mode t))
 
   (use-package magit
+    :defer t
     :ensure t)
 
   (use-package git-modes
+    :defer t
     :ensure t)
 
   (use-package gitattributes-mode
@@ -160,6 +164,7 @@ included to make them unique.
 #+NAME: buffer-names
 #+BEGIN_SRC emacs-lisp
   (use-package uniquify
+    :defer t
     :config
     (setq uniquify-buffer-name-style 'forward))
 #+END_SRC
@@ -196,31 +201,37 @@ Make mouse clicks work in xterm (and iTerm)
 #+NAME: programming-setup
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :defer t
     :ensure t
     :delight '(:eval (concat " " (projectile-project-name)))
     :config
     (projectile-mode t))
 
   (use-package smartparens
+    :defer t
     :delight smartparens-mode
     :ensure t
     :config
     (smartparens-global-mode t))
 
   (use-package rainbow-delimiters
+    :defer t
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package highlight-doxygen
+    :defer t
     :ensure t
     :config (highlight-doxygen-global-mode 1))
 
   (use-package yasnippet
+    :defer t
     :ensure t
     :delight yas-minor-mode
     :config (yas-global-mode 1))
 
   (use-package yasnippet-snippets
+    :after yasnippet
     :ensure t)
 #+END_SRC
 
@@ -257,9 +268,11 @@ something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
   ;; for cmake-mode.
 
   (use-package dockerfile-mode
+    :defer t
     :ensure t)
 
   (use-package cmake-mode
+    :defer t
     :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
     :mode "CMakeLists\\.txt\\'")
 
@@ -315,6 +328,7 @@ java.
   (use-package flycheck
     :ensure flycheck-color-mode-line
     :no-require t
+    :defer t
     :delight flycheck-mode
     :hook ((Texinfo-mode emacs-lisp-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
@@ -350,14 +364,16 @@ java.
     )
 
   (use-package which-key
+    :defer t
     :ensure t
-    :init (which-key-mode)
+    :commands which-key-mode
     :delight which-key-mode)
 #+END_SRC
 
 #+NAME: auto-complete
 #+BEGIN_SRC emacs-lisp
   (use-package company
+    :defer t
     :ensure t
     :delight company-mode
     :commands global-company-mode
@@ -379,6 +395,7 @@ anymore!
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package modern-cpp-font-lock
+    :defer t
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-ts-mode . modern-c++-font-lock-mode))
@@ -388,6 +405,7 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 #+NAME: elisp
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
+    :defer t
     :ensure t
     :delight paredit-mode
     :commands enable-paredit-mode
@@ -412,6 +430,7 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (TeX-master nil))
 
   (use-package cdlatex
+    :defer t
     :ensure t
     :delight org-cdlatex-mode
     :hook ((LaTeX-mode . cdlatex-mode)
@@ -434,6 +453,7 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
   (use-package adoc-mode
+    :defer t
     :ensure t)
 
   (use-package autoconf
@@ -443,17 +463,21 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight auto-revert-mode)
 
   (use-package bash-completion
+    :defer t
     :ensure t
     :config (bash-completion-setup))
 
   (use-package gnuplot-mode
+    :defer t
     :ensure t
     :mode "\\.gnuplot\\'")
 
   (use-package hcl-mode
+    :defer t
     :ensure t)
 
   (use-package mermaid-mode
+    :defer t
     :ensure t
     :delight)
 
@@ -461,24 +485,24 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight)
 
   (use-package sage-shell-mode
+    :defer t
     :ensure t)
 
   (use-package sql-indent
+    :defer t
     :ensure t
     :delight sqlind-minor-mode
     :commands sqlind-minor-mode
     :hook (sql-mode . sqlind-minor-mode))
 
-  (use-package tuareg
-    :ensure t
-    :delight)
-
   (use-package graphviz-dot-mode
+    :defer t
     :ensure t
     :config
     (setq graphviz-dot-indent-width 4))
 
   (use-package cargo
+    :defer t
     :ensure t
     :delight cargo-minor-mode
     :hook (rust-ts-mode . cargo-minor-mode))
@@ -516,6 +540,11 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight)
 
   (use-package lean-mode
+    :ensure t
+    :delight)
+
+  (use-package tuareg
+    :defer t
     :ensure t
     :delight)
 
@@ -652,6 +681,7 @@ Use treemacs for exploring projects/workspaces.
 #+NAME: treemacs
 #+BEGIN_SRC emacs-lisp
   (use-package treemacs
+    :defer t
     :ensure t
     :config
     (setq
@@ -685,11 +715,18 @@ Use treemacs for exploring projects/workspaces.
 Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
 #+NAME: update-packages
 #+BEGIN_SRC emacs-lisp
+  (use-package package
+    :custom (package-archives
+             '(("nongnu"   . "https://elpa.nongnu.org/nongnu/")
+               ("gnu"   . "https://elpa.gnu.org/packages/")
+               ("melpa" . "https://melpa.org/packages/"))
+             "add melpa to the list of archives to search for packages"))
+
   (use-package auto-package-update
+    :defer t
     :ensure t
-    :config
-    (setq
-     auto-package-update-delete-old-versions t
+    :custom
+    (auto-package-update-delete-old-versions t
      auto-package-update-hide-results t
      auto-package-update-prompt-before-update t
      auto-package-update-interval 14)
@@ -699,6 +736,7 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
 #+NAME: mastodon
 #+BEGIN_SRC emacs-lisp
   (use-package mastodon
+    :defer t
     :ensure t
     :config
       (setq
