@@ -98,7 +98,6 @@ This configuration is intended to be installable from scratch.
     :delight abbrev-mode)
 
   (use-package eldoc
-    :defer t
     :delight eldoc-mode)
 #+END_SRC
 ** Git stuff
@@ -109,7 +108,6 @@ Set up git diffs and buffer position in the fringe.
   (use-package git-gutter
     :ensure t
     :delight git-gutter-mode
-    :defer t
     :config
     (global-git-gutter-mode t))
 
@@ -118,7 +116,6 @@ Set up git diffs and buffer position in the fringe.
     :ensure t)
 
   (use-package git-modes
-    :defer t
     :ensure t)
 
   (use-package gitattributes-mode
@@ -164,7 +161,6 @@ included to make them unique.
 #+NAME: buffer-names
 #+BEGIN_SRC emacs-lisp
   (use-package uniquify
-    :defer t
     :config
     (setq uniquify-buffer-name-style 'forward))
 #+END_SRC
@@ -201,28 +197,24 @@ Make mouse clicks work in xterm (and iTerm)
 #+NAME: programming-setup
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :defer t
     :ensure t
     :delight '(:eval (concat " " (projectile-project-name)))
     :config
     (projectile-mode t))
 
   (use-package smartparens
-    :defer t
     :delight smartparens-mode
     :ensure t
     :config
     (smartparens-global-mode t))
 
   (use-package rainbow-delimiters
-    :defer t
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
   (use-package highlight-doxygen
-    :defer t
     :ensure t
-    :config (highlight-doxygen-global-mode 1))
+    :hook (c++-ts-mode . highlight-doxygen-mode))
 
   (use-package yasnippet
     :defer t
@@ -233,6 +225,17 @@ Make mouse clicks work in xterm (and iTerm)
   (use-package yasnippet-snippets
     :after yasnippet
     :ensure t)
+
+  ;; make yas-snippet work with treesitter modes
+  ;; see https://github.com/joaotavora/yasnippet/issues/1169
+  (advice-add
+   'yas--modes-to-activate
+   :around
+   (defun yas--get-snippet-tables@tree-sitter (orig-fn &optional mode)
+     (funcall orig-fn
+              (or (car (rassq
+                        (or mode major-mode) major-mode-remap-alist))
+                  mode))))
 #+END_SRC
 
 1. ~sudo apt-get install libtree-sitter-dev~
@@ -261,7 +264,7 @@ something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-  ;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+  ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
   ;; I shouldn't have to do this but the only way I see to 'load'
   ;; dockerfile-ts-mode is to load dockerfile-mode and then remap. Ditto
@@ -289,8 +292,8 @@ something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
           (rust-mode . rust-ts-mode)
           (conf-toml-mode . toml-ts-mode)))
 
-  (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'"
-                                  . yaml-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'"                       . yaml-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'" . yaml-ts-mode))
 #+END_SRC
 
 [[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation
@@ -310,19 +313,6 @@ with the following:
 Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as the LSP server for Python. See
 [[https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json][configuration]] for more details.
 
-To get lsp-haskell to behave, I have to first set the version of ghc
-used by ghcup (e.g. ~ghcup set ghc 8.10.2~) to match the version used
-in a particular project. Setting the custom variable
-~lsp-haskell-server-path~ should work directly without having to mess
-around with ghcup, but I couldn't get it to work as expected. So I
-ended up setting that variable per haskell project in
-~.dir-locals.el~, and thus I have to add that hook here like I did for
-java.
-
-#+BEGIN_SRC emacs-lisp
-  ((haskell-mode . ((lsp-haskell-server-path . "~/.ghcup/bin/haskell-language-server-8.10.4"))))
-#+END_SRC
-
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
@@ -341,17 +331,6 @@ java.
                (concat (getenv "HOME")
                        "/miniconda3/envs/lsp/bin"))
 
-    (setq-default eglot-workspace-configuration
-                  '((:pylsp . (:configurationSources ["flake8"]
-                               :plugins (
-                                         :autopep8 (:enabled :json-false)
-                                         :mccabe (:enabled :json-false)
-                                         :pycodestyle (:enabled t :maxLinelength 80)
-                                         :pydocstyle (:enabled t :convention "numpy")
-                                         :pyflakes (:enabled :json-false)
-                                         :ruff (:enabled :json-false)
-                                         :yapf (:enabled :json-false))))))
-
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '((c-mode c-ts-mode c++-mode c++-ts-mode) .
@@ -360,20 +339,17 @@ java.
                     "-completion-style=detailed")))
     (add-to-list 'eglot-server-programs
                  '((python-mode python-ts-mode) .
-                   ("pylsp")))
-    )
+                   ("pylsp"))))
 
   (use-package which-key
-    :defer t
     :ensure t
-    :commands which-key-mode
+    :config (which-key-mode)
     :delight which-key-mode)
 #+END_SRC
 
 #+NAME: auto-complete
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :defer t
     :ensure t
     :delight company-mode
     :commands global-company-mode
@@ -463,7 +439,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :delight auto-revert-mode)
 
   (use-package bash-completion
-    :defer t
     :ensure t
     :config (bash-completion-setup))
 
@@ -723,7 +698,6 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
              "add melpa to the list of archives to search for packages"))
 
   (use-package auto-package-update
-    :defer t
     :ensure t
     :custom
     (auto-package-update-delete-old-versions t
