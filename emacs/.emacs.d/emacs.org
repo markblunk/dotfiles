@@ -641,8 +641,11 @@ a file with ~\C-x\C-f~).
   (push ".settings/" completion-ignored-extensions)
   (push "target" completion-ignored-extensions)
 
-  (use-package dired-x
-    :config (setq dired-omit-mode t))
+  (use-package dired
+    :requires dired-x)
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (dired-omit-mode 1)))
 #+END_SRC
 
 view manpages inside emacs for greater readability.
