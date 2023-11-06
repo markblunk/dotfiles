@@ -18,9 +18,10 @@ This configuration is intended to be installable from scratch.
 #+BEGIN_SRC emacs-lisp
   (use-package solarized-theme
     :ensure t
+    :custom
+    (solarized-emphasize-indicators nil
+     solarized-scale-org-headlines nil)
     :config
-    (setq solarized-emphasize-indicators nil
-          solarized-scale-org-headlines nil)
     (load-theme 'solarized-dark t))
 #+END_SRC
 ** Font
@@ -136,12 +137,12 @@ Use smart mode line to clean up the modeline display a little.
 #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line
     :ensure t
+    :custom
+    (column-number-mode t)
+    (sml/shorten-directory t)
+    (sml/shorten-modes t)
+    (sml/no-confirm-load-theme t)
     :config
-    (setq
-     column-number-mode t
-     sml/shorten-directory t
-     sml/shorten-modes t
-     sml/no-confirm-load-theme t)
     (sml/setup))
 #+END_SRC
 ** Scrolling behavior
@@ -161,8 +162,8 @@ included to make them unique.
 #+NAME: buffer-names
 #+BEGIN_SRC emacs-lisp
   (use-package uniquify
-    :config
-    (setq uniquify-buffer-name-style 'forward))
+    :custom
+    (uniquify-buffer-name-style 'forward))
 #+END_SRC
 ** Window systems and terminals
 Make mouse clicks work in xterm (and iTerm)
@@ -416,9 +417,9 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 #+NAME: python
 #+BEGIN_SRC emacs-lisp
   (use-package python
-    :config
-    (setq python-indent-offset 4
-          tab-stop-list (number-sequence 4 120 4)))
+    :custom
+    (python-indent-offset 4)
+    (tab-stop-list (number-sequence 4 120 4)))
 #+END_SRC
 
 ** Misc
@@ -473,8 +474,8 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package graphviz-dot-mode
     :defer t
     :ensure t
-    :config
-    (setq graphviz-dot-indent-width 4))
+    :custom
+    (graphviz-dot-indent-width 4))
 
   (use-package cargo
     :defer t
@@ -564,13 +565,14 @@ Set emacs configuration file location, and bind that function.
 
   (use-package ido
     :ensure t
-    :config
-    (ido-mode 1) ; this has to be 1. it will break if you use 't' here
     :custom
     (ido-enable-flex-matching t)
-    (ido-ignore-extensions t)
     (ido-everywhere t)
-    (ido-file-extensions-order '(".c" ".cpp" ".el" ".java" ".sh" ".ac" ".org" ".tex")))
+    (ido-file-extensions-order
+     '(".cpp" ".hpp" ".c" ".h" ".py" ".sh" ".org" ".tex" ".el"))
+    (ido-ignore-extensions t)
+    (ido-mode "both")
+    (ido-use-filename-at-point 'guess))
 
   (use-package ido-yes-or-no
     :ensure t
@@ -604,25 +606,23 @@ Short key bindings for capturing notes/links and switching to agenda.
     :bind (("\C-cl" . org-store-link)
            ("\C-cc" . org-capture)
            ("\C-ca" . org-agenda))
-    :config
-    (setq org-directory (concat (getenv "HOME") "/org")
-          org-archive-location (concat org-directory "/archive.org::")
-          org-default-notes-file (concat org-directory "/notes.org")
-          org-agenda-files (list org-directory)
-          org-babel-python-command (concat (getenv "HOME") "/.virtualenvs/emacs/bin/python")
-          org-log-done 'time
-          org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1))
-          org-src-fontify-natively t
-          org-todo-keywords '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
-                              (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
-    (org-babel-do-load-languages 'org-babel-load-languages
-                                 '((emacs-lisp . t)
+    :custom
+    (org-directory (concat (getenv "HOME") "/org"))
+    (org-archive-location (concat org-directory "/archive.org::"))
+    (org-default-notes-file (concat org-directory "/notes.org"))
+    (org-agenda-files (list org-directory))
+    (org-babel-python-command (concat (getenv "HOME") "/miniconda3/envs/lsp/bin/python"))
+    (org-log-done 'time)
+    (org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1)))
+    (org-src-fontify-natively t)
+    (org-todo-keywords '((sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
+                         (sequence "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
+    (org-export-backends '(ascii beamer html latex md texinfo))
+    (org-babel-load-languages  '((emacs-lisp . t)
                                    (shell . t)
                                    (sql . t)
                                    (python . t)
-                                   (latex . t)))
-    :custom
-    (org-export-backends '(ascii beamer html latex md texinfo)))
+                                   (latex . t))))
 
   (use-package org-indent :delight)
 #+END_SRC
@@ -658,18 +658,17 @@ Use treemacs for exploring projects/workspaces.
   (use-package treemacs
     :defer t
     :ensure t
+    :custom
+    (treemacs-width 30)
+    (treemacs-show-hidden-files nil)
     :config
-    (setq
-     treemacs-width 30
-     treemacs-show-hidden-files nil)
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled java class files"
                    (or
                     (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)
                     (string-match "\\`\\.settings\\'" filename)
-                    (string-match "\\`target\\'" filename)
-                    )))
+                    (string-match "\\`target\\'" filename))))
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
                    "Ignore compiled autotools files"
