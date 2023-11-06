@@ -711,9 +711,8 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
   (use-package mastodon
     :defer t
     :ensure t
-    :config
-      (setq
-       mastodon-instance-url "https://mastodon.social"
+    :custom
+      (mastodon-instance-url "https://mathstodon.xyz"
        mastodon-active-user "mibbles"))
 #+END_SRC
 
