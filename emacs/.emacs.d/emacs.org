@@ -712,11 +712,11 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
 #+NAME: mastodon
 #+BEGIN_SRC emacs-lisp
   (use-package mastodon
-    :defer t
     :ensure t
     :custom
-      (mastodon-instance-url "https://mathstodon.xyz"
-       mastodon-active-user "mibbles"))
+      (mastodon-instance-url "https://mathstodon.xyz")
+      (mastodon-active-user "mibbles")
+      )
 #+END_SRC
 
 * External
@@ -794,7 +794,7 @@ this org file.
 
   <<elisp>>
 
-  <<latex>>
+  ;;  <<latex>>
 
   <<python>>
 
