@@ -624,20 +624,16 @@ ignored) in [[info:emacs#Dired][dired-mode]] (the mode of the minibuffer when tr
 a file with ~\C-x\C-f~).
 #+NAME: dired-omit
 #+BEGIN_SRC emacs-lisp
-  (push ".class.d/" completion-ignored-extensions)
-  (push ".dirstamp" completion-ignored-extensions)
-  (push ".deps/" completion-ignored-extensions)
-  (push ".idea/" completion-ignored-extensions)
-  (push ".libs/" completion-ignored-extensions)
-  (push ".out" completion-ignored-extensions)
-  (push ".settings/" completion-ignored-extensions)
-  (push "target" completion-ignored-extensions)
-
   (use-package dired
-    :requires dired-x)
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (dired-omit-mode 1)))
+    :custom
+    (completion-ignored-extensions
+     (append '("target" ".settings/" ".out"
+               ".libs/" ".idea/" ".deps/"
+               ".dirstamp" ".class.d/")
+             completion-ignored-extensions)))
+
+  (use-package dired-x
+    :hook ((dired-mode . dired-omit-mode)))
 #+END_SRC
 
 view manpages inside emacs for greater readability.
