@@ -655,22 +655,17 @@ Use treemacs for exploring projects/workspaces.
     :config
     (add-to-list 'treemacs-ignored-file-predicates
                  (lambda (filename absolute-path)
-                   "Ignore compiled java class files"
+                   "custom ignored files"
                    (or
+                    ;; java stuff
                     (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)
                     (string-match "\\`\\.settings\\'" filename)
-                    (string-match "\\`target\\'" filename))))
-    (add-to-list 'treemacs-ignored-file-predicates
-                 (lambda (filename absolute-path)
-                   "Ignore compiled autotools files"
-                   (or
+                    (string-match "\\`target\\'" filename)
+                    ;; autotools
                     (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\|s\\)?o\\'" filename)
                     (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename)
-                    (string-match "\\`\\.dirstamp\\'" filename))))
-    (add-to-list 'treemacs-ignored-file-predicates
-                 (lambda (filename absolute-path)
-                   "Ignore random files"
-                   (or
+                    ;; random stuff
+                    (string-match "\\`\\.dirstamp\\'" filename)
                     (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)
                     (string-match "\\`\\.clangd\\'" filename)
                     (string-match "\\`[-_A-Za-z0-9]+\\.iml\\'" filename)
@@ -681,20 +676,22 @@ Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] 
 #+NAME: update-packages
 #+BEGIN_SRC emacs-lisp
   (use-package package
-    :custom (package-archives
-             '(("nongnu"   . "https://elpa.nongnu.org/nongnu/")
-               ("gnu"   . "https://elpa.gnu.org/packages/")
-               ("melpa" . "https://melpa.org/packages/"))
-             "add melpa to the list of archives to search for packages"))
+    :custom
+    (package-archives
+     '(("nongnu"   . "https://elpa.nongnu.org/nongnu/")
+       ("gnu"   . "https://elpa.gnu.org/packages/")
+       ("melpa" . "https://melpa.org/packages/"))
+     "add melpa to the list of archives to search for packages"))
 
   (use-package auto-package-update
     :ensure t
+    :config
+    (auto-package-update-maybe)
     :custom
-    (auto-package-update-delete-old-versions t
-     auto-package-update-hide-results t
-     auto-package-update-prompt-before-update t
-     auto-package-update-interval 14)
-    (auto-package-update-maybe))
+    (auto-package-update-delete-old-versions t)
+    (auto-package-update-interval 14)
+    (auto-package-update-hide-results t)
+    (auto-package-update-prompt-before-update t))
 #+END_SRC
 
 #+NAME: mastodon
