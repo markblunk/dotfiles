@@ -276,7 +276,6 @@ something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
     :ensure t)
 
   (use-package cmake-mode
-    :defer t
     :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
     :mode "CMakeLists\\.txt\\'")
 
@@ -319,7 +318,6 @@ Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as 
   (use-package flycheck
     :ensure flycheck-color-mode-line
     :no-require t
-    :defer t
     :delight flycheck-mode
     :hook ((Texinfo-mode emacs-lisp-mode)
            (flycheck-mode . flycheck-color-mode-line-mode))
@@ -372,7 +370,6 @@ anymore!
 #+NAME: cpp
 #+BEGIN_SRC emacs-lisp
   (use-package modern-cpp-font-lock
-    :defer t
     :ensure t
     :delight modern-c++-font-lock-mode
     :hook (c++-ts-mode . modern-c++-font-lock-mode))
@@ -382,7 +379,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 #+NAME: elisp
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
-    :defer t
     :ensure t
     :delight paredit-mode
     :commands enable-paredit-mode
@@ -407,7 +403,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (TeX-master nil))
 
   (use-package cdlatex
-    :defer t
     :ensure t
     :delight org-cdlatex-mode
     :hook ((LaTeX-mode . cdlatex-mode)
@@ -444,7 +439,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :config (bash-completion-setup))
 
   (use-package gnuplot-mode
-    :defer t
     :ensure t
     :mode "\\.gnuplot\\'")
 
@@ -465,7 +459,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :ensure t)
 
   (use-package sql-indent
-    :defer t
     :ensure t
     :delight sqlind-minor-mode
     :commands sqlind-minor-mode
@@ -478,7 +471,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     (graphviz-dot-indent-width 4))
 
   (use-package cargo
-    :defer t
     :ensure t
     :delight cargo-minor-mode
     :hook (rust-ts-mode . cargo-minor-mode))
