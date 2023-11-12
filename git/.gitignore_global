@@ -19,21 +19,19 @@
 
 #emacs
 *~
-.\#*
 *.elc
-tramp
-.org-id-locations
 *_archive
+.\#*
 .dir-locals.el
+.org-id-locations
+.projectile
 /eshell/history
 /eshell/lastdir
 flycheck_*.el
+tramp
 
 # server auth directory
 /server/
-
-# projectiles files
-.projectile
 
 #python
 __pycache__
@@ -46,6 +44,7 @@ pyrightconfig.json
 #lsp for cpp
 compile_commands.json
 .clangd/
+.clang-tidy
 
 #lsp for java
 .settings/
@@ -65,5 +64,5 @@ target/
 *.im.in
 *.out
 .deps/
-.libs/
 .dirstamp
+.libs/
