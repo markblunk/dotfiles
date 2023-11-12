@@ -227,8 +227,16 @@ Make mouse clicks work in xterm (and iTerm)
     :after yasnippet
     :ensure t)
 
-  ;; make yas-snippet work with treesitter modes
+  ;; Make yas-snippet work with treesitter modes
+
+  ;; Note that yasnippet doesn't work now since the modes in the snippets
+  ;; directory say things like "c++-mode" and not "c++-ts-mode".
+  ;; See https://github.com/joaotavora/yasnippet/issues/1169 for a workaround.
+  ;;something like
+  ;; (add-hook 'c++-ts-mode-hook (yas-activate-extra-mode  'c++-mode)
+  ;; should work but i'm making some silly mistake.
   ;; see https://github.com/joaotavora/yasnippet/issues/1169
+
   (advice-add
    'yas--modes-to-activate
    :around
@@ -239,15 +247,16 @@ Make mouse clicks work in xterm (and iTerm)
                   mode))))
 #+END_SRC
 
+To set up treesitter:
 1. ~sudo apt-get install libtree-sitter-dev~
 2. Run ~treesit-install-language-grammar~ for every language grammer
    in ~treesit-language-source-alist~.
 
-Note that yasnippet doesn't work now since the modes in the snippets
-directory say things like "c++-mode" and not "c++-ts-mode".
-See https://github.com/joaotavora/yasnippet/issues/1169 for a workaround.
-something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
-'c++-mode))~should work but i'm making some silly mistake
+Because there is no built-in (cmake|dockerfile|yaml)-mode in Emacs,
+you can't remap the major mode, but instead we have to manually add
+references for the relevant files. This shouldn't be required since
+all of these modes have logic to add to auto-mode-alist when the
+relevant grammer is present, but here we are.
 
 
 #+NAME: treesit
@@ -267,32 +276,25 @@ something like   ~(add-hook 'c++-ts-mode-hook (yas-activate-extra-mode
 
   ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
-  ;; I shouldn't have to do this but the only way I see to 'load'
-  ;; dockerfile-ts-mode is to load dockerfile-mode and then remap. Ditto
-  ;; for cmake-mode.
-
-  (use-package dockerfile-mode
-    :defer t
-    :ensure t)
-
-  (use-package cmake-mode
-    :load-path "/usr/share/emacs/site-lisp/elpa-src/cmake-mode-3.22.1"
-    :mode "CMakeLists\\.txt\\'")
-
   (setq major-mode-remap-alist
         '((sh-mode . bash-ts-mode)
           (c++-mode . c++-ts-mode)
           (c-or-c++-mode . c-or-c++-ts-mode)
           (c-mode . c-ts-mode)
-          (cmake-mode . cmake-ts-mode)
-          (dockerfile-mode . dockerfile-ts-mode)
           (java-mode . java-ts-mode)
           (js-json-mode . json-ts-mode)
           (python-mode . python-ts-mode)
           (rust-mode . rust-ts-mode)
           (conf-toml-mode . toml-ts-mode)))
 
-  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'"                       . yaml-ts-mode))
+
+  (add-to-list 'auto-mode-alist
+               '("CMakeLists\\.txt\\'" . cmake-ts-mode))
+  (add-to-list 'auto-mode-alist
+               '("\\.dockerfile\\'" . dockerfile-ts-mode))
+  (add-to-list 'auto-mode-alist
+               '("[/\\]\\(?:Containerfile\\|Dockerfile\\)\\(?:\\.[^/\\]*\\)?\\'" . dockerfile-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'" . yaml-ts-mode))
 #+END_SRC
 
