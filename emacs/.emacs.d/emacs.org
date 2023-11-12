@@ -217,7 +217,7 @@ Make mouse clicks work in xterm (and iTerm)
 
   (use-package highlight-doxygen
     :ensure t
-    :hook (c++-ts-mode . highlight-doxygen-mode))
+    :hook (prog-mode . highlight-doxygen-mode))
 
   (use-package yasnippet
     :defer t
@@ -343,11 +343,6 @@ Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as 
     (add-to-list 'eglot-server-programs
                  '((python-mode python-ts-mode) .
                    ("pylsp"))))
-
-  (use-package which-key
-    :ensure t
-    :config (which-key-mode)
-    :delight which-key-mode)
 #+END_SRC
 
 #+NAME: auto-complete
@@ -577,6 +572,10 @@ Set emacs configuration file location, and bind that function.
 
   (transient-mark-mode t) ;; No region when it is not highlighted
 
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode)
+    :delight which-key-mode)
 #+END_SRC
 * Backups
 Save all backups to a universal location
@@ -631,9 +630,13 @@ a file with ~\C-x\C-f~).
   (use-package dired
     :custom
     (completion-ignored-extensions
-     (append '("target" ".settings/" ".out"
-               ".libs/" ".idea/" ".deps/"
-               ".dirstamp" ".class.d/")
+     (append '(".am" ".dirstamp" ".out"
+               ".class.d/"
+               ".deps/"
+               ".idea/"
+               ".libs/"
+               ".settings/"
+               "target")
              completion-ignored-extensions)))
 
   (use-package dired-x
