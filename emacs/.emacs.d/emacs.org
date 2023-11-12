@@ -85,7 +85,7 @@ This configuration is intended to be installable from scratch.
                                (blink-matching-open))))
       (when matching-text (message matching-text))))
 
-  (if (window-system)
+  (if (display-graphic-p)
       (progn
         (tool-bar-mode -1)
         (scroll-bar-mode -1))
