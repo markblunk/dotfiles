@@ -650,35 +650,6 @@ view manpages inside emacs for greater readability.
     :load-path "/usr/share/doc/manpages")
 #+END_SRC
 
-Use treemacs for exploring projects/workspaces.
-#+NAME: treemacs
-#+BEGIN_SRC emacs-lisp
-  (use-package treemacs
-    :defer t
-    :ensure t
-    :custom
-    (treemacs-width 30)
-    (treemacs-show-hidden-files nil)
-    :config
-    (add-to-list 'treemacs-ignored-file-predicates
-                 (lambda (filename absolute-path)
-                   "custom ignored files"
-                   (or
-                    ;; java stuff
-                    (string-match "\\`[a-zA-Z]+\\(\\$[0-9]+\\)?\\.class\\(\\.d\\)?\\'" filename)
-                    (string-match "\\`\\.settings\\'" filename)
-                    (string-match "\\`target\\'" filename)
-                    ;; autotools
-                    (string-match "\\`[-_A-Za-z0-9]+\\.\\(l\\|s\\)?o\\'" filename)
-                    (string-match "\\`\\.\\(dep\\|lib\\)s\\'" filename)
-                    ;; random stuff
-                    (string-match "\\`\\.dirstamp\\'" filename)
-                    (string-match "\\`[-_A-Za-z0-9]+\\.cache\\'" filename)
-                    (string-match "\\`\\.clangd\\'" filename)
-                    (string-match "\\`[-_A-Za-z0-9]+\\.iml\\'" filename)
-                    (string-match "\\`\\.idea\\'" filename)))))
-#+END_SRC
-
 Use [[https://github.com/rranelli/auto-package-update.el][auto-package-update]] to keep packages up to date.
 #+NAME: update-packages
 #+BEGIN_SRC emacs-lisp
@@ -800,8 +771,6 @@ this org file.
   <<dired-omit>>
 
   <<man>>
-
-  <<treemacs>>
 
   <<mastodon>>
 
