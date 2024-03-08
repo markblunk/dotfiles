@@ -1,37 +1,37 @@
 prepend() {
-    [ -d $1 ] && PATH="$1:${PATH}"
+  [ -d $1 ] && PATH="$1:${PATH}"
 }
 
 if [[ $HOSTNAME = markbott ]]; then
-    export JAVA_HOME="/usr/lib/jvm/default-java"
-    prepend "$JAVA_HOME/bin"
+  export JAVA_HOME="/usr/lib/jvm/default-java"
+  prepend "$JAVA_HOME/bin"
 
-    CLASSPATH="$JAVA_HOME/lib:/usr/local/share/java:/usr/local/share/java/*:/usr/share/java:/usr/share/java/*"
-    export CLASSPATH
+  CLASSPATH="$JAVA_HOME/lib:/usr/local/share/java:/usr/local/share/java/*:/usr/share/java:/usr/share/java/*"
+  export CLASSPATH
 
-    if [ -d $HOME/.cargo/bin ]; then
-        prepend "$HOME/.cargo/bin"
-    fi
+  if [ -d $HOME/.cargo/bin ]; then
+    prepend "$HOME/.cargo/bin"
+  fi
 
-    #add bazel to path
-    if [ -d "$HOME/bin" ]; then
-        prepend "$HOME/bin"
-    fi
+  #add bazel to path
+  if [ -d "$HOME/bin" ]; then
+    prepend "$HOME/bin"
+  fi
 
-    # snap bins
-    prepend "/snap/bin"
+  # snap bins
+  prepend "/snap/bin"
 
-    #npm global location
-    if [ -d "$HOME/.npm-global" ]; then
-        prepend "$HOME/.npm-global/bin"
-    fi
+  #npm global location
+  if [ -d "$HOME/.npm-global" ]; then
+    prepend "$HOME/.npm-global/bin"
+  fi
 
-    # https://www.haskell.org/ghcup
-    if [ -d "$HOME/.cabal" ]; then
-        prepend "$HOME/.cabal/bin"
-    fi
+  # https://www.haskell.org/ghcup
+  if [ -d "$HOME/.cabal" ]; then
+    prepend "$HOME/.cabal/bin"
+  fi
 
-    if [ -d "$HOME/.ghcup/bin" ]; then
-        prepend "$HOME/.ghcup/bin"
-    fi
+  if [ -d "$HOME/.ghcup/bin" ]; then
+    prepend "$HOME/.ghcup/bin"
+  fi
 fi
