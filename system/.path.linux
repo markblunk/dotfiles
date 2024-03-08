@@ -9,13 +9,11 @@ if [[ $HOSTNAME = markbott ]]; then
   CLASSPATH="$JAVA_HOME/lib:/usr/local/share/java:/usr/local/share/java/*:/usr/share/java:/usr/share/java/*"
   export CLASSPATH
 
+  #rust stuff
   if [ -d $HOME/.cargo/bin ]; then
     prepend "$HOME/.cargo/bin"
   fi
 
-  #add bazel to path
-  if [ -d "$HOME/bin" ]; then
-    prepend "$HOME/bin"
   fi
 
   # snap bins
