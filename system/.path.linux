@@ -14,6 +14,13 @@ if [[ $HOSTNAME = markbott ]]; then
     prepend "$HOME/.cargo/bin"
   fi
 
+  # scala stuff
+  if [ -d $HOME/.local/share/coursier/bin ]; then
+    prepend "$HOME/.local/share/coursier/bin"
+  fi
+
+  if [ -d $HOME/.cargo/bin ]; then
+    prepend "$HOME/.cargo/bin"
   fi
 
   # snap bins
