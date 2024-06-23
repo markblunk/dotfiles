@@ -39,4 +39,8 @@ if [[ $HOSTNAME = markbott ]]; then
   if [ -d "$HOME/.ghcup/bin" ]; then
     prepend "$HOME/.ghcup/bin"
   fi
+
+  if [ -d "$HOME/.local/bin" ]; then
+    prepend "$HOME/.local/bin"
+  fi
 fi

@@ -10,7 +10,6 @@ ido.last
 tramp
 Games
 .emacs.d/.cache/treemacs-persist
-.emacs.d/.lsp*
 .emacs.d/bookmarks
 .emacs.d/eclipse.jdt.ls
 .emacs.d/elpa

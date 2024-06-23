@@ -75,16 +75,6 @@ This configuration is intended to be installable from scratch.
         show-trailing-whitespace t
         blink-cursor-mode nil)
 
-  (defadvice show-paren-function
-      (after show-matching-paren-offscreen activate)
-    "If matching paren is offscreen, show the matching line in the echo area."
-    (interactive)
-    (let* ((cb (char-before (point)))
-           (matching-text (and cb
-                               (char-equal (char-syntax cb) ?\) )
-                               (blink-matching-open))))
-      (when matching-text (message matching-text))))
-
   (if (display-graphic-p)
       (progn
         (tool-bar-mode -1)
@@ -100,6 +90,11 @@ This configuration is intended to be installable from scratch.
 
   (use-package eldoc
     :delight eldoc-mode)
+
+  (use-package golden-ratio
+    :ensure t
+    :delight golden-ratio-mode
+    :config (golden-ratio-mode 1))
 #+END_SRC
 ** Git stuff
 [[https://www.emacswiki.org/emacs/TheFringe][The fringe]] is the vertical region at the right and left of the buffer.
@@ -286,9 +281,7 @@ relevant grammer is present, but here we are.
           (java-mode . java-ts-mode)
           (js-json-mode . json-ts-mode)
           (python-mode . python-ts-mode)
-          (rust-mode . rust-ts-mode)
           (conf-toml-mode . toml-ts-mode)))
-
 
   (add-to-list 'auto-mode-alist
                '("CMakeLists\\.txt\\'" . cmake-ts-mode))
@@ -296,26 +289,57 @@ relevant grammer is present, but here we are.
                '("\\.dockerfile\\'" . dockerfile-ts-mode))
   (add-to-list 'auto-mode-alist
                '("[/\\]\\(?:Containerfile\\|Dockerfile\\)\\(?:\\.[^/\\]*\\)?\\'" . dockerfile-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.clang-\\(?:tidy\\|format\\)\\'" . yaml-ts-mode))
 #+END_SRC
 
-[[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation
-#+BEGIN_SRC shell
-npm i -g bash-language-server
-#+END_SRC
-Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and installed it
-with the following:
++ [[https://github.com/mads-hartmann/bash-language-server][bash lsp]] installation
+  #+BEGIN_SRC shell
+    npm i -g bash-language-server
+  #+END_SRC
+
++ cmake-lsp: Added [[https://github.com/regen100/cmake-language-server][cmake language server]] in a conda environment, and
+  installed it with the following:
+  #+BEGIN_SRC shell
+    conda create --name lsp
+    conda activate lsp
+    conda install pip
+    pip install cmake-language-server
+  #+END_SRC
+
++ latex-lsp: Using [[https://github.com/astoff/digestif][digestif]] as the LSP server for Latex. Just add the
+  executable to your PATH and eglot will find it.
+
++ python-lsp: Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as the LSP server for Python. See
+[[https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json][configuration]] for more details.
 #+BEGIN_SRC shell
   conda create --name lsp
   conda activate lsp
   conda install pip
-  pip install cmake-language-server
   conda install -c conda-forge python-lsp-server[all]
 #+END_SRC
 
-Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as the LSP server for Python. See
-[[https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json][configuration]] for more details.
++ scala-lsp [[https://scalameta.org/metals/][metals-emacs]] installation
+  first install [[https://get-coursier.io/][coursier]]
+  #+BEGIN_SRC shell
+  curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz" | gzip -d > cs
+  chmod +x cs
+   ./cs setup
+  #+END_SRC
+  and add coursier to PATH. Next, install metals-emacs and add it to
+  the path (in this example we put the binary in the same place as coursier)
+Then install
+  #+BEGIN_SRC shell
+    coursier bootstrap                        \
+             --java-opt -Xss4m                \
+             --java-opt -Xms100m              \
+             --java-opt -Dmetals.client=emacs \
+             org.scalameta:metals_2.13:1.2.2  \
+             -r bintray:scalacenter/releases  \
+             -r sonatype:snapshots            \
+             -o $HOME/.local/share/coursier/bin/metals-emacs -f
+  #+END_SRC
 
 #+NAME: error-checking
 #+BEGIN_SRC emacs-lisp
@@ -329,20 +353,25 @@ Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as 
     :custom
     (flycheck-checker-error-threshold 2000))
 
-
+  ;; add this so emacs can find cmake-lsp-server and pylsp
   (add-to-list 'exec-path
                (concat (getenv "HOME")
                        "/miniconda3/envs/lsp/bin"))
 
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '((c-mode c-ts-mode c++-mode c++-ts-mode) .
+                 '((c-ts-mode c++-ts-mode) .
                    ("clangd" "-background-index" "-clang-tidy"
                     "-suggest-missing-includes"
                     "-completion-style=detailed")))
     (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode) .
-                   ("pylsp"))))
+                 '((python-ts-mode) .
+                   ("pylsp")))
+    (add-to-list 'eglot-server-programs
+                 '((rust-ts-mode) .
+                   ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+    (add-to-list 'eglot-server-programs
+                 '(scala-mode . ("metals-emacs"))))
 #+END_SRC
 
 #+NAME: auto-complete
@@ -356,7 +385,6 @@ Using [[https://github.com/python-lsp/python-lsp-server][python lsp server]] as 
     (company-tooltip-align-annotations t))
 #+END_SRC
 ** CMake
-
 ** C
 Nothing right now
 ** Cpp
@@ -423,35 +451,13 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-  (use-package adoc-mode
-    :defer t
-    :ensure t)
-
-  (use-package autoconf
-    :delight autoconf-mode)
-
   (use-package autorevert
     :delight auto-revert-mode)
 
   (use-package bash-completion
     :ensure t
+    :defer t
     :config (bash-completion-setup))
-
-  (use-package gnuplot-mode
-    :ensure t
-    :mode "\\.gnuplot\\'")
-
-  (use-package hcl-mode
-    :defer t
-    :ensure t)
-
-  (use-package mermaid-mode
-    :defer t
-    :ensure t
-    :delight)
-
-  (use-package nxml-mode
-    :delight)
 
   (use-package sage-shell-mode
     :defer t
@@ -463,23 +469,37 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :commands sqlind-minor-mode
     :hook (sql-mode . sqlind-minor-mode))
 
-  (use-package graphviz-dot-mode
-    :defer t
-    :ensure t
-    :custom
-    (graphviz-dot-indent-width 4))
-
   (use-package cargo
     :ensure t
     :delight cargo-minor-mode
     :hook (rust-ts-mode . cargo-minor-mode))
+
+  (use-package scala-mode
+    :ensure t)
+
+  (use-package sbt-mode
+    :ensure t
+    :commands sbt-start sbt-command
+    :config
+    ;; WORKAROUND: allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map))
 #+END_SRC
 ***  Unused
 [[https://github.com/FStarLang/FStar/blob/master/INSTALL.md#opam-package][Fstar installation instructions]]
 #+NAME: misc-unused
 #+BEGIN_SRC emacs-lisp
+  (use-package adoc-mode
+    :defer t
+    :ensure t)
+
   (use-package antlr-mode
     :mode "\\.g4\\'")
+
+  (use-package autoconf
+    :delight autoconf-mode)
 
   (use-package bison-mode
     :ensure t)
@@ -494,6 +514,20 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :ensure t
     :mode ("\\.fs?\\'" . fstar-mode))
 
+  (use-package gnuplot-mode
+    :ensure t
+    :mode "\\.gnuplot\\'")
+
+  (use-package graphviz-dot-mode
+    :defer t
+    :ensure t
+    :custom
+    (graphviz-dot-indent-width 4))
+
+
+
+
+
   (use-package gradle-mode
     :ensure t
     :mode "\\.gradle\\'")
@@ -501,6 +535,10 @@ For emacs-lisp code, use paredit for dealing with parentheses.
   (use-package haskell-mode
     :ensure t
     :delight)
+
+  (use-package hcl-mode
+    :defer t
+    :ensure t)
 
   (use-package kotlin-mode
     :ensure t
@@ -510,20 +548,35 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :ensure t
     :delight)
 
+  (use-package company-lean
+    :ensure t
+    :after (lean-mode company))
+
+  (use-package mermaid-mode
+    :defer t
+    :ensure t
+    :delight)
+
+  (use-package nxml-mode
+    :delight)
+
+
+  (use-package proof-general
+    :ensure t)
+
+  (use-package swift-mode
+    :ensure t)
+
   (use-package tuareg
     :defer t
     :ensure t
     :delight)
 
-  (use-package company-lean
+  (use-package ttl-mode
+    :defer t
     :ensure t
-    :after (lean-mode company))
-
-  (use-package proof-general
-    :ensure t)
-
-  (use-package scala-mode
-    :ensure t)
+    :delight
+    :mode "\\.\\(n3\\|ttl\\|trig\\)\\'")
 #+END_SRC
 * Global key bindings
 Some miminal global key bindings. Consult [[https://www.masteringemacs.org/article/my-emacs-keybindings][Mastering Emacs]] for some
