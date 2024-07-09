@@ -198,12 +198,6 @@ Make mouse clicks work in xterm (and iTerm)
     :custom
     (projectile-mode t))
 
-  (use-package smartparens
-    :delight smartparens-mode
-    :ensure t
-    :hook (prog-mode text-mode markdown-mode)
-    :config
-    (require 'smartparens-config))
 
 
   (use-package rainbow-delimiters
@@ -327,8 +321,9 @@ relevant grammer is present, but here we are.
   chmod +x cs
    ./cs setup
   #+END_SRC
-  and add coursier to PATH. Next, install metals-emacs and add it to
-  the path (in this example we put the binary in the same place as coursier)
+  and add coursier to ~PATH~. Next, install metals-emacs and add it to
+  the path (in this example we put the binary in the same place as
+  coursier).
 Then install
   #+BEGIN_SRC shell
     coursier bootstrap                        \
@@ -362,16 +357,10 @@ Then install
     (add-to-list 'eglot-server-programs
                  '((c-ts-mode c++-ts-mode) .
                    ("clangd" "-background-index" "-clang-tidy"
-                    "-suggest-missing-includes"
                     "-completion-style=detailed")))
     (add-to-list 'eglot-server-programs
-                 '((python-ts-mode) .
-                   ("pylsp")))
-    (add-to-list 'eglot-server-programs
                  '((rust-ts-mode) .
-                   ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
-    (add-to-list 'eglot-server-programs
-                 '(scala-mode . ("metals-emacs"))))
+                   ("rust-analyzer" :initializationOptions (:check (:command "clippy"))))))
 #+END_SRC
 
 #+NAME: auto-complete
@@ -524,10 +513,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
     :custom
     (graphviz-dot-indent-width 4))
 
-
-
-
-
   (use-package gradle-mode
     :ensure t
     :mode "\\.gradle\\'")
@@ -559,7 +544,6 @@ For emacs-lisp code, use paredit for dealing with parentheses.
 
   (use-package nxml-mode
     :delight)
-
 
   (use-package proof-general
     :ensure t)
@@ -613,7 +597,7 @@ Set emacs configuration file location, and bind that function.
     (ido-enable-flex-matching t)
     (ido-everywhere t)
     (ido-file-extensions-order
-     '(".cpp" ".hpp" ".c" ".h" ".py" ".sh" ".org" ".tex" ".el"))
+     '(".scala" ".java" ".cpp" ".hpp" ".c" ".h" ".py" ".sh" ".org" ".tex" ".el"))
     (ido-ignore-extensions t)
     (ido-mode "both")
     (ido-use-filename-at-point 'guess))
